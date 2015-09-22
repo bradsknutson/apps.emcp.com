@@ -1,0 +1,24 @@
+.hand li {
+    color: #337ab7;
+    cursor: pointer;
+}
+.hand li:hover {
+    color: #23527c;
+    text-decoration: underline;
+}
+table, .section-2, .section-3 {
+    display: none;   
+}
+.red {
+    color: #F00;
+}
+td.padding {
+    padding: 50px !important;
+}
+.table-bordered, .section-1, .section-2, .section-3 {
+    margin-top: 50px;   
+}
+.row {
+    margin-right: 0px !important;
+    margin-left: 0px !important;
+}
