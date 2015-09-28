@@ -6,4 +6,6 @@
 
     $mysqli = mysqli_connect('localhost',$user,$password,$db);
 
+    $mysqli->set_charset('utf8');
+
 ?>

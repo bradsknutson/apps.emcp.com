@@ -1,17 +1,21 @@
 <?php
 
     include 'con.php';
+    include 'base.php';
 
     $id = $_POST['id'];
     $level = $_POST['level'];
     $unit = $_POST['unit'];
+    $lesson = $_POST['lesson'];
 
-    $getResources = 'SELECT a.id, b.activity_name, a.label, a.lesson, a.link
+    $getResources = 'SELECT a.id, b.activity_name, a.activity_label, a.lesson, a.url, a.book_id, a.page, a.activity_number, a.interaction_id, a.score_possible
                         FROM  resource_meta_data a, resource_master b 
                         WHERE a.resource_id = b.id 
                         AND program_id =  "'. $id .'"
                         AND level =  "'. $level .'"
-                        AND unit =  "'. $unit .'"';
+                        AND unit =  "'. $unit .'"
+                        ORDER BY page * 1 ASC';
+
     $getResourcesResult = $mysqli->query($getResources);
     
     while($getResourcesRow = $getResourcesResult->fetch_array()) {
@@ -20,7 +24,12 @@
     $getResourcesResult->close();
 
 
-    $getActivityType = 'SELECT * FROM resource_master';
+    $getActivityType = 'SELECT b.activity_name
+                        FROM resource_meta_data a, resource_master b
+                        WHERE a.program_id = "'. $id .'"
+                        AND a.resource_id = b.id
+                        GROUP BY a.resource_id
+                        ORDER BY b.sort_order ASC';
     $getActivityTypeResult = $mysqli->query($getActivityType);
     
     while($getActivityTypeRow = $getActivityTypeResult->fetch_array()) {
@@ -35,13 +44,6 @@
         $activity = str_replace("'", "", explode(' ', $act['activity_name']) );
         $act_lower_array[] = strtolower($activity['0']);
     }
-
-    $jsArray = '[';
-    foreach( $act_lower_array as $jsVal ) { 
-        $jsArray .= '\''. $jsVal .'\',';
-    }
-    $jsArray = rtrim($jsArray, ',') .']';
-    
         
     $types = array_combine($act_clean_array, $act_lower_array);
 
@@ -58,12 +60,44 @@
 
         foreach( $getResourcesRows as $i ){
             if( $i['activity_name'] == $k ) {
+                
+                if( strlen($i['activity_label']) >= 24 ) {
+                    $label = mb_substr($i['activity_label'],0,21, 'utf-8') . '...';
+                } else {
+                    $label = $i['activity_label'];   
+                }
+                
+                $interaction_type = explode('.', $i['interaction_id']);
                 $c .= '<li class="l'. $level .'u'. $unit . $v .' resource_individuals">
-                            <a class="resource_item-link" href="'. $i['link'] .'" target="_blank">
+                            <a class="resource_item-link" href="'. $i['url'] .'" target="_blank">
                                 <div class="resource_item '. $v .'">
-                                    <div class="resource_label">'. $i['label'] .'</div>
-                                    <div class="resource-meta-data lesson" id="'. $i['lesson'] .'"></div>
-                                    <div class="resource-meta-data activity_id" id="'. $i['id'] .'"></div>
+                                    <div class="resource_label">'. $label .'</div>
+                                    <div class="info_icon"></div>
+                                    <div class="resource_modal_info">
+                                        <div class="resource-meta-data label"><strong>'. $i['activity_label'] .'</strong></div>
+                                        <div class="resource-meta-data level" id="'. $level .'">Level '. $level .'</div>
+                                        <div class="resource-meta-data unit" id="'. $unit .'">Unit '. $unit .'</div>
+                                        <div class="resource-meta-data lesson" id="'. $i['lesson'] .'">Lesson '. $i['lesson'] .'</div>
+                                        <div class="resource-meta-data page" id="'. $i['page'] .'">Page '. $i['page'] .'</div>
+                                        ';
+                if( !empty( $i['activity_number'] ) ) {
+                    $c .= '
+                                        <div class="resource-meta-data activity_number" id="'. $i['activity_number'] .'">Activity Number '. $i['activity_number'] .'</div> 
+                                        ';
+                } 
+                                        
+                if( !empty( $i['score_possible'] ) ) {
+                    $c .= '
+                                        <div class="resource-meta-data score_possible" id="'. $i['score_possible'] .'">Score Possible: '. $i['score_possible'] .'</div>';   
+                }
+                                        
+                $c .= '
+                                        <div class="resource-meta-data interaction_type" id="'. $interaction_type[0] .'"></div>
+                                        <div class="resource-meta-data interaction_num" id="'. $interaction_type[1] .'"></div>
+                                        <div class="resource-meta-data activity_id" id="'. $i['id'] .'"></div>
+                                        <div class="resource-meta-data book_id" id="'. $i['book_id'] .'"></div>
+                                        <div class="modalClose anim"></div>
+                                    </div>
                                 </div>
                             </a>
                         </li>';
@@ -132,10 +166,15 @@
                 
                 if( $(\'.\' + $coverSelector + \'.resource_individuals\').length == 0 ) {
                     $(\'.\' + $coverSelector).remove();
-                    console.log($coverSelector + \' has been be removed\');
                 }
                 
             });
+            
+            var url = \''. $base .'includes/get_filters.ajax.php\';
+            var $this = $(\'.level-'. $level .'-unit-'. $unit .'\');
+            var lesson = \''. $lesson .'\';
+            
+            lessonRequest( url, '. $id .', '. $level .', '. $unit .', $this, lesson );
             
             </script>';
 

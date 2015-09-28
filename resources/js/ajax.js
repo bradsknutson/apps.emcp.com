@@ -10,9 +10,10 @@ $(document).ready(function() {
         
         $level = $(this).children('.slice-level').attr('id');
         $unit = $(this).children('.slice-unit').attr('id');
+        $lesson = $('.lesson').attr('id');
         
         // AJAX
-        function ajaxRequest(a,b,c,d,e) {
+        function ajaxRequest(a,b,c,d,e,f) {
             $.ajax({
                 url: a,
                 async: true,
@@ -20,14 +21,15 @@ $(document).ready(function() {
                 data: {
                     id: b,
                     level: c,
-                    unit: d        
+                    unit: d,
+                    lesson: f
                 }
             }).done(function(data) {
                 e.children('.resources').append(data); 
             });    
         }
         
-        ajaxRequest( process, id, $level, $unit, $this );
+        ajaxRequest( process, id, $level, $unit, $this, $lesson );
         
     });
     

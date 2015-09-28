@@ -10,7 +10,7 @@
     while($getCoversRow = $getCoversResult->fetch_array()) {
         $getCoversRows[] = $getCoversRow;
     }
-    $result->close();
+    $getCoversResult->close();
 
     // cover-workbookl1
 

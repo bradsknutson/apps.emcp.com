@@ -12,28 +12,15 @@
                 <a href="https://www.facebook.com/EMCPublishing" target="_blank"><img src="<?php echo $base; ?>img/facebook.png"></a>
                 <a href="http://vimeo.com/emcpublishing" target="_blank"><img src="<?php echo $base; ?>img/vimeo.png"></a>
             </div> <!-- end social -->	
-            <div class="copy">© 2014 EMC Publishing, LLC. All Rights Reserved.<br />EMC is a division of <a href="http://newmountainlearning.com/" target="_blank" class="nml"><img src="<?php echo $base; ?>img/NML_logo.png" height="22px"> New Mountain Learning, LLC</a><br />EMC Publishing, LLC, 875 Montreal Way, St. Paul, MN 55102 &bull; 800-328-1452 &bull; Fax: 800-328-4564
+            <div class="copy">&copy; 2014 EMC Publishing, LLC. All Rights Reserved.<br />EMC is a division of <a href="http://newmountainlearning.com/" target="_blank" class="nml"><img src="<?php echo $base; ?>img/NML_logo.png" height="22px"> New Mountain Learning, LLC</a><br />EMC Publishing, LLC, 875 Montreal Way, St. Paul, MN 55102 &bull; 800-328-1452 &bull; Fax: 800-328-4564
             </div>
 
         </div> <!-- end footer -->
         <div id="xmses" style="display:none"></div>
         <div id="xese" style="display:none"></div>
         <div id="selinput" style="display:none"></div>
-        <div id="totop" class="anim">^</div>
+        <div id="totop" class="anim"></div>
     </div> <!-- end xcenter -->
-    <script>
-        $(document).scroll(function () {
-            var yx = $(this).scrollTop();
-            if (yx > 200) {
-                $('#totop').css('opacity','1');
-            } else {
-                $('#totop').css('opacity','0');
-            }
-
-        });
-
-        $('#totop').click(function(){$("html").stop().scrollTo( { top:10,left:0} , 1000 );});
-    </script>
 </body>
 </html>
 <?php 

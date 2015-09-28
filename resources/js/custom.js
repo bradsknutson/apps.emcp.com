@@ -29,4 +29,54 @@ $(document).ready(function() {
         e.preventDefault();
     });
     
+    $(document).on('click', '.info_icon', function(e) {
+        if( $(this).hasClass('toggled') ) {
+            $(this).removeClass('toggled');
+            $(this).parent().find('.resource_modal_info').hide();
+        } else {
+            $(this).addClass('toggled');
+            $(this).parent().find('.resource_modal_info').show();
+        }
+        
+        e.preventDefault();
+    });
+    
+    $(document).on('click', '.modalClose', function(e) {
+        $(this).parent().hide();
+        $(this).parent().parent().find('.info_icon').removeClass('toggled');
+        e.preventDefault();
+    });
+    
+    $(document).on('click', '.resource_modal_info', function(e) {
+        e.preventDefault();
+    });
+
+    $(document).scroll(function () {
+        var yx = $(this).scrollTop();
+        if (yx > 200) {
+            $('#totop').css('opacity','1');
+        } else {
+            $('#totop').css('opacity','0');
+        }
+
+    });
+
+    $('#totop').click(function(){$("html").stop().scrollTo( { top:10,left:0} , 1000 );});    
+    
 });
+
+function lessonRequest(a,b,c,d,e,f) {
+    $.ajax({
+        url: a,
+        async: true,
+        type: "POST",
+        data: {
+            id: b,
+            level: c,
+            unit: d,
+            lesson: f
+        }
+    }).done(function(data) {
+        e.children('.resources').prepend(data); 
+    });    
+}  

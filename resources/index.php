@@ -7,7 +7,7 @@
 ?>
     <div class="program_id" id="<?php echo $id; ?>"></div>
         <div class="hero">
-            <img src="<?php echo $base; ?>img/<?php echo $hero; ?>" alt="" />
+            <img src="<?php echo $base; ?>img/heros/<?php echo $hero; ?>" alt="" />
             <div class="shadow"></div>
             <div class="title"><?php echo $title; ?> Program Resources</div>
         </div>
@@ -19,9 +19,7 @@
                 <div class="units">
                     <?php getUnits($getUnitCountRows,$unit_title); ?>
                 </div>
-                <!-- <div class="lessons">
-                    <?php echo $lesson_title; ?>
-                </div> -->
+                <div class="lesson" id="<?php echo $lesson_title; ?>"></div>
             </div>
             <?php displaySlices($getUnitCountRows,$unit_title); ?>
         </div>

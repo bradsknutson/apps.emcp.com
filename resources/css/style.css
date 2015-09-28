@@ -1,4 +1,5 @@
 @import url(https://fonts.googleapis.com/css?family=Raleway:100,300,400);
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300);
 
 @font-face{font-family:emclIcons;src:url(fonts/emclIcons.eot?-d6xjjw);src:url(fonts/emclIcons.eot?#iefix-d6xjjw) format('embedded-opentype'),url(fonts/emclIcons.woff?-d6xjjw) format('woff'),url(fonts/emclIcons.ttf?-d6xjjw) format('truetype'),url(fonts/emclIcons.svg?-d6xjjw#emclIcons) format('svg');font-weight:400;font-style:normal}
 
@@ -459,6 +460,7 @@ color:#fff;
 
 .slice, .sliced {
     display: none;
+    position: relative;
     padding: 30px 100px;
     background: -moz-linear-gradient(top, #efefef 0%, #9f9f9f 100%); /* FF3.6+ */
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#efefef), color-stop(100%,#9f9f9f)); /* Chrome,Safari4+ */
@@ -466,6 +468,7 @@ color:#fff;
 	background: -o-linear-gradient(top, #efefef 0%,#9f9f9f 100%); /* Opera 11.10+ */
 	background: -ms-linear-gradient(top, #efefef 0%,#9f9f9f 100%); /* IE10+ */
 	background: linear-gradient(top, #efefef 0%,#9f9f9f 100%); /* W3C */
+    overflow: hidden;
 }
 h2.unit-title {
     padding: 0 0 20px;
@@ -493,6 +496,9 @@ h2.unit-title {
 #totop:hover{
     background:#282322;
     color:#eee;
+}
+#totop:after {
+    content: '\21E7';   
 }
 
 .nadpis{
@@ -1051,13 +1057,19 @@ margin-left:60px;
     bottom: 25px;
     width: 100%;
     text-align: center;
-    padding: 14px 0;
+    padding: 10px 0;
     height: 48px;
     box-sizing: border-box;
     z-index: 2;
+    font-family: 'Open Sans',sans-serif;
+    font-weight: 300;
+    line-height: 1;
 }
 .resource_item .resource_label {
-    bottom: 0px;   
+    bottom: 0px;
+    font-size: 13px;
+    padding: 10px 5px;
+    word-wrap: break-word;
 }
 .resource_item:after {
     color: #FFF;
@@ -1075,6 +1087,9 @@ margin-left:60px;
     width: 60px;
     height: 20px;
     background-color: #1e355e;   
+    font-family: 'Open Sans',sans-serif;
+    font-weight: 300;
+    line-height: 1;
 }
 .resource_item.workbook:after {
     content: 'WB';
@@ -1083,10 +1098,21 @@ margin-left:60px;
     content: 'GV';
 }
 .resource_item.listening:after {
-    content: 'Li';
+    content: 'LA';
+}
+.resource_item.audio:after {
+    content: '';
+    background-image: url('../img/listening.png');
+    background-size: 35px;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 .resource_item.video:after {
-    content: '\25B6';
+    content: '';
+    background-image: url('../img/video.png');
+    background-size: 35px;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 .resource_item.communicative:after {
     content: 'CA';
@@ -1098,12 +1124,18 @@ margin-left:60px;
 .resource_item.quizzes:after {
     content: 'Q';
 }
-.resource_item.teachers:after {
+.resource_item.tests:after {
+    content: 'T';
+}
+.resource_item.teachers:after { 
     content: 'ATE';
 }
 .cover-communicative .resource_label {
     font-size: 12px;
     padding: 10px 0;
+}
+.cover-student .resource_label, .cover-video .resource_label {
+    padding: 6px 0;
 }
 .cover-grammar .resource_label, .cover-teachers .resource_label {
     font-size: 15px;
@@ -1133,9 +1165,9 @@ margin-left:60px;
     float: left;
 }
 
-.frame { width: 100%; height: 135px; padding: 0; }
+.frame { width: 100%; height: 135px; padding: 0; overflow: visible !important; }
 .frame .slidee { margin: 0; padding: 0; height: 100%; list-style: none; }
-.frame .slidee li { float: left; margin: 0 25px 0 0; padding: 0; height: 100%; }
+.frame .slidee li { float: left; margin: 0 25px 0 0; padding: 0; height: 100%; position: relative; }
 
 .scrollbar { 
     width: 100%;
@@ -1181,6 +1213,11 @@ margin-left:60px;
     content: "\e632";
     color: #f9bf00;
 }
+.resource_item.student:after, .resource_item.teachers:after {
+    content: '\e600';
+    font-family: emclIcons;
+    color: #FFF;
+}
 .resource_item.iculture:after, .resource_item.flipgrid:after, .resource_item.avenue:after {
     font-family: emclIcons;
     font-size: 30px;
@@ -1204,4 +1241,114 @@ margin-left:60px;
 }
 .resource_item.avenue:after {
     content: "\e632";
+}
+
+.select-style {
+    border: 1px solid #ccc;
+    width: 100px;
+    border-radius: 3px;
+    overflow: hidden;
+    background: #fafafa url("data:image/png;base64,R0lGODlhDwAUAIABAAAAAP///yH5BAEAAAEALAAAAAAPABQAAAIXjI+py+0Po5wH2HsXzmw//lHiSJZmUAAAOw==") no-repeat 90% 50%;
+    position: absolute;
+    top: 30px;
+    right: 100px;
+    cursor: pointer;
+}
+
+.select-style select {
+    padding: 5px 8px;
+    width: 130%;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    background-image: none;
+    -webkit-appearance: none;
+}
+
+.select-style select:focus {
+    outline: none;
+}
+.hiddenlesson, .hiddeninteraction_type {
+    display: none !important;   
+}
+.select-interaction_type {
+    display: none;
+    width: 150px;   
+}
+.lessonFilterSelected {
+    right: 260px;   
+}
+.info-icon {
+}
+.info_icon:after {
+    content: '\e615';
+    position: absolute;
+    top: 3px;
+    right: 6px;
+    font-family: emclIcons;
+    color: #000;
+    font-size: 17px;
+    cursor: pointer;
+    z-index: 5;
+}
+.info_icon.toggled:after {
+    content: '\e633' !important;   
+}
+.resource_modal_info {
+    display: none;
+    position: absolute;
+    top: -50px;
+    z-index: 999999;
+    left: 107px;
+    background: #FFF;
+    width: 150px;
+    padding: 25px;
+    box-shadow: 0px 2px 5px 1px #777;
+    color: #000;
+    font-size: 14px;
+    cursor: default;
+}
+.resource_modal_info:before, .resource_modal_info:after {
+    content: '';
+    position: absolute;
+    background: #FFF;
+}
+.resource_modal_info:before {
+    content: '';
+	width: 20px; 
+	height: 20px; 
+    -moz-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+	box-shadow: 0px 2px 5px 1px #777;
+    left: -10px;
+    top: 50px;
+}
+.resource_modal_info:after {
+	width: 20px; 
+	height: 40px; 
+    left: 0px;
+    top: 39px;
+}
+.modalClose {
+    position: absolute;
+    top: -12px;
+    right: -12px;
+    background-image: url('../img/modalClose.gif');
+    background-size: 25px;
+    height: 25px;
+    width: 25px;
+    cursor: pointer;
+}
+.modalClose:hover {
+    opacity: 0.5;   
+}
+.noneAvailable:after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100px; height: 100%;
+    z-index: 99999;
+    background-color: rgba(0,0,0,0.5);
 }

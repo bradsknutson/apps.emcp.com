@@ -1,6 +1,6 @@
 <?php 
 
-    $base = 'http://apps.emcp.com/resources/';
+    include 'includes/base.php';
 
     include 'includes/vars.php';
     include 'includes/con.php';
@@ -19,18 +19,8 @@
     <script src="<?php echo $base; ?>js/jquery-1.9.1.min.js"></script>
 
     <link rel="stylesheet" href="<?php echo $base; ?>css/style.css"/>
-    <script src="<?php echo $base; ?>js/sha1.js"></script>
-
 
     <script src="<?php echo $base; ?>js/jquery.scrollto.min.js"></script>
-    <script src="<?php echo $base; ?>js/jquery.animate-colors-min.js"></script>
-
-    <link href="<?php echo $base; ?>css/jquery.mCustomScrollbar.css" rel="stylesheet" />
-    <script src="<?php echo $base; ?>js/jquery.mCustomScrollbar.concat.min.js"></script>
-
-    <link rel="stylesheet" href="<?php echo $base; ?>css/fallr2.css" />
-    <script src="<?php echo $base; ?>js/jquery-fallr-2.0.min.js"></script>
-    <script src="<?php echo $base; ?>js/jquery.easing.min.js"></script>
     
     <script src="<?php echo $base; ?>js/sly.js"></script>
     <script src="<?php echo $base; ?>js/ajax.js"></script>
