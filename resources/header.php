@@ -15,19 +15,13 @@
     <title><?php echo $title; ?> | Digital Resource Center</title>
 
     <link rel="shortcut icon" href="<?php echo $base; ?>img/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="<?php echo $base; ?>css/style.css"/>   
+    <link rel="stylesheet" href="<?php echo $base; ?>css/covers.php?id=<?php echo $id; ?>" />
           
-    <script src="<?php echo $base; ?>js/jquery-1.9.1.min.js"></script>
-
-    <link rel="stylesheet" href="<?php echo $base; ?>css/style.css"/>
-
-    <script src="<?php echo $base; ?>js/jquery.scrollto.min.js"></script>
+    <script async src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script async src="<?php echo $base; ?>js/custom.js"></script>
     
-    <script src="<?php echo $base; ?>js/sly.js"></script>
-    <script src="<?php echo $base; ?>js/ajax.js"></script>
-    <script src="<?php echo $base; ?>js/custom.js"></script>
-    
-    <?php echo $css; ?>
-    
+    <?php include 'includes/preload-js-only.php'; ?>
 </head>
 <body> 	
     <div id="xcenter">

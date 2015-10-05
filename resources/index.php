@@ -1,4 +1,6 @@
 <?php 
+
+    ob_start("ob_gzhandler");
   
     include 'header.php';
     include 'includes/get_unit_count.php';

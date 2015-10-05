@@ -1,5 +1,7 @@
 <?php
 
+    ob_start("ob_gzhandler");
+
     include 'con.php';
     
     $lessonTitle = $_POST['lesson'];
@@ -13,6 +15,7 @@
                     AND a.level = "'. $lev .'"
                     AND a.unit = "'. $u .'"
                     AND b.interaction_short = REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE (a.interaction_id, "0", ""),"1", ""),"2", ""),"3", ""),"4", ""),"5", ""),"6", ""),"7", ""),"8", ""),"9", ""),".", "")
+                    AND b.interaction_short !=  \'na\'
                     GROUP BY interaction';
 
     $getIntTypeResult = $mysqli->query($getIntType);
@@ -27,6 +30,7 @@
                     WHERE program_id = "'. $id .'"
                     AND level = "'. $lev .'"
                     AND unit = "'. $u .'"
+                    AND lesson != ""
                     GROUP BY lesson';
 
     $getLessonsResult = $mysqli->query($getLessons);
@@ -70,18 +74,20 @@
 
     // Scripts
 
-    $s .= '<script>$(document).ready(function() {';
+    $s .= '<script>$(document).ready(function() {
+    ';
     foreach( $filters as $f ) {
         $s .= '$(\'.l'. $lev .'u'. $u .'-'. $f .'\').change(function() {
                 $'. $f .' = $(this).val();';
         
         if( $f == 'lesson' ) {
-            $s .= 'if( $'. $f .' != \'choose\' ) {
+            $s .= '
+            if( $'. $f .' != \'choose\' ) {
                     $(this).parent().addClass(\'lessonFilterSelected\');
                     $(\'.l'. $lev .'u'. $u .'-interaction_type\').parent().show();
                 } else {
                     $(this).parent().removeClass(\'lessonFilterSelected\');
-                    $(\'.l'. $lev .'u'. $u .'-interaction_type\').parent().hide();
+                    $(\'.l'. $lev .'u'. $u .'-interaction_type\').val(\'choose\').change().parent().hide();
                 }
             ';
         }
@@ -118,6 +124,6 @@
     $s .= '
         });</script>';
 
-    echo $l . $int_type . $s;
+    echo $l . $int_type;
 
 ?>

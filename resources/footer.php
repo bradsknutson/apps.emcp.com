@@ -21,6 +21,9 @@
         <div id="selinput" style="display:none"></div>
         <div id="totop" class="anim"></div>
     </div> <!-- end xcenter -->
+    <div class="modalBackground">
+        <div class="modalContainer"></div>
+    </div>
 </body>
 </html>
 <?php 

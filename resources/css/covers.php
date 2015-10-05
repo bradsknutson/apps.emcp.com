@@ -1,0 +1,30 @@
+<?php
+
+    ob_start("ob_gzhandler");
+
+    header("Content-type: text/css");
+
+    include '../includes/con.php';
+    $id = $_GET['id'];
+
+    $getCovers = 'SELECT a.activity_name, b.level, b.cover
+                    FROM resource_master a, resource_asset_data b
+                    WHERE b.resource_id = a.id
+                    AND b.program_id = "'. $id .'"';
+
+    $getCoversResult = $mysqli->query($getCovers);
+    
+    while($getCoversRow = $getCoversResult->fetch_array()) {
+        $getCoversRows[] = $getCoversRow;
+    }
+    $getCoversResult->close();
+
+    foreach( $getCoversRows as $i ) {
+        $activity = str_replace("'", "", explode(' ', $i['activity_name']) );
+        
+        $css .= ".cover-". strtolower($activity[0]) ."l". $i['level'] ." { background-image: url('../img/covers/". $i['cover'] ."'); }\r\n";   
+    } 
+
+    echo $css;
+
+?>
