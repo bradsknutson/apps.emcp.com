@@ -13,13 +13,15 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title><?php echo $title; ?> | Digital Resource Center</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
     <link rel="shortcut icon" href="<?php echo $base; ?>img/favicon.ico" type="image/x-icon" />
-    <link rel="stylesheet" href="<?php echo $base; ?>css/style.css"/>   
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="<?php echo $base; ?>css/style.css"/ class="styled">   
     <link rel="stylesheet" href="<?php echo $base; ?>css/covers.php?id=<?php echo $id; ?>" />
           
-    <script async src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script async src="<?php echo $base; ?>js/custom.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     
     <?php include 'includes/preload-js-only.php'; ?>
 </head>

@@ -22,8 +22,17 @@
         <div id="totop" class="anim"></div>
     </div> <!-- end xcenter -->
     <div class="modalBackground">
-        <div class="modalContainer"></div>
+        <div class="modalContainer anim"></div>
     </div>
+    <div class="loading">
+        <div class="loader">
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+        </div>
+     </div>
+    <script src="<?php echo $base; ?>js/custom.js"></script>
 </body>
 </html>
 <?php 

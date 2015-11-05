@@ -1,9 +1,12 @@
 <?php
 
-    $preload = 'SELECT cover
-                    FROM resource_asset_data
-                    WHERE program_id = "'. $id .'"
-                    ORDER BY level';
+    $preload = 'SELECT a.activity_name, b.level, b.cover, COUNT(c.id) as count
+                    FROM resource_master a, resource_asset_data b, resource_meta_data c
+                    WHERE b.resource_id = a.id
+                    AND c.resource_id = a.id
+                    AND c.level = b.level
+                    AND b.program_id = "'. $id .'"
+                    GROUP BY b.cover';
 
     $preloadResult = $mysqli->query($preload);
     

@@ -15,7 +15,7 @@
                     AND a.level = "'. $lev .'"
                     AND a.unit = "'. $u .'"
                     AND b.interaction_short = REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE (a.interaction_id, "0", ""),"1", ""),"2", ""),"3", ""),"4", ""),"5", ""),"6", ""),"7", ""),"8", ""),"9", ""),".", "")
-                    AND b.interaction_short !=  \'na\'
+                    AND b.interaction_short !=  \'\'
                     GROUP BY interaction';
 
     $getIntTypeResult = $mysqli->query($getIntType);
@@ -30,7 +30,7 @@
                     WHERE program_id = "'. $id .'"
                     AND level = "'. $lev .'"
                     AND unit = "'. $u .'"
-                    AND lesson != ""
+                    AND lesson != "0"
                     GROUP BY lesson';
 
     $getLessonsResult = $mysqli->query($getLessons);

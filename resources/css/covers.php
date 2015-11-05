@@ -7,10 +7,13 @@
     include '../includes/con.php';
     $id = $_GET['id'];
 
-    $getCovers = 'SELECT a.activity_name, b.level, b.cover
-                    FROM resource_master a, resource_asset_data b
+    $getCovers = 'SELECT a.activity_name, b.level, b.cover, COUNT(c.id) as count
+                    FROM resource_master a, resource_asset_data b, resource_meta_data c
                     WHERE b.resource_id = a.id
-                    AND b.program_id = "'. $id .'"';
+                    AND c.resource_id = a.id
+                    AND c.level = b.level
+                    AND b.program_id = "'. $id .'"
+                    GROUP BY b.cover';
 
     $getCoversResult = $mysqli->query($getCovers);
     
@@ -20,9 +23,9 @@
     $getCoversResult->close();
 
     foreach( $getCoversRows as $i ) {
-        $activity = str_replace("'", "", explode(' ', $i['activity_name']) );
+        $activity = strtolower(str_replace("'", "", str_replace("&","and", str_replace(" ","_", $i['activity_name']) ) ) );
         
-        $css .= ".cover-". strtolower($activity[0]) ."l". $i['level'] ." { background-image: url('../img/covers/". $i['cover'] ."'); }\r\n";   
+        $css .= ".cover-". $activity ."l". $i['level'] ." { background-image: url('../img/covers/". $i['cover'] ."'); }\r\n";   
     } 
 
     echo $css;
