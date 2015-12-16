@@ -1,5 +1,5 @@
 <?php
-    $base = 'http://apps.emcp.com/editor/';
+    $base = 'https://apps.emcp.com/editor/';
 
     $book = $_GET['book'];
     $type = $_GET['type'];

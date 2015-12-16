@@ -985,7 +985,9 @@ FileETag None
 
 
 RewriteEngine On
+RewriteCond %{SERVER_PORT} 80 
+RewriteRule ^(.*)$ https://apps.emcp.com/resources/$1 [R=301,L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_URI}  ^/([^/]+)/?([^/]*)?/?([^/]*)?/?([^/]*)?/?  [NC]
-RewriteRule .*    index.php?book=%2&var2=%3&var3=%4 [L]
+RewriteRule .*    index.php?book=%2&passport=%3&uid=%4 [L]

@@ -1,11 +1,8 @@
 <?php 
 
-    include 'includes/base.php';
+    ob_start('ob_gzhandler');
 
-    include 'includes/vars.php';
-    include 'includes/con.php';
-    include 'includes/get_book_info.php';
-    include 'includes/get_covers.php';
+    include 'includes/functions.php';
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -25,5 +22,6 @@
     
     <?php include 'includes/preload-js-only.php'; ?>
 </head>
-<body> 	
+<body class="initial">
+    <div class="passport" id="<?php echo $passport; ?>"></div>
     <div id="xcenter">

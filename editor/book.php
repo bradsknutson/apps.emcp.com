@@ -63,9 +63,9 @@
 
                                     while (false !== ($entry = readdir($handle))) {
 
-                                        if ($entry != "." && $entry != "..") {
+                                        if ($entry != "." && $entry != ".." && $entry != "images" && $entry != "icons" && $entry != "" ) {
 
-                                            echo '<option value="'. rtrim($entry, ".xhtml") .'">'. rtrim($entry, ".xhtml") .'</option>';
+                                            echo '<option value="'. str_replace(".xhtml", "", $entry) .'">'. str_replace(".xhtml", "", $entry) .'</option>';
                                         }
                                     }
 
@@ -105,7 +105,6 @@
                             });
                             $ajax.done(function(data) {
                                 $('.panel-body textarea').text(data);
-                                console.log(data)
                             });
                             
                             $('.edit-json textarea').keyup(function() {
@@ -125,7 +124,6 @@
                                     }
                                 });
                                 ajaxRequest.done(function(data) {
-                                    console.log(data);
                                 });	
                                 
                                 event.preventDefault();

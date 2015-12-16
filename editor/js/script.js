@@ -1,8 +1,9 @@
 $(document).ready(function () {
     
-    $base = 'http://apps.emcp.com/editor/';
+    $base = 'https://apps.emcp.com/editor/';
     
     $('select').each(function() {
+        
         var selectedValue = $(this).val();
 
         $(this).html($("option", $(this)).sort(function(a, b) { 
@@ -14,7 +15,8 @@ $(document).ready(function () {
         $(this).val(selectedValue);
     });
     
-    $('select').prepend('<option selected="selected">Choose Page</option>');
+    $('.json-book-selector select').prepend('<option selected="selected">Choose Book</option>');
+    $('.json-page-selector select, .html-page-selector select').prepend('<option selected="selected">Choose Page</option>');
     
     $('select').change(function() {
         $(this).parent().parent().submit(); 

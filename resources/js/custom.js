@@ -1,5 +1,7 @@
 $(document).ready(function() {
     
+    bodyFixed();
+    
     ;(function($){var h=$.scrollTo=function(a,b,c){$(window).scrollTo(a,b,c)};h.defaults={axis:'xy',duration:parseFloat($.fn.jquery)>=1.3?0:1,limit:true};h.window=function(a){return $(window)._scrollable()};$.fn._scrollable=function(){return this.map(function(){var a=this,isWin=!a.nodeName||$.inArray(a.nodeName.toLowerCase(),['iframe','#document','html','body'])!=-1;if(!isWin)return a;var b=(a.contentWindow||a).document||a.ownerDocument||a;return/webkit/i.test(navigator.userAgent)||b.compatMode=='BackCompat'?b.body:b.documentElement})};$.fn.scrollTo=function(e,f,g){if(typeof f=='object'){g=f;f=0}if(typeof g=='function')g={onAfter:g};if(e=='max')e=9e9;g=$.extend({},h.defaults,g);f=f||g.duration;g.queue=g.queue&&g.axis.length>1;if(g.queue)f/=2;g.offset=both(g.offset);g.over=both(g.over);return this._scrollable().each(function(){if(e==null)return;var d=this,$elem=$(d),targ=e,toff,attr={},win=$elem.is('html,body');switch(typeof targ){case'number':case'string':if(/^([+-]=)?\d+(\.\d+)?(px|%)?$/.test(targ)){targ=both(targ);break}targ=$(targ,this);if(!targ.length)return;case'object':if(targ.is||targ.style)toff=(targ=$(targ)).offset()}$.each(g.axis.split(''),function(i,a){var b=a=='x'?'Left':'Top',pos=b.toLowerCase(),key='scroll'+b,old=d[key],max=h.max(d,a);if(toff){attr[key]=toff[pos]+(win?0:old-$elem.offset()[pos]);if(g.margin){attr[key]-=parseInt(targ.css('margin'+b))||0;attr[key]-=parseInt(targ.css('border'+b+'Width'))||0}attr[key]+=g.offset[pos]||0;if(g.over[pos])attr[key]+=targ[a=='x'?'width':'height']()*g.over[pos]}else{var c=targ[pos];attr[key]=c.slice&&c.slice(-1)=='%'?parseFloat(c)/100*max:c}if(g.limit&&/^\d+$/.test(attr[key]))attr[key]=attr[key]<=0?0:Math.min(attr[key],max);if(!i&&g.queue){if(old!=attr[key])animate(g.onAfterFirst);delete attr[key]}});animate(g.onAfter);function animate(a){$elem.animate(attr,f,g.easing,a&&function(){a.call(this,e,g)})}}).end()};h.max=function(a,b){var c=b=='x'?'Width':'Height',scroll='scroll'+c;if(!$(a).is('html,body'))return a[scroll]-$(a)[c.toLowerCase()]();var d='client'+c,html=a.ownerDocument.documentElement,body=a.ownerDocument.body;return Math.max(html[scroll],body[scroll])-Math.min(html[d],body[d])};function both(a){return typeof a=='object'?a:{top:a,left:a}}})(jQuery);
 
     ;(function ($, w, undefined) {
@@ -2205,7 +2207,7 @@ $(document).ready(function() {
         };
     }(jQuery, window));    
     
-    // AJAX Request Function
+    // Load all Activities via ajaxRequest
     
     $base = window.location.protocol + '//' + window.location.hostname + '/' + window.location.pathname.split('/')[1] + '/';
     
@@ -2219,8 +2221,9 @@ $(document).ready(function() {
         $level = $(this).children('.slice-level').attr('id');
         $unit = $(this).children('.slice-unit').attr('id');
         $lesson = $('.lesson').attr('id');
+        $passport = $('.passport').attr('id');
         
-        ajaxRequest( process, id, $level, $unit, $this, $lesson );
+        ajaxRequest( process, id, $level, $unit, $this, $lesson, $passport );
         
     });    
     
@@ -2271,6 +2274,8 @@ $(document).ready(function() {
 
     $('#totop').click(function(){$("html").stop().scrollTo( { top:10,left:0} , 1000 );});
     
+    // Filter Activities by Lesson
+    
     $(document).on('change','.select-lesson select', function() {
         $lu = $(this).attr('class').split('-')[0];
         $lesson = $(this).val();
@@ -2286,6 +2291,8 @@ $(document).ready(function() {
         }
     });
     
+    // Filter Activities by Interaction Type
+    
     $(document).on('change','.select-interaction_type select', function() {
         $intType =  $(this).val();
         if( $intType == 'choose' ) {
@@ -2296,12 +2303,14 @@ $(document).ready(function() {
         }
     });
     
+    // Mark Activity Type (Book Cover) as unavailable if all activities have been filtered out
+    
     $(document).on('change','.resources select', function() {
         $lu = $(this).attr('class').split('-')[0];
         $thisFrame = '.' + $(this).parent().parent().parent().attr('class').split(' ')[2];
         $( $thisFrame + ' .expanded,' + $thisFrame + ' .collapsed').each(function() {
             $x = $(this).attr('class').split(' ')[0];
-            $length = $('.' + $x + '.resource_individuals').not('.hiddenlesson,.hiddeninteraction_type').length;
+            $length = $('.' + $x + '.resource_individuals').not('.hiddenlesson,.hiddeninteraction_type,.hiddenAssignable').length;
             if( $length == '0' ) {
                 $(this).addClass('noneAvailable');
             } else {
@@ -2310,6 +2319,8 @@ $(document).ready(function() {
         });
         $('.' + $lu + 'frame').sly('reload');
     });
+    
+    // Collapse Activity Type (Book Cover) and Resize Slider
     
     $(document).on('click', '.collapsed', function() {
 
@@ -2323,6 +2334,8 @@ $(document).ready(function() {
 
     });
 
+    // Expand Activity Type (Book Cover) and Resize Slider
+    
     $(document).on('click', '.expanded', function() {
 
         $(this).removeClass('expanded').addClass('collapsed');
@@ -2335,7 +2348,7 @@ $(document).ready(function() {
 
     });
     
-    // Modal Window (iCulture)
+    // Launch iCulture Modal from Slider
     
     $(document).on('click', '.resource_item.iculture', function(e) {
         $iCURL = $(this).find('.resource-meta-data.iculture-url').attr('id');
@@ -2347,6 +2360,8 @@ $(document).ready(function() {
         
         e.preventDefault(); 
     });
+    
+    // Launch iCulture Modal from Modal Container
     
     $(document).on('click', '.cover-iculturelarge', function() {
         $iCURL = $(this).parent().find('.resource-meta-data.iculture-url').attr('id');
@@ -2360,49 +2375,453 @@ $(document).ready(function() {
         
     });
     
+    // Close iCulture Modal
+    
     $(document).on('click','.iCultureModal .modalClose', function() {
-        $(this).fadeOut(300, function() {
-            $('.modalContainer').delay(300).removeClass().addClass('modalContainer');
-        });
+        modalClose();
     });
         
-    // Modal Window    
+    // Launch Activity Modal Window from Info Icon  
     
-    $(document).on('click', '.info_icon', function(e) {
+    $(document).on('click', '.resource_item .info_icon', function(e) {
         
         $id = $(this).parent().find('.resource-meta-data.activity_id').attr('id');
         getModalData($id);
         
         e.preventDefault();
     });
-        
-    $(document).on('click', '.modalClose', function() {
-        $(this).parent().parent().fadeOut(300, function() {
-            $('.modalContainer').html('');
-        });
-        
-        $('.BShelf, .ui-widget-overlay, .ui-dialog, .dialog-container, .interaction-trigger').remove();
+    
+    // Launch Activity Preview from Info Icon (Scheduling Queue)
+    
+    $(document).on('click', '.queue-label .info_icon', function() {
+        $id = $(this).parent().attr('id').split('-')[2];
+        closeScheduling();
+        getModalData($id);
     });
     
-    // Testing Bookshelf Interaction Modals...
+    // Close Modal Container
+        
+    $(document).on('click', '.modalClose', function() {
+        modalClose();
+    });
+    
+    // Launch Activity Preview from Activity Info Modal
     
     $(document).on('click', '.modalContainer .resource-cover', function(e) {
         
-        if( !isMobile() ) {
+        $id = $(this).parent().parent().find('.resource-meta-data.activity_id').attr('id');
+        $a = $(this).parent().parent().find('.resource-meta-data.assignable').attr('id');
+        launchActivityPreview($id,$a,e);
+        setTimeout(function() {
+            overlayCheck($a);
+        }, 1500);
         
-            if( $(this).parent().parent().find('.resource-meta-data.assignable').attr('id') == '1' ) {
+    });
+    
+    // Close Bookshelf Interaction Modal and Open Modal Container
+    
+    $(document).on('click', '.ui-dialog-titlebar-close, .ui-widget-overlay', function() {
+        modalLaunch();
+    });
+    
+    var modal = '<div class="modalContainer anim"></div>';
+    
+    // Click to Left Arrow in Modal Container
+    
+    $(document).on('click', '.modalContainer .left-arrow', function() {
+        $id = $(this).parent().find('.resource-meta-data.activity_id').attr('id');
+        $next = getNextActivityID($id,'1');
+        
+        $(this).parent().addClass('left-clicked').delay(300).queue(function() {
+            $(this).removeClass('left-clicked').addClass('right-clicked').delay(300).queue(function() {
+                $(this).removeClass('right-clicked').dequeue();
+                
+                getModalData($next);
+            }).dequeue(); 
+            $('.modalContainer').html('');
+        });
+    });
+    
+    // Click to Right Arrow in Modal Container
+    
+    $(document).on('click', '.modalContainer .right-arrow', function() {
+        $id = $(this).parent().find('.resource-meta-data.activity_id').attr('id');
+        $next = getNextActivityID($id,'0');
+        
+        $(this).parent().addClass('right-clicked').delay(300).queue(function() {
+            $(this).removeClass('right-clicked').addClass('left-clicked').delay(300).queue(function() {
+                $(this).removeClass('left-clicked').dequeue();
+                
+                getModalData($next);
+            }).dequeue(); 
+            $('.modalContainer').html('');
+        });
+    });
+    
+    // Click to Add Activity to Scheduling Queue
+    
+    $(document).on('click', '.queue-button', function(e) {
+        $id = $(this).parent().find('.resource-meta-data.activity_id').attr('id');
+        addToQueue($id);
+        if( typeof $uid != 'undefined' ) {
+            writeStoredActivities($uid,formatAct());
+        }
+    });
+    
+    // Click to Remove Activity from Scheduling Queue
+    
+    $(document).on('click', '.scheduling-edit', function() {
+        $id = $(this).parent().find('.queue-label').attr('id').split('-')[2];
+        removeFromQueue($id);
+        if( typeof $uid != 'undefined' ) {
+            writeStoredActivities($uid,formatAct());
+        }
+    });
+    
+    // Close Scheduling Queue Modal
+    
+    $(document).on('click', '.schedulingClose', function() {
+        schedulingClose(); 
+    });
+    
+    // Add Header Row to Scheduling Queue Table
+    
+    $unitLabel = $('.unit-title').text().split(' ')[0];
+    $lessonLabel = $('.lesson').attr('id');
+    $('.scheduling-container table').append('<tr class="header-row"><td class="scheduling-row-title" id="sort-label">Title<div class="sort-arrows anim"><div class="arrow-up"></div><div class="arrow-down"></div></div></td><td class="center" id="sort-level">Level<div class="sort-arrows anim"><div class="arrow-up"></div><div class="arrow-down"></div></div></td><td class="center" id="sort-unit">' + $unitLabel + '<div class="sort-arrows anim"><div class="arrow-up"></div><div class="arrow-down"></div></div></td><td class="center" id="sort-lesson">' + $lessonLabel + '<div class="sort-arrows anim"><div class="arrow-up"></div><div class="arrow-down"></div></div></td><td class="center assign-all">Assign</td><td class="center remove-all">Remove</td</tr>');
+    
+    // Open Scheduling Queue Modal
+    
+    $(document).on('click', '.scheduling-icon', function(e) {
+        modalClose();
+        bodyFixed();
+        $('.scheduling-queue').fadeIn();
+    });
+    
+    // Remove All Items from Scheduling Queue
+    
+    $(document).on('click', '.remove-all', function() {
+        launchConfirmPrompt();
+    });
+    $(document).on('click', '.confirm-no', function() {
+        closeConfirmPrompt();
+    });
+    $(document).on('click', '.confirm-yes', function() {
+        closeConfirmPrompt();
+        $('.scheduled-item').each(function() {
+            $id = $(this).find('.queue-label').attr('id').split('-')[2];
+            removeFromQueue($id);
+        });
+        if( typeof $uid != 'undefined' ) {
+            writeStoredActivities($uid,formatAct());
+        }
+    });
+    
+    // Click on Proceed to "Assign" Button in Scheduling Queue
+    
+    $(document).on('click', '.scheduling-assign', function() {
+        if( !$(this).hasClass('assignDeactivated') ) {
+            $schedArray = [];
+            $('td input[type=checkbox]:checked').parent().parent().each(function() {
+                $schedArray.push({
+                    Book_ID: $(this).find('.book_id').text(),
+                    Interaction_ID: $(this).find('.interaction_id').text()
+                });
+                $id = $(this).find('.queue-label').attr('id').split('-')[2];
+                removeFromQueue($id);
+            });
+            if( typeof $uid != 'undefined' ) {
+                writeStoredActivities($uid,formatAct());
+            }
+            console.log($schedArray);
+        }
+    });
+    
+    // Filter by Assignable Activities
+    
+    $(document).on('change', '.select-assignable select', function() {
+        $aV = $('.select-assignable select').val();
+        if( $aV == 'choose' || $aV == '0' ) {
+            $('.resource_individuals').each(function() {
+                $(this).removeClass('hiddenAssignable');
+            });
+            $('.expanded, .collapsed').removeClass('noneAvailable');
+        } else if ( $aV == '1' ) {
+            
+            showLoading();
+            setTimeout(filterByAssignable, 500);
+            
+        }
+        $('.frame').sly('reload');
+    });
+    
+    // Check/Uncheck All Checkboxes in Scheduling Queue
+    
+    $(document).on('change', '.selectAll input', function() {
+        checkAll(); 
+    });
+    
+    // De/Activate Assign Button Based on Available Items to Assign (checked)
+    
+    $(document).on('change', '.scheduling-queue input', function() {
+        $i = $('.scheduling-queue input:checked').length;
+        if( $i == 0 ) {
+            $('.scheduling-assign').addClass('assignDeactivated');
+        } else {
+            $('.scheduling-assign').removeClass('assignDeactivated');
+        }
+    });
+    
+    // Sort Scheduling Queue Table
+    
+    $(document).on('click', '.sort-arrows', function() {
+        $sort = $(this).parent().attr('id').split('-')[1];
+        rewriteSchedQueue($sort);
+    });
+    
+    // Bookshelf Login Button Click
+    
+    $(document).on('click', '.overlayCheckYes', function() {
+        
+        window.open('https://emc.bookshelf.emcp.com/account', '_blank');
+        
+        $('.overlayCheckYes').parent().append('<div class="confirm-button overlayCheckClose">OK! I\'m logged in!</div>')
+        $('.overlayCheckYes').remove();
+        
+    });
+    
+     $(document).on('click', '.overlayCheckClose', function() {
+        
+        $(this).parent().parent().fadeOut( function() {
+            $(this).remove(); 
+        });
+         
+        launchBookshelfBehindScenes(); 
+        
+        bodyScroll();
+    });   
+    
+    // Keyboard Shortcuts
+    
+    $(document).keydown(function(e) {
+        
+        key = e.which;
+        
+        switch(key) {
+            case 37:
+                $('.modalContainer .left-arrow').click();
+                break;
+            case 39:
+                $('.modalContainer .right-arrow').click();
+                break;
+            case 13: 
+                $('.modalContainer .queue-button').click();
+                break;
+        }
+    });
+    
+    if( typeof $uid != 'undefined' ) {
+        getStoredActivities($uid);
+    }
+    
+});
 
-                $('.BShelf, .ui-widget-overlay, .ui-dialog, .dialog-container, .interaction-trigger').remove();
+// FUNCTION AJAX Request to get all resouces (a = URL, b = activity_id, c = level, d = unit, e = $(this), f = lesson, g = Passport {TRUE/FALSE})
 
-                $int_type = $(this).parent().parent().find('.resource-meta-data.interaction_type').attr('id');
-                $int_num = $(this).parent().parent().find('.resource-meta-data.interaction_num').attr('id');
-                $int_id = $int_type + '.' + $int_num;
+function ajaxRequest(a,b,c,d,e,f,g) {
+    $.ajax({
+        url: a,
+        async: true,
+        type: "POST",
+        data: {
+            id: b,
+            level: c,
+            unit: d,
+            lesson: f,
+            passport: g
+        }
+    }).done(function(data) {
+        e.children('.resources').append(data); 
+    }); 
+    return;   
+}
 
-                $BSURL = $(this).parent().parent().find('.resource-meta-data.url').attr('id').split('#')[0];
-                $BSjsURL = $BSURL + 'OEBPS/Data/' + $(this).parent().parent().find('.resource-meta-data.page').attr('id') + '.js';
+// FUNCTION AJAX Get Stored Activities (u = uid)
 
-                $.getScript( $BSjsURL ).done(function() {
+function getStoredActivities(u) {
+    $.ajax({
+        url: $base + 'includes/get_user_activities.ajax.php',
+        async: true,
+        type: "POST",
+        data: {
+            uid: u
+        }
+    }).done(function(data) {
+        if( data != '' ) {
+            $a = data.split(',');
+            $l = $a.length;
+            for( var i = 0; i < $l; i++ ) {
+                addToQueue($a[i]);
+            }
+        }
+    });
+    return;
+}
 
+// FUNCTION AJAX Write Stored Activities (u = uid, a = activities)
+
+function writeStoredActivities(u,a) {
+    $.ajax({
+        url: $base + 'includes/write_user_activities.ajax.php',
+        async: true,
+        type: "POST",
+        data: {
+            uid: u,
+            act: a
+        }
+    });
+    return;
+    
+}
+
+// FUNCTION Format activity_ids to be stored
+
+function formatAct() {
+    $act = '';
+    $('.scheduling-queue .queue-label').each(function() {
+        $act += $(this).attr('id').split('-')[2] + ',';
+    });
+    $act = $act.substring(0, $act.length - 1);
+    return $act;
+}
+
+// FUNCTION Mobile Check
+
+function isMobile(){
+    return (
+        (navigator.platform.indexOf("iPhone") != -1) ||
+        (navigator.platform.indexOf("iPod") != -1) ||
+        (navigator.platform.indexOf("iPad") != -1) ||
+        (navigator.platform.indexOf("Android") != -1)
+    );
+}
+
+// FUNCTION Launch Modal Container (i = activity_id)
+    
+function getModalData(i) {
+    
+    $('.modalContainer').html('');
+    
+    a = $('.resource-meta-data.activity_id-' + i).parent();
+    
+    b = a.find('.resource-meta-data.type').attr('id');
+    c = a.parent().find('.resource_modal_info').html();
+    d = a.find('.resource-meta-data.level').attr('id');
+    e = a.find('.resource-meta-data.url').attr('id');
+    f = 'cover-' + b + 'l' + d;
+    
+    if( b == 'iculture' ) {
+        f = 'cover-iculturelarge';
+        g = '<div class="resource-cover ' + f + '"></div>';
+    } else {
+        g = '<a href="' + e + '" target="_blank"><div class="resource-cover ' + f + '"></div></a>';
+    }
+    
+    bodyFixed();
+    $('.modalContainer').append(g + c).parent().fadeIn(300);
+    
+    return;
+}
+
+// FUNCTION Launch/Close Modal Container (i = {0:reset, 1:preserve})
+
+function modalLaunch() {
+    $('.modalBackground').fadeIn();
+    bodyFixed();
+    return;
+}
+function modalClose(i) {
+    if( i == '1' ) { 
+        $('.modalBackground').fadeOut();
+    } else {
+        $('.modalBackground').fadeOut(300, function() {
+            $('.modalContainer').remove();
+            $(this).append('<div class="modalContainer anim"></div>');
+        });
+    }
+    bodyScroll();
+    return;
+}
+
+// FUNCTION Lauch/Close Scheduling Queue
+
+function launchScheduling() {
+    $('.scheduling-queue').fadeIn();
+    bodyFixed();
+    return;
+}
+function closeScheduling() {
+    $('.scheduling-queue').fadeOut();
+    bodyScroll();
+    return;
+}
+
+// FUNCTION Bookshelf Login Check
+
+function overlayCheck($v) {
+    
+    if( $v == 1 ) {
+    
+        if( $('.ui-widget-overlay ').length == 1 ) {
+            return;
+        } else {
+            
+            bodyFixed();
+            $('<div class="confirm-background"><div class="confirm-container overlay-container"><h2 class="text-centered">Login Required</h2><p>To preview activities from your eBook here, you first need to login.</p><div class="confirm-button overlayCheckYes">Login to Bookshelf</div></div></div>' ).hide().appendTo('body').fadeIn();
+                        
+            return;
+        }
+        
+    }
+}
+
+// FUNCTION Launch Bookshelf iFrame to Guarantee Session Initiated
+
+function launchBookshelfBehindScenes() {
+    
+    $('.bookshelfIframe').remove();
+    
+    var $iframeURL = $('.student_ebook:first').find('.resource_modal_info .resource-meta-data.url').attr('id');
+    $('body').append('<iframe src="' + $iframeURL + '" class="bookshelfIframe"></iframe>');
+    
+    return;
+
+}
+
+// FUNCTION Launch Activity Preview Overlay (i = activity_id, a = {1:assignable}, e = event)
+
+function launchActivityPreview(i,a,e) {
+    
+    if( !isMobile() ) {
+        
+        if( a == '1' ) {
+            
+            $('.BShelf, .ui-widget-overlay, .ui-dialog, .dialog-container, .interaction-trigger').remove();
+
+            $this = $('.resource-meta-data.activity_id-' + i).parent();
+
+            $int_type = $this.find('.resource-meta-data.interaction_type').attr('id');
+            $int_num = $this.find('.resource-meta-data.interaction_num').attr('id');
+            $int_id = $int_type + '.' + $int_num;
+
+            $BSURL = $this.find('.resource-meta-data.url').attr('id').split('#')[0];
+            $BSjsURL = $BSURL + 'OEBPS/Data/' + $this.find('.resource-meta-data.page').attr('id') + '.js';
+
+            $.ajax({
+                url: $BSjsURL,
+                dataType: 'script'
+            }).done(function() {
+                
                     $('<script></script>', {
                         'class': 'BShelf',
                         'src': $base + 'js/app.js'
@@ -2426,145 +2845,35 @@ $(document).ready(function() {
 
                 });
 
-                $('.modalBackground').fadeOut();
+            e.preventDefault();
 
-                e.preventDefault();
+            modalClose('1');
 
-            }
-            
         }
-        
-    });
-    
-    $(document).on('click', '.ui-dialog-titlebar-close, .ui-widget-overlay', function() {
-        $('.modalBackground').fadeIn();
-    });
-    
-    var modal = '<div class="modalContainer anim"></div>';
-    
-    $(document).on('click', '.modalContainer .left-arrow', function() {
-        $id = $(this).parent().find('.resource-meta-data.activity_id').attr('id');
-        $next = getNextActivityID($id,'1');
-        
-        $(this).parent().addClass('left-clicked').delay(300).queue(function() {
-            $(this).removeClass('left-clicked').addClass('right-clicked').delay(300).queue(function() {
-                $(this).removeClass('right-clicked').dequeue();
-                
-                getModalData($next);
-            }).dequeue(); 
-            $('.modalContainer').html('');
-        });
-    });
-    
-    $(document).on('click', '.modalContainer .right-arrow', function() {
-        $id = $(this).parent().find('.resource-meta-data.activity_id').attr('id');
-        $next = getNextActivityID($id,'0');
-        
-        $(this).parent().addClass('right-clicked').delay(300).queue(function() {
-            $(this).removeClass('right-clicked').addClass('left-clicked').delay(300).queue(function() {
-                $(this).removeClass('left-clicked').dequeue();
-                
-                getModalData($next);
-            }).dequeue(); 
-            $('.modalContainer').html('');
-        });
-    });
-    
-    
-    
-    // AFTER ALL AJAX REQUESTS ARE COMPLETE
-    
-    $(document).ajaxStop(function() {
-        $('.resource_item.tests, .resource_item.listening_activities_te').each(function() {
-            if( $(this).find('.resource-meta-data.book_id').attr('id') == '0' ) {
-                $(this).removeClass('tests listening_activities_te').addClass('textbook_audio');
-            }
-        });
-        
-        $('.resource_item.el_cuarto_misterioso').each(function() {
-            $(this).append('<i class="fa fa-play-circle"></i>'); 
-        });
-        
-        $('.loading').fadeOut();
-    });
-    
-    
-    
-    $(document).keydown(function(e) {
-        key = e.which;
-        
-        switch(key) {
-            case 37:
-                $('.modalContainer .left-arrow').click();
-                break;
-            case 39:
-                $('.modalContainer .right-arrow').click();
-                break;
-        }
-    });
-    
-});
 
-// AJAX Request to get all resouces
-
-function ajaxRequest(a,b,c,d,e,f) {
-    $.ajax({
-        url: a,
-        async: true,
-        type: "POST",
-        data: {
-            id: b,
-            level: c,
-            unit: d,
-            lesson: f
-        }
-    }).done(function(data) {
-        e.children('.resources').append(data); 
-    });    
+    }    
+    return;
 }
 
-function isMobile(){
-    return (
-        (navigator.platform.indexOf("iPhone") != -1) ||
-        (navigator.platform.indexOf("iPod") != -1) ||
-        (navigator.platform.indexOf("iPad") != -1) ||
-        (navigator.platform.indexOf("Android") != -1)
-    );
+// FUNCTION Close Scheduling Modal
+
+function schedulingClose() {
+    $('.scheduling-queue').fadeOut();
+    bodyScroll();
+    return;
 }
 
-    
-function getModalData(i) {
-    
-    $('.modalContainer').html('');
-    
-    a = $('.resource-meta-data.activity_id-' + i).parent();
-    
-    b = a.find('.resource-meta-data.type').attr('id');
-    c = a.parent().find('.resource_modal_info').html();
-    d = a.find('.resource-meta-data.level').attr('id');
-    e = a.find('.resource-meta-data.url').attr('id');
-    f = 'cover-' + b + 'l' + d;
-    
-    if( b == 'iculture' ) {
-        f = 'cover-iculturelarge';
-        g = '<div class="resource-cover ' + f + '"></div>';
-    } else {
-        g = '<a href="' + e + '" target="_blank"><div class="resource-cover ' + f + '"></div></a>';
-    }
-    
-    $('.modalContainer').append(g + c).parent().fadeIn(300);
-    
-}
+// FUNCTION Get the Next Activity ID (i = activity_id, y = direction {1:left, 0:right} )
 
 function getNextActivityID(i,y) {
     
-    m = $('.resource-meta-data.activity_id-' + i);
+    m = $('.resource_modal_info .resource-meta-data.activity_id-' + i);
     a = m.parent().parent().parent().parent().parent().parent();
     b = m.parent().find('.resource-meta-data.type').attr('id');
     c = a.attr('class').split(' ')[0];
     d = [];
     
-    $('.' + c + ' .type#' + b).parent().parent().find('.resource-meta-data.activity_id').each(function() {
+    $('.' + c + ' .type#' + b).parent().parent().parent().parent().not('.hiddenlesson,.hiddeninteraction_type,.hiddenAssignable').find('.resource-meta-data.activity_id').each(function() {
         d.push( $(this).attr('id') );  
     });
     
@@ -2593,6 +2902,227 @@ function getNextActivityID(i,y) {
     
 }
 
+// FUNCTION Add Activity to Scheduling Queue (i = activity_id)
+
+function addToQueue(i) {
+    
+    $this = $('.resource_modal_info .resource-meta-data.activity_id-' + i).parent();
+    
+    if( $this.find('.queue-button').hasClass('queue-added') ) {
+        // Do 
+        return false;
+    } else {
+        
+        $level = $this.find('.resource-meta-data.level').attr('id');
+        $unit = $this.find('.resource-meta-data.unit').attr('id');
+        $schedLesson = $this.find('.resource-meta-data.lesson').attr('id');
+        $label = $this.find('.resource-meta-data.label').text();
+        $book_id = $this.find('.resource-meta-data.book_id').attr('id');
+        $interaction_id = $this.find('.resource-meta-data.interaction_type').attr('id') + '.' + $this.find('.resource-meta-data.interaction_num').attr('id');
+        $labelTrimmed = $label.replace('Activity Name: ', '');
+
+        $this.find('.queue-button').addClass('queue-added').text('Added!');
+        $('.modalContainer .queue-button').addClass('queue-added').text('Added!');
+
+        $('.scheduling-container table').append('<tr class="scheduled-item"><td class="hidden book_id">' + $book_id + '</td><td class="hidden interaction_id">' + $interaction_id +'</td><td class="queue-label scheduling-row-title" id="activity-id-' + i + '">' + $labelTrimmed + '<div class="info_icon"></div></td><td class="queue-level center" id="' + $level + '">' + $level + '</td><td class="queue-unit center" id="' + $unit + '">' + $unit + '</td><td class="queue-lesson center" id="' + $schedLesson + '">' + $schedLesson + '</td><td class="center scheduling-select"><input type="checkbox" value="1" id="' + i  + '" name="check" checked="checked" /><label for="' + i  + '"></label></td><td class="center scheduling-edit"></td></tr>');
+
+        $('.scheduling-icon').fadeIn();
+        getSchedulingQueue();
+        return true;
+            
+    }
+}
+
+// FUNCTION Remove Activity from Scheduling Queue (i = activity_id)
+
+function removeFromQueue(i,x) {
+    $('.queue-label.scheduling-row-title#activity-id-' + i).parent().remove();
+    $('.resource_individuals .activity_id-' + i).parent().find('.queue-button').removeClass('queue-added').text('Add to Scheduling Queue');
+    
+    if( $('.scheduling-container tr').length == 1 && !x ) {
+        schedulingClose();
+        bodyScroll();
+        $('.scheduling-icon').fadeOut();
+    }
+    
+    getSchedulingQueue();
+    return;
+}
+
+// FUNCTION Remove/Restore Scrolling to Window
+
+function bodyFixed() {
+    $('body').addClass('fixed');
+    return;
+}
+function bodyScroll() {
+    $('body').removeClass('fixed');
+    return;
+}
+
+// FUNCTION Launch/Close Confirm Prompt
+
+function launchConfirmPrompt() {
+    $('.confirm-background').fadeIn();
+    return;
+}
+function closeConfirmPrompt() {
+    $('.confirm-background').fadeOut();
+    return;
+}
+
+// FUNCTION Filter by Assignable vs. Non-Assignable
+
+function filterByAssignable() {    
+    $('.expanded, .collapsed').each(function() {
+        $actGroup = '.' + $(this).attr('class').split(' ')[0];
+        $count = $($actGroup).length - 1;
+        $i = 0;
+
+        $($actGroup + '.resource_individuals').each(function() {
+            $v = $(this).find('.resource-meta-data.assignable').attr('id');
+            if( $v == '0' ) {
+                $(this).addClass('hiddenAssignable');
+                $i++;
+                if( $i == $count ) {
+                    $($actGroup + '.expanded, ' + $actGroup + '.collapsed').addClass('noneAvailable');
+                }
+            }
+        });
+
+    });
+    hideLoading();
+    return;
+}
+
+// FUNCTION Loading Placeholder
+
+function showLoading() {
+    $('.loading').show();
+    bodyFixed();
+    return;
+}
+function hideLoading() {
+    $('.loading').fadeOut();
+    bodyScroll();
+    return;
+}
+
+// FUNCTION Get Scheduling Queue Array
+var $schedIDs = [];
+function getSchedulingQueue() {
+    $schedIDs = [];
+    $('.scheduling-queue').find('.queue-label').each(function() {
+        $id = $(this).attr('id').split('-')[2];
+        $schedIDs.push($id);
+    });
+    return;
+}
+
+// FUNCTION Check All Items in Scheduling Queue
+
+function checkAll() {
+    $j = $('.selectAll input:checked').length;
+    if( $j > 0 ) {
+        $('input').prop('checked',true);
+    } else {
+        $('input').prop('checked',false);
+    }
+    return;
+}
+
+// FUNCTION Generate Array from Pending Assignments table
+
+function genSchedQueueArray() {
+    
+    $schedQueueArray = [];
+    $('.scheduling-queue .queue-label').each(function() {
+        $i = $(this).parent();
+        
+        $schedRow = {};
+        
+        $schedRow['id'] = $i.find('.queue-label').attr('id').split('-')[2];
+        $schedRow['label'] = $i.find('.queue-label').text();
+        $schedRow['level'] = $i.find('.queue-level').attr('id');
+        $schedRow['unit'] = $i.find('.queue-unit').attr('id');
+        $schedRow['lesson'] = $i.find('.queue-lesson').attr('id');
+        
+        $schedQueueArray.push($schedRow);
+    });
+    
+    return $schedQueueArray;
+}
+
+// FUNCTION Sort Schedule Queue Array (a = $schedQueueArray, b = parameter to sort {id,label,level,unit,lesson})
+
+function compareLabel(a,b) {
+    if (a.label < b.label) {
+        return -1;
+    }
+    if (a.label > b.label) {
+        return 1;
+    }
+    return 0;
+}
+function compareLesson(a,b) {
+    if (a.lesson < b.lesson) {
+        return -1;
+    }
+    if (a.lesson > b.lesson) {
+        return 1;
+    }
+    return 0;
+}
+function compareLevel(a,b) {
+    return a.level - b.level;
+}
+function compareUnit(a,b) {
+    return a.unit - b.unit;
+}
+function compareId(a,b) {
+    return a.id - b.id;
+}
+function sortSchedQueueArray(b) {
+    
+    a = genSchedQueueArray();
+    $l = a.length;
+    
+    if( b == 'id' ) {
+        a.sort(compareId);
+    } else if ( b == 'label' ) {
+        a.sort(compareLabel);
+    } else if ( b == 'level' ) {
+        a.sort(compareLevel);
+    } else if ( b == 'unit' ) {
+        a.sort(compareUnit);
+    } else if ( b == 'lesson' ) {
+        a.sort(compareLesson);
+    } else {
+        a.sort(compareId);
+    }
+    
+    return a;
+}
+
+// FUNCTION Wewrite Scheduling Queue Table (b = parameter to sort {id,label,level,unit,lesson})
+
+function rewriteSchedQueue(b) {
+    a = sortSchedQueueArray(b);
+    l = a.length;
+    $('.scheduled-item').each(function() {
+        $id = $(this).find('.queue-label').attr('id').split('-')[2];
+        removeFromQueue($id,'x');
+    });    
+    for( var i = 0; i < l; i++ ) {        
+        addToQueue( a[i]['id'] );
+    }
+    if( typeof $uid != 'undefined' ) {
+        writeStoredActivities($uid,formatAct());
+    }
+}
+
+// Reload Page Every Hour (for iCulture Hash)
+
 window.onload = function() {
     
     d = 3600000 - ( Date.now() % 3600000 );
@@ -2600,6 +3130,8 @@ window.onload = function() {
         location.reload(true);
     }, d);    
 };
+
+// Enable Mobile Swipe for Modal Container Left and Right Click
 
 document.addEventListener('touchstart', handleTouchStart, false);        
 document.addEventListener('touchmove', handleTouchMove, false);

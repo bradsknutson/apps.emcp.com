@@ -7,6 +7,7 @@
     include 'con.php';
     include 'base.php';
 
+    $passport = $_POST['passport'];
     $id = $_POST['id'];
     $level = $_POST['level'];
     $unit = $_POST['unit'];
@@ -129,6 +130,15 @@
                                             <div class="modalClose anim"></div>
                                             <div class="left-arrow anim"><</div>
                                             <div class="right-arrow anim">></div>
+                                            ';   
+                
+                    if( $i['assignable'] != '0' && $passport == 'passport' ) {
+                        $c .= '
+                                            <div class="queue-button anim">Add to Scheduling Queue</div> 
+                                            ';
+                    }                 
+
+                    $c .= '
                                         </div>
                                     </div>
                                 </a>';
@@ -146,7 +156,7 @@
                     
                     $iCtypeLabel = substr_replace($iCtype[1], '-', 1, 0);
                     
-                    $iCultureBase = 'http://www.emcp.com/ilife/iculturenew/'. $iCtype[1];
+                    $iCultureBase = 'https://www.emcp.com/ilife/iculturenew/'. $iCtype[1];
                     
                     if( $iCtype[1] == 'ipassport') { $iCFA = 'plane'; }
                     if( $iCtype[1] == 'ivideos') { $iCFA = 'play-circle'; }
