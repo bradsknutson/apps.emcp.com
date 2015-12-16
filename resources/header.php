@@ -23,5 +23,6 @@
     <?php include 'includes/preload-js-only.php'; ?>
 </head>
 <body class="initial">
+    <?php include 'includes/analytics.php'; ?>
     <div class="passport" id="<?php echo $passport; ?>"></div>
     <div id="xcenter">
