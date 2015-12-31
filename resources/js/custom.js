@@ -2391,6 +2391,16 @@ $(document).ready(function() {
         e.preventDefault();
     });
     
+    // Launch Activity Modal Window from iCulture Info Icon
+    
+    $(document).on('click', '.iculture_info_icon', function(e) {
+        
+        $id = $(this).parent().find('.resource-meta-data.activity_id').attr('id');
+        getModalData($id);
+        
+        e.preventDefault();
+    });
+    
     // Launch Activity Preview from Info Icon (Scheduling Queue)
     
     $(document).on('click', '.queue-label .info_icon', function() {

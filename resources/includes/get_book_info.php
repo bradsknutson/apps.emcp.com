@@ -10,8 +10,7 @@
 
     if($result->num_rows == 0) {
         if(!empty($book)) {
-            header("HTTP/1.1 301 Moved Permanently"); 
-            header('Location: '. $base);
+            header('Location: http://www.emcp.com');
             exit;
         }
     }

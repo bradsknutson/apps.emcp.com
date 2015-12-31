@@ -156,7 +156,7 @@
                     
                     $iCtypeLabel = substr_replace($iCtype[1], '-', 1, 0);
                     
-                    $iCultureBase = 'https://www.emcp.com/ilife/iculturenew/'. $iCtype[1];
+                    $iCultureBase = 'https://iculture.emcp.com/'. $iCtype[1];
                     
                     if( $iCtype[1] == 'ipassport') { $iCFA = 'plane'; }
                     if( $iCtype[1] == 'ivideos') { $iCFA = 'play-circle'; }
@@ -167,7 +167,7 @@
                     
                     $c .= '
                             
-                            <div class="info_icon"></div>
+                            <div class="iculture_info_icon info_icon"></div>
                             <a class="resource_item-link">
                                 <div class="resource_item '. $v .' '. $v .'-'. $iCtype[1] .'">
                                     <i class="fa fa-'. $iCFA .'"></i>
