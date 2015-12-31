@@ -2596,7 +2596,8 @@ $(document).ready(function() {
             $(this).remove(); 
         });
          
-        launchBookshelfBehindScenes(); 
+        launchBookshelfBehindScenes();
+        $bookshelfFailSafe = '1';
         
         bodyScroll();
     });   
@@ -2768,20 +2769,29 @@ function closeScheduling() {
 
 // FUNCTION Bookshelf Login Check
 
+$bookshelfFailSafe = '0';
 function overlayCheck($v) {
     
     if( $v == 1 ) {
+        
+        if( $bookshelfFailSafe != '1' ) {
     
-        if( $('.ui-widget-overlay ').length == 1 ) {
-            return;
-        } else {
+            if( $('.ui-widget-overlay ').length == 1 ) {
+                return;
+            } else {
+
+                bodyFixed();
+                $('<div class="confirm-background"><div class="confirm-container overlay-container"><h2 class="text-centered">Login Required</h2><p>To preview activities from your eBook here, you first need to login.</p><div class="confirm-button overlayCheckYes">Login to Bookshelf</div></div></div>' ).hide().appendTo('body').fadeIn();
+
+                return;
+            }
             
-            bodyFixed();
-            $('<div class="confirm-background"><div class="confirm-container overlay-container"><h2 class="text-centered">Login Required</h2><p>To preview activities from your eBook here, you first need to login.</p><div class="confirm-button overlayCheckYes">Login to Bookshelf</div></div></div>' ).hide().appendTo('body').fadeIn();
-                        
+        } else {
             return;
         }
         
+    } else {
+        return;
     }
 }
 
@@ -3165,6 +3175,34 @@ function handleTouchMove(evt) {
     xDown = null;
     yDown = null;                                             
 };
+
+// FUNCTION Check if user is logged in to Bookshelf yet
+
+function bookshelfSessionGrab() {
+    $this = $('.resource_item:first .resource_modal_info');
+    $BSURL = $this.find('.resource-meta-data.url').attr('id').split('#')[0];
+    $BSjsURL = $BSURL + 'OEBPS/Data/' + $this.find('.resource-meta-data.page').attr('id') + '.js';
+
+    $BSstatusCheck = $.ajax({
+        url: $BSjsURL,
+        dataType: 'script'
+    });
+
+    return $BSstatusCheck;
+}
+
+function bookshelfSessionCheck($a) {
+    
+    if( $a['statusText'] ) {
+        return true;
+        console.log('true');
+    } else {
+        return false;
+        console.log('false');
+    }
+    
+}
+
 
 // ------------- Bookshelf Scripts ---------------- //
 

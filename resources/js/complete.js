@@ -15,6 +15,7 @@
 
             hideLoading();
             $('body').removeClass('initial');
+            
         }
         
     });
