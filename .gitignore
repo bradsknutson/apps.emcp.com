@@ -1,6 +1,3 @@
-
 editor/uploads/
-
 resources/.htaccess
-
-resources/.htaccess
+resources/includes/github.php
