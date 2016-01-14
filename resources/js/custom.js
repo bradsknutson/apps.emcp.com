@@ -2470,8 +2470,8 @@ $(document).ready(function() {
     
     // Click to Add Activity to Scheduling Queue
     
-    $(document).on('click', '.queue-button', function(e) {
-        $id = $(this).parent().find('.resource-meta-data.activity_id').attr('id');
+    $(document).on('click', '.queue-scheduling-icon', function(e) {
+        $id = $(this).parent().parent().find('.resource-meta-data.activity_id').attr('id');
         addToQueue($id);
         if( typeof $uid != 'undefined' ) {
             writeStoredActivities($uid,formatAct());
@@ -2502,7 +2502,7 @@ $(document).ready(function() {
     
     // Open Scheduling Queue Modal
     
-    $(document).on('click', '.scheduling-icon', function(e) {
+    $(document).on('click', '.scheduling-icon, .queue-added', function(e) {
         modalClose();
         bodyFixed();
         $('.scheduling-queue').fadeIn();
@@ -2626,14 +2626,42 @@ $(document).ready(function() {
                 $('.modalContainer .right-arrow').click();
                 break;
             case 13: 
-                $('.modalContainer .queue-button').click();
+                $('.modalContainer .queue-scheduling-icon').click();
                 break;
         }
     });
     
     if( typeof $uid != 'undefined' ) {
         getStoredActivities($uid);
-    }
+        getStoredFavorites($uid);
+    }   
+    
+    // Favorite Icon Clicked State
+    
+    $(document).on('click', '.favorite-icon', function() {
+        $(this).addClass('favorite-icon-selected');
+        $id = $(this).parent().parent().find('.resource-meta-data.activity_id').attr('id')
+        addToFavorites($id);
+        writeStoredFavorites($uid,formatFavAct());     
+    });    
+    $(document).on('click', '.favorite-icon-selected', function() {
+        $(this).removeClass('favorite-icon-selected');
+        $id = $(this).parent().parent().find('.resource-meta-data.activity_id').attr('id')
+        removeFromFavorites($id);
+        writeStoredFavorites($uid,formatFavAct());
+    });
+    
+    // Link Icon Clicked State
+    
+    $(document).on('click', '.link-icon', function() {
+        
+        $(function() {
+            $('.confirm-background-copied').fadeIn(100, function() {
+                $(this).delay(300).fadeOut(400); 
+            });
+        });
+        
+    });   
     
 });
 
@@ -2704,6 +2732,57 @@ function formatAct() {
     });
     $act = $act.substring(0, $act.length - 1);
     return $act;
+}
+
+// FUNCTION AJAX Get Stored Favorites (u = uid)
+
+function getStoredFavorites(u) {
+    $.ajax({
+        url: $base + 'includes/get_user_favorites.ajax.php',
+        async: true,
+        type: "POST",
+        data: {
+            uid: u
+        }
+    }).done(function(data) {
+        if( data != '' ) {
+            favArrPre = [];
+            $a = data.split(',');
+            $l = $a.length;
+            for( var i = 0; i < $l; i++ ) {
+                favArrPre.push($a[i]);
+            }
+        }
+    });
+    return;
+}
+
+// FUNCTION AJAX Write Stored Favorites (u = uid, a = activities)
+
+function writeStoredFavorites(u,a) {
+    $.ajax({
+        url: $base + 'includes/write_user_favorites.ajax.php',
+        async: true,
+        type: "POST",
+        data: {
+            uid: u,
+            act: a
+        }
+    });
+    return;
+    
+}
+
+// FUNCTION Format Favorited activity_ids to be stored
+
+function formatFavAct() {
+    var $favAct = '';
+    var favArrLength = favArr.length;
+    for (var i = 0; i < favArrLength; i++ ) {
+        $favAct += favArr[i] + ',';
+    }
+    $favAct = $favAct.substring(0, $favAct.length - 1);
+    return $favAct;
 }
 
 // FUNCTION Mobile Check
@@ -2887,13 +2966,17 @@ function schedulingClose() {
 
 function getNextActivityID(i,y) {
     
-    m = $('.resource_modal_info .resource-meta-data.activity_id-' + i);
+    n = $('.resource_modal_info .resource-meta-data.activity_id-' + i);
+    l = n.parent().find('.resource-meta-data.level').attr('id');
+    u = n.parent().find('.resource-meta-data.unit').attr('id');
+    
+    m = n.parent().parent().parent().parent().not('.l' + l + 'u' + u + 'favorites').find('.resource_modal_info .resource-meta-data.activity_id-' + i);
     a = m.parent().parent().parent().parent().parent().parent();
     b = m.parent().find('.resource-meta-data.type').attr('id');
     c = a.attr('class').split(' ')[0];
     d = [];
     
-    $('.' + c + ' .type#' + b).parent().parent().parent().parent().not('.hiddenlesson,.hiddeninteraction_type,.hiddenAssignable').find('.resource-meta-data.activity_id').each(function() {
+    $('.' + c + ' .type#' + b).parent().parent().parent().parent().not('.l' + l + 'u' + u + 'favorites,.hiddenlesson,.hiddeninteraction_type,.hiddenAssignable').find('.resource-meta-data.activity_id').each(function() {
         d.push( $(this).attr('id') );  
     });
     
@@ -2926,10 +3009,10 @@ function getNextActivityID(i,y) {
 
 function addToQueue(i) {
     
-    $this = $('.resource_modal_info .resource-meta-data.activity_id-' + i).parent();
+    $this = $('.resource_modal_info .resource-meta-data.activity_id-' + i).first().parent();
     
-    if( $this.find('.queue-button').hasClass('queue-added') ) {
-        // Do 
+    if( $this.find('.queue-scheduling-icon').hasClass('queue-added') ) {
+        // Do nothing
         return false;
     } else {
         
@@ -2941,8 +3024,8 @@ function addToQueue(i) {
         $interaction_id = $this.find('.resource-meta-data.interaction_type').attr('id') + '.' + $this.find('.resource-meta-data.interaction_num').attr('id');
         $labelTrimmed = $label.replace('Activity Name: ', '');
 
-        $this.find('.queue-button').addClass('queue-added').text('Added!');
-        $('.modalContainer .queue-button').addClass('queue-added').text('Added!');
+        $this.find('.queue-scheduling-icon').addClass('queue-added');
+        $('.modalContainer .queue-scheduling-icon').addClass('queue-added');
 
         $('.scheduling-container table').append('<tr class="scheduled-item"><td class="hidden book_id">' + $book_id + '</td><td class="hidden interaction_id">' + $interaction_id +'</td><td class="queue-label scheduling-row-title" id="activity-id-' + i + '">' + $labelTrimmed + '<div class="info_icon"></div></td><td class="queue-level center" id="' + $level + '">' + $level + '</td><td class="queue-unit center" id="' + $unit + '">' + $unit + '</td><td class="queue-lesson center" id="' + $schedLesson + '">' + $schedLesson + '</td><td class="center scheduling-select"><input type="checkbox" value="1" id="' + i  + '" name="check" checked="checked" /><label for="' + i  + '"></label></td><td class="center scheduling-edit"></td></tr>');
 
@@ -2957,7 +3040,7 @@ function addToQueue(i) {
 
 function removeFromQueue(i,x) {
     $('.queue-label.scheduling-row-title#activity-id-' + i).parent().remove();
-    $('.resource_individuals .activity_id-' + i).parent().find('.queue-button').removeClass('queue-added').text('Add to Scheduling Queue');
+    $('.resource_individuals .activity_id-' + i).parent().find('.queue-scheduling-icon').removeClass('queue-added');
     
     if( $('.scheduling-container tr').length == 1 && !x ) {
         schedulingClose();
@@ -3213,6 +3296,72 @@ function bookshelfSessionCheck($a) {
     
 }
 
+// FUNCTION Add/Remove Activity to Favorites (a = activity_id)
+
+favArr = [];
+function addToFavorites(a,c) {
+    
+    favArr.push(a);
+    
+    $item = $('.resource_item .resource-meta-data.activity_id-' + a).parent();
+    $item.find('.passport-icons .favorite-icon').addClass('favorite-icon-selected');
+    
+    $level = $item.find('.resource-meta-data.level').attr('id');
+    $unit = $item.find('.resource-meta-data.unit').attr('id');
+
+    $actDataPre = $item.parent().parent();
+    $actDataPreHTML = $actDataPre[0].outerHTML;
+    $actData = $('<li class="l' + $level + 'u' + $unit + 'favorites resource_individuals"></li>').append( $actDataPreHTML );
+    $actDataHTML = $actData[0].outerHTML;
+
+    $('.l' + $level + 'u' + $unit + 'favorites').last().after( $actDataHTML );
+    
+    if( c == '1' ) {
+        $('.l' + $level + 'u' + $unit + 'favorites.favorite-activities-container').removeClass('expanded').addClass('collapsed');
+        $('.l' + $level + 'u' + $unit + 'favorites').not('.favorite-activities-container').hide();
+    } else {
+        $('.l' + $level + 'u' + $unit + 'favorites.favorite-activities-container').addClass('expanded').removeClass('collapsed');
+        $('.l' + $level + 'u' + $unit + 'favorites').not('.favorite-activities-container').show();
+    }
+    
+    $('.l' + $level + 'u' + $unit + 'frame').sly('reload');
+    
+    showHideFavorites();
+    return favArr;
+
+}
+function removeFromFavorites(a,c) {
+
+    favArr = $.grep(favArr, function(v) {
+       return v != a;
+    });
+    
+    $item = $('.resource_item .resource-meta-data.activity_id-' + a).parent();
+    $item.find('.passport-icons .favorite-icon').removeClass('favorite-icon-selected');
+    
+    $level = $item.find('.resource-meta-data.level').attr('id');
+    $unit = $item.find('.resource-meta-data.unit').attr('id');
+
+    $('.l' + $level + 'u' + $unit + 'favorites').find('.resource-meta-data.activity_id-' + a).parent().parent().parent().parent().remove();
+    
+    $('.l' + $level + 'u' + $unit + 'frame').sly('reload');
+    
+    showHideFavorites();
+    return favArr;
+    
+}
+function showHideFavorites() {
+    $('.favorite-activities-container').each(function() {
+        $favContainer = $(this).attr('class').split(' ')[0];
+        $count = $('.' + $favContainer).length;
+        if( $count > 1 ) {
+            $(this).removeClass('noneAvailable');
+        } else {
+            $(this).addClass('noneAvailable');
+        }
+    });
+}
+
 
 // ------------- Bookshelf Scripts ---------------- //
 
@@ -3238,3 +3387,13 @@ function bookshelfSessionCheck($a) {
  *  jquery.ui.mouse.js
  */
 (function(b){b.support.touch="ontouchend" in document;if(!b.support.touch){return;}var c=b.ui.mouse.prototype,e=c._mouseInit,a;function d(g,h){if(g.originalEvent.touches.length>1){return;}g.preventDefault();var i=g.originalEvent.changedTouches[0],f=document.createEvent("MouseEvents");f.initMouseEvent(h,true,true,window,1,i.screenX,i.screenY,i.clientX,i.clientY,false,false,false,false,0,null);g.target.dispatchEvent(f);}c._touchStart=function(g){var f=this;if(a||!f._mouseCapture(g.originalEvent.changedTouches[0])){return;}a=true;f._touchMoved=false;d(g,"mouseover");d(g,"mousemove");d(g,"mousedown");};c._touchMove=function(f){if(!a){return;}this._touchMoved=true;d(f,"mousemove");};c._touchEnd=function(f){if(!a){return;}d(f,"mouseup");d(f,"mouseout");if(!this._touchMoved){d(f,"click");}a=false;};c._mouseInit=function(){var f=this;f.element.bind("touchstart",b.proxy(f,"_touchStart")).bind("touchmove",b.proxy(f,"_touchMove")).bind("touchend",b.proxy(f,"_touchEnd"));e.call(f);};})(jQuery);
+
+// Clipboard.js
+
+/*!
+ * clipboard.js v1.5.5
+ * https://zenorocha.github.io/clipboard.js
+ *
+ * Licensed MIT © Zeno Rocha
+ */
+!function(t){if("object"==typeof exports&&"undefined"!=typeof module)module.exports=t();else if("function"==typeof define&&define.amd)define([],t);else{var e;e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof self?self:this,e.Clipboard=t()}}(function(){var t,e,n;return function t(e,n,r){function o(a,c){if(!n[a]){if(!e[a]){var s="function"==typeof require&&require;if(!c&&s)return s(a,!0);if(i)return i(a,!0);var u=new Error("Cannot find module '"+a+"'");throw u.code="MODULE_NOT_FOUND",u}var l=n[a]={exports:{}};e[a][0].call(l.exports,function(t){var n=e[a][1][t];return o(n?n:t)},l,l.exports,t,e,n,r)}return n[a].exports}for(var i="function"==typeof require&&require,a=0;a<r.length;a++)o(r[a]);return o}({1:[function(t,e,n){var r=t("matches-selector");e.exports=function(t,e,n){for(var o=n?t:t.parentNode;o&&o!==document;){if(r(o,e))return o;o=o.parentNode}}},{"matches-selector":2}],2:[function(t,e,n){function r(t,e){if(i)return i.call(t,e);for(var n=t.parentNode.querySelectorAll(e),r=0;r<n.length;++r)if(n[r]==t)return!0;return!1}var o=Element.prototype,i=o.matchesSelector||o.webkitMatchesSelector||o.mozMatchesSelector||o.msMatchesSelector||o.oMatchesSelector;e.exports=r},{}],3:[function(t,e,n){function r(t,e,n,r){var i=o.apply(this,arguments);return t.addEventListener(n,i),{destroy:function(){t.removeEventListener(n,i)}}}function o(t,e,n,r){return function(n){n.delegateTarget=i(n.target,e,!0),n.delegateTarget&&r.call(t,n)}}var i=t("closest");e.exports=r},{closest:1}],4:[function(t,e,n){n.node=function(t){return void 0!==t&&t instanceof HTMLElement&&1===t.nodeType},n.nodeList=function(t){var e=Object.prototype.toString.call(t);return void 0!==t&&("[object NodeList]"===e||"[object HTMLCollection]"===e)&&"length"in t&&(0===t.length||n.node(t[0]))},n.string=function(t){return"string"==typeof t||t instanceof String},n.function=function(t){var e=Object.prototype.toString.call(t);return"[object Function]"===e}},{}],5:[function(t,e,n){function r(t,e,n){if(!t&&!e&&!n)throw new Error("Missing required arguments");if(!c.string(e))throw new TypeError("Second argument must be a String");if(!c.function(n))throw new TypeError("Third argument must be a Function");if(c.node(t))return o(t,e,n);if(c.nodeList(t))return i(t,e,n);if(c.string(t))return a(t,e,n);throw new TypeError("First argument must be a String, HTMLElement, HTMLCollection, or NodeList")}function o(t,e,n){return t.addEventListener(e,n),{destroy:function(){t.removeEventListener(e,n)}}}function i(t,e,n){return Array.prototype.forEach.call(t,function(t){t.addEventListener(e,n)}),{destroy:function(){Array.prototype.forEach.call(t,function(t){t.removeEventListener(e,n)})}}}function a(t,e,n){return s(document.body,t,e,n)}var c=t("./is"),s=t("delegate");e.exports=r},{"./is":4,delegate:3}],6:[function(t,e,n){function r(t){var e;if("INPUT"===t.nodeName||"TEXTAREA"===t.nodeName)t.focus(),t.setSelectionRange(0,t.value.length),e=t.value;else{t.hasAttribute("contenteditable")&&t.focus();var n=window.getSelection(),r=document.createRange();r.selectNodeContents(t),n.removeAllRanges(),n.addRange(r),e=n.toString()}return e}e.exports=r},{}],7:[function(t,e,n){function r(){}r.prototype={on:function(t,e,n){var r=this.e||(this.e={});return(r[t]||(r[t]=[])).push({fn:e,ctx:n}),this},once:function(t,e,n){function r(){o.off(t,r),e.apply(n,arguments)}var o=this;return r._=e,this.on(t,r,n)},emit:function(t){var e=[].slice.call(arguments,1),n=((this.e||(this.e={}))[t]||[]).slice(),r=0,o=n.length;for(r;o>r;r++)n[r].fn.apply(n[r].ctx,e);return this},off:function(t,e){var n=this.e||(this.e={}),r=n[t],o=[];if(r&&e)for(var i=0,a=r.length;a>i;i++)r[i].fn!==e&&r[i].fn._!==e&&o.push(r[i]);return o.length?n[t]=o:delete n[t],this}},e.exports=r},{}],8:[function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{"default":t}}function o(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}n.__esModule=!0;var i=function(){function t(t,e){for(var n=0;n<e.length;n++){var r=e[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(t,r.key,r)}}return function(e,n,r){return n&&t(e.prototype,n),r&&t(e,r),e}}(),a=t("select"),c=r(a),s=function(){function t(e){o(this,t),this.resolveOptions(e),this.initSelection()}return t.prototype.resolveOptions=function t(){var e=arguments.length<=0||void 0===arguments[0]?{}:arguments[0];this.action=e.action,this.emitter=e.emitter,this.target=e.target,this.text=e.text,this.trigger=e.trigger,this.selectedText=""},t.prototype.initSelection=function t(){if(this.text&&this.target)throw new Error('Multiple attributes declared, use either "target" or "text"');if(this.text)this.selectFake();else{if(!this.target)throw new Error('Missing required attributes, use either "target" or "text"');this.selectTarget()}},t.prototype.selectFake=function t(){var e=this;this.removeFake(),this.fakeHandler=document.body.addEventListener("click",function(){return e.removeFake()}),this.fakeElem=document.createElement("textarea"),this.fakeElem.style.position="absolute",this.fakeElem.style.left="-9999px",this.fakeElem.style.top=(window.pageYOffset||document.documentElement.scrollTop)+"px",this.fakeElem.setAttribute("readonly",""),this.fakeElem.value=this.text,document.body.appendChild(this.fakeElem),this.selectedText=c.default(this.fakeElem),this.copyText()},t.prototype.removeFake=function t(){this.fakeHandler&&(document.body.removeEventListener("click"),this.fakeHandler=null),this.fakeElem&&(document.body.removeChild(this.fakeElem),this.fakeElem=null)},t.prototype.selectTarget=function t(){this.selectedText=c.default(this.target),this.copyText()},t.prototype.copyText=function t(){var e=void 0;try{e=document.execCommand(this.action)}catch(n){e=!1}this.handleResult(e)},t.prototype.handleResult=function t(e){e?this.emitter.emit("success",{action:this.action,text:this.selectedText,trigger:this.trigger,clearSelection:this.clearSelection.bind(this)}):this.emitter.emit("error",{action:this.action,trigger:this.trigger,clearSelection:this.clearSelection.bind(this)})},t.prototype.clearSelection=function t(){this.target&&this.target.blur(),window.getSelection().removeAllRanges()},t.prototype.destroy=function t(){this.removeFake()},i(t,[{key:"action",set:function t(){var e=arguments.length<=0||void 0===arguments[0]?"copy":arguments[0];if(this._action=e,"copy"!==this._action&&"cut"!==this._action)throw new Error('Invalid "action" value, use either "copy" or "cut"')},get:function t(){return this._action}},{key:"target",set:function t(e){if(void 0!==e){if(!e||"object"!=typeof e||1!==e.nodeType)throw new Error('Invalid "target" value, use a valid Element');this._target=e}},get:function t(){return this._target}}]),t}();n.default=s,e.exports=n.default},{select:6}],9:[function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{"default":t}}function o(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}function i(t,e){if("function"!=typeof e&&null!==e)throw new TypeError("Super expression must either be null or a function, not "+typeof e);t.prototype=Object.create(e&&e.prototype,{constructor:{value:t,enumerable:!1,writable:!0,configurable:!0}}),e&&(Object.setPrototypeOf?Object.setPrototypeOf(t,e):t.__proto__=e)}function a(t,e){var n="data-clipboard-"+t;if(e.hasAttribute(n))return e.getAttribute(n)}n.__esModule=!0;var c=t("./clipboard-action"),s=r(c),u=t("tiny-emitter"),l=r(u),f=t("good-listener"),d=r(f),h=function(t){function e(n,r){o(this,e),t.call(this),this.resolveOptions(r),this.listenClick(n)}return i(e,t),e.prototype.resolveOptions=function t(){var e=arguments.length<=0||void 0===arguments[0]?{}:arguments[0];this.action="function"==typeof e.action?e.action:this.defaultAction,this.target="function"==typeof e.target?e.target:this.defaultTarget,this.text="function"==typeof e.text?e.text:this.defaultText},e.prototype.listenClick=function t(e){var n=this;this.listener=d.default(e,"click",function(t){return n.onClick(t)})},e.prototype.onClick=function t(e){var n=e.delegateTarget||e.currentTarget;this.clipboardAction&&(this.clipboardAction=null),this.clipboardAction=new s.default({action:this.action(n),target:this.target(n),text:this.text(n),trigger:n,emitter:this})},e.prototype.defaultAction=function t(e){return a("action",e)},e.prototype.defaultTarget=function t(e){var n=a("target",e);return n?document.querySelector(n):void 0},e.prototype.defaultText=function t(e){return a("text",e)},e.prototype.destroy=function t(){this.listener.destroy(),this.clipboardAction&&(this.clipboardAction.destroy(),this.clipboardAction=null)},e}(l.default);n.default=h,e.exports=n.default},{"./clipboard-action":8,"good-listener":5,"tiny-emitter":7}]},{},[9])(9)});

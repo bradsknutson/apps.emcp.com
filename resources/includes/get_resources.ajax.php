@@ -134,7 +134,18 @@
                 
                     if( $i['assignable'] != '0' && $passport == 'passport' ) {
                         $c .= '
-                                            <div class="queue-button anim">Add to Scheduling Queue</div> 
+                                            <div class="passport-icons">
+                                                <div class="favorite-icon anim">
+                                                    <div class="passport-buttons-text anim">Favorite</div> 
+                                                    <div class="favorite-button-hover anim"></div> 
+                                                </div>
+                                                <div class="link-icon anim" data-clipboard-text="http://myemcp.com/'. $i['id'] .'/">
+                                                    <div class="passport-buttons-text anim">Copy Link</div>
+                                                </div> 
+                                                <div class="queue-scheduling-icon anim">
+                                                    <div class="passport-buttons-text anim">Add to Scheduling Queue</div>
+                                                </div>
+                                            </div>
                                             ';
                     }                 
 
