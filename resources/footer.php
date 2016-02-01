@@ -18,6 +18,7 @@
         </div> <!-- end footer -->
         <?php } ?>
     </div> <!-- end xcenter -->
+    <div id="totop" class="anim"></div>
     <div class="modalBackground">
         <div class="modalContainer anim"></div>
     </div>

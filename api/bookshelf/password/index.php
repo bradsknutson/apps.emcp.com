@@ -2,7 +2,8 @@
 
     include '../inc/functions.php';
     $badpass = $_GET['badpass'];
-    $code = $_GET['code'];
+
+    $campaign_id = $_GET['campaign_id'];
 
 ?>
 <!DOCTYPE html>
@@ -25,8 +26,8 @@
                         <h1>Incorrect password.</h1>
                         <p>Hmm...the password you are using doesn't seem to be working. Please try again. If you're not sure what your password is, try <a href="http://emc.bookshelf.emcp.com/account/forgotPassword" target="_blank">resetting your password</a>.</p>
                         <? } else { ?>
-                        <h1>One More Thing...</h1>
-                        <p>Your eBook is almost ready, we just need one more thing. It looks like you already have an account on our Bookshelf platform. In order to add your new eBook to your existing account, we need you to autheticate with your Bookshelf password.</p>
+                        <h1>Your eBook is almost ready.</h1>
+                        <p>We just need one more thing. It looks like you already have an account on our Bookshelf platform. In order to add your new eBook to your existing account, we need you to autheticate with your Bookshelf password.</p>
                         <? } ?>
                     </div>
                     <div class="row">
@@ -38,9 +39,7 @@
                                         <input type="password" class="form-control" id="password" name="password" placeholder="Password">
                                     </div>
                                     <input type="hidden" id="email" name="email" value="<?php echo $email; ?>" />
-                                    <input type="hidden" id="fname" name="fname" value="<?php echo $fname; ?>" />
-                                    <input type="hidden" id="lname" name="lname" value="<?php echo $lname; ?>" />
-                                    <input type="hidden" id="code" name="code" value="<?php echo $code; ?>" />
+                                    <input type="hidden" id="email" name="campaign_id" value="<?php echo $campaign_id; ?>" />
                                     <input class="btn btn-primary" type="submit" style="display:none;" value="Submit">
                                     <button type="button" class="btn btn-danger btn-lg btn-block">Submit</button>
                                 </form>

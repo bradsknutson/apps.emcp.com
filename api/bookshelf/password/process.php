@@ -1,41 +1,63 @@
 <?php
 
     $password = $_POST['password'];
-    $email = $_POST['email'];
 
     include '../inc/functions.php';
 
-    $code = $activation_code = $_POST['code'];
-    $fname = $_POST['fname'];
-    $lname = $_POST['lname'];
+    $email = $_POST['email'];
+    $campaign_id = $_POST['campaign_id'];
+    $account_id = getID($email, $mysqli);
+    $campaign_vars = getCampaignVars($email, $campaign_id, $mysqli);
+
+    $group_id = $campaign_vars[0]['group_id'];
+    $duration = $campaign_vars[0]['duration'];
+
+    $linkAccountVars = array(
+        'application_name' => 'SFDC',
+        'account_id' => $account_id,
+        'username' => $email,
+        'password' => $password,
+    );
 
     $linkAccountJson = callAPI($linkAccountURL, $linkAccountVars);
     $linkAccountData = json_decode($linkAccountJson, true);
 
-    $addBookVars = array(
-        'activation_code' => $code,
+    $addBookUserVars = array(
+        'group_id' => $group_id,
+        'account_id' => $account_id,
         'application_name' => 'SFDC',
-        'account_id' => $account_id,    
+        'duration' => $duration,    
     );
+
+    $addBookUserJson = callAPI($addBookUserURL, $addBookUserVars);
+    $addBookUserData = json_decode($addBookUserJson, true);
+
+    echo $addBookUserJson;
 
     if( $linkAccountData['errno'] ) {
         if( $linkAccountData['errno'] == 14 || $linkAccountData['errno'] == 15 ) {
-            header('Location: ../password/?code='. $code .'&email='. $email .'&fname='. $fname .'&lname='. $lname .'&badpass=true');
+            header('Location: ../password/?email='. urlencode($email) .'&campaign_id='. $campaign_id .'&badpass=true');
             exit;
         } else {
             // Unhandled error
             echo $linkAccountJson;
         }
     } else {
-        $addBookJson = callAPI($addBookURL, $addBookVars);
-        $addBookData = json_decode($addBookJson, true);
-        if( $addBookData['errno'] ) {
+        $addBookUserJson = callAPI($addBookUserURL, $addBookUserVars);
+        $addBookUserData = json_decode($addBookUserJson, true);
+        if( $addBookUserData['errno'] ) {
             // Unhandled error
-            echo $addBookJson;
+            echo $addBookUserJson;
         } else {
-            header('Location: ../success/?code='. $code .'&email='. $email);
+            
+            echo $addBookUserJson;
+                    
+            header('Location: ../success/?email='. urlencode($email) .'&campaign_id='. $campaign_id );
             exit;
+
         }
     }
+
+
 
 ?>

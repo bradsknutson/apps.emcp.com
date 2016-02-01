@@ -35,16 +35,8 @@
                                         <input class="form-control" id="email" name="email" value="" />
                                     </div>
                                     <div class="form-group">
-                                        <label for="book_id">Book ID:</label>
-                                        <input class="form-control" id="book_id" name="book_id" value="" />
-                                    </div>
-                                    <div class="form-group">
                                         <label for="campaign_id">Campaign ID:</label>
                                         <input class="form-control" id="campaign_id" name="campaign_id" value="" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="length">Duration:</label>
-                                        <input class="form-control" id="length" name="length" value="" />
                                     </div>
                                     <input class="btn btn-primary" type="submit" style="display:none;" value="Submit">
                                     <button type="button" class="btn btn-danger btn-lg btn-block">Submit</button>
