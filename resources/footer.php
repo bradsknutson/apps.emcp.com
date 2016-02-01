@@ -18,7 +18,11 @@
         </div> <!-- end footer -->
         <?php } ?>
     </div> <!-- end xcenter -->
+<<<<<<< HEAD
     <div id="totop" class="anim">^</div>
+=======
+    <div id="totop" class="anim"></div>
+>>>>>>> staging
     <div class="modalBackground">
         <div class="modalContainer anim"></div>
     </div>

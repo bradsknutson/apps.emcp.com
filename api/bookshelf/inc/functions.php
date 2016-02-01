@@ -4,57 +4,17 @@ include 'con.php';
 
 $fname = $_GET['fname'];
 $lname = $_GET['lname'];
-$book_id = $_GET['book_id'];
+$email = $_GET['email'];
 $campaign_id = $_GET['campaign_id'];
-$length = $_GET['length'];
-if( $length == '' || intval($length) > 90 ) {
-    $duration = '21';
-} else {
-    $duration = $length;
-}
-if( !isset($password) ) {
-    $password = $_GET['password'];
-}
-if( !isset($email) ) {
-    $email = $_GET['email'];
-}
 
-$base = 'https://staging.bookshelf.emcp.com';
+$base = 'https://emc.bookshelf.emcp.com';
 
-$addAccountUrl = $base .'/webservice/addaccount';
-$addBookURL = $base .'/webservice/addbook';
 $linkAccountURL = $base .'/webservice/linkaccount';
-$goToBookURL = $base .'/webservice/linkbook';
-$addCourseBookURL = $base .'/webservice/addcoursebook';
-$addCodeURL = $base .'/webservice/addcode';
-
-$addCodeVars = array(
-    'application_name' => 'SFDC',
-    'book_id' => $book_id,
-    'duration' => $duration,
-);
+$addExternalUserURL = $base .'/webservice/addexternaluser';
+$addBookUserURL = $base .'/webservice/addbookuser';
+$goToBookURL = $base .'/webservice/gotobook';
 
 $account_id = getID($email, $mysqli);
-
-$vars = array(
-	'activation_code' => $activation_code,
-	'username' => $email,
-	'lastname' => $lname,
-	'firstname' => $fname,
-	'email' => $email,
-	'application_name' => 'SFDC',
-    'password' => generatePassword(),
-    'account_id' => $account_id,
-);
-
-$linkAccountVars = array (
-	'application_name' => 'SFDC',
-    'account_id' => $account_id,    
-	'username' => $email,
-    'password' => $password,
-);
-
-
 
 function generatePassword($length = 12) {
     $chars = 'bcdfghjkmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ23456789';
@@ -104,6 +64,23 @@ function getID($email, $mysqli) {
     
     $result->close();
     $mysqli->close();
+}
+
+function getCampaignVars($email, $campaign_id, $mysqli) {
+    $query = "SELECT *
+                FROM campaigns
+                WHERE campaign_id = '". $campaign_id ."'";
+    
+    $result = $mysqli->query($query);
+    
+    while ($row = $result->fetch_assoc()) {
+        $rows[] = $row;
+    }  
+    
+    $result->close();
+    $mysqli->close();
+    
+    return $rows;
 }
 
 function redirect($a) {

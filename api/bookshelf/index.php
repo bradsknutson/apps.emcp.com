@@ -1,75 +1,98 @@
 <?php
 
-// Get Request with email, fname, lname, campaign_id, book_id, and length (optional)
+// Get Request with email, fname, lname, campaign_id (campaign stores the group_id, book_id and duration)
 
 include 'inc/functions.php';
+
 
 redirect($email);
 
 $account_id = getID($email, $mysqli);
 
 $checkquery = "SELECT *
-        FROM campaign_log
-        WHERE account_id = '". $account_id ."'
-        AND campaign_id = '". $campaign_id ."'";
+        FROM campaigns
+        WHERE campaign_id = '". $campaign_id ."'";
 
 $checkresult = $mysqli->query($checkquery);
-
+ 
 if( $checkresult->num_rows == 0) {
-    $addCodeJson = callAPI($addCodeURL, $addCodeVars);
-    $addCodeData = json_decode($addCodeJson, true);
-    $activation_code = $addCodeData['code'];
+    // No campaign
     
-    $insert = "INSERT INTO campaign_log VALUES (NULL, '". $account_id ."', '". $campaign_id ."', '". $activation_code ."', '". $duration ."', NULL)";
-    $insertresult = $mysqli->query($insert);
+    header('Location: http://www.emcp.com');
+    exit;
+    
 } else {
     while ($checkrow = $checkresult->fetch_assoc()) {
-        $activation_code = $checkrow['code'];
+        $group_id = $checkrow['group_id'];
+        $book_id = $checkrow['book_id'];
+        $duration = $checkrow['duration'];
     }
 }
 
-$vars = array(
-	'activation_code' => $activation_code,
-	'username' => $email,
-	'lastname' => $lname,
-	'firstname' => $fname,
-	'email' => $email,
-	'application_name' => 'SFDC',
-    'password' => generatePassword(),
+$addExternalUserVars = array(
     'account_id' => $account_id,
+    'username' => $email,
+    'firstname' => $fname,
+    'lastname' => $lname,
+    'email' => $email,
+    'application_name' => 'SFDC',
 );
 
-$addBookVars = array(
-    'activation_code' => $activation_code,
-	'application_name' => 'SFDC',
-    'account_id' => $account_id,    
+$addBookUserVars = array(
+    'group_id' => $group_id,
+    'account_id' => $account_id,
+    'application_name' => 'SFDC',
+    'duration' => $duration,
 );
 
-$addAccountJson = callAPI($addAccountUrl, $vars);
-$addAccountData = json_decode($addAccountJson, true);
+$addBookUserVars = array(
+    'group_id' => $group_id,
+    'account_id' => $account_id,
+    'application_name' => 'SFDC',
+    'duration' => $duration,
+);
 
-if( $addAccountData['errno'] ) {
-    if( $addAccountData['errno'] == 11 ) {
-        // Account ID already exists for application => /webservice/addbook
-        $addBookJson = callAPI($addBookURL, $addBookVars);
-        $addBookData = json_decode($addBookJson, true);
-        header('Location: success/?code='. $activation_code .'&email='. $email);
+$userLogQuery = "SELECT * FROM user_log
+        WHERE account_id = '". $account_id ."'
+        AND campaign_id = '". $campaign_id ."'";
+
+$userLogResult = $mysqli->query($userLogQuery);
+
+if( $userLogResult->num_rows == 0) {
+    // User->Campaign does no exists => /webservice/addexternaluser
+    $insertUserLogQuery = "INSERT INTO user_log (account_id,campaign_id)
+                            VALUES ('". $account_id ."','". $campaign_id ."')";
+    
+    $insertUserLogResult = $mysqli->query($insertUserLogQuery);
+    
+    $addExternalUserJson = callAPI($addExternalUserURL, $addExternalUserVars);
+    $addExternalUserData = json_decode($addExternalUserJson, true);
+    
+    echo $addExternalUserJson;
+    
+    if( $addExternalUserData['errno'] == 12 ) {
+        // Username already exists => /webservice/linkaccount
+
+        header('Location: password/?email='. urlencode($email) .'&campaign_id='. $campaign_id );
         exit;
-    } else if( $addAccountData['errno'] == 12 ) {
-        // Username already exists => Password required to move forward
-        header('Location: password/?code='. $activation_code .'&email='. $email .'&fname='. $fname .'&lname='. $lname);
-        exit;
-    } else if( $addAccountData['errno'] == 22 ) {
-        // Activation code is already linked to this user => Send to prevent page
-        header('Location: prevent/?code='. $activation_code .'&email='. $email);
-        exit;
+
     } else {
-        // Unhandled error
-        echo $addAccountJson;
+        // Account created successfully => /webservice/addbookuser
+            
+        $addBookUserJson = callAPI($addBookUserURL, $addBookUserVars);
+        $addBookUserData = json_decode($addBookUserJson, true);
+
+        header('Location: success/?email='. urlencode($email) .'&campaign_id='. $campaign_id );
+        exit;         
+        
     }
+    
 } else {
-    header('Location: success/?code='. $activation_code .'&email='. $email);
-    exit;
+    // User->Campaign exists => /webservice/gotobook
+        
+    header('Location: success/?email='. urlencode($email) .'&campaign_id='. $campaign_id );
+    exit;    
+    
 }
 
 ?>
