@@ -18,7 +18,9 @@ $checkresult = $mysqli->query($checkquery);
 if( $checkresult->num_rows == 0) {
     // No campaign
     
-    header('Location: http://www.emcp.com');
+    $redirect_url = 'https://apps.emcp.com/api/bookshelf/oops/?fname='. $fname .'&lname='. $lname .'&email='. $email .'&campaign_id='. $campaign_id;
+    
+    header('Location: '. $redirect_url);
     exit;
     
 } else {
