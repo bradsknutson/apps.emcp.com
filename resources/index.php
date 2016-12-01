@@ -1,4 +1,4 @@
-<?php include 'header.php'; ?>
+<?php include 'header.php'; ?>    
     <div class="program_id" id="<?php echo $id; ?>"></div>
         <?php if( !isPassport() ) { ?>
         <div class="hero">

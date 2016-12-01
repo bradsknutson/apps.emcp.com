@@ -1,0 +1,201 @@
+<?php
+
+    $id = $_GET['id'];
+
+    require '../../includes/functions.php';
+
+    if($_SERVER['REMOTE_ADDR'] != $ip1 && $_SERVER['REMOTE_ADDR'] != $ip2) {
+        header("Location: http://paradigmeducation.com/");
+    } else {
+        
+        include '../../includes/header.php';
+        
+        $domain = "SELECT *
+                FROM root_domains";
+        
+        $domain_result = $mysqli->query($domain);
+        
+        $sub = "SELECT *
+                FROM sub_domains";
+        
+        $sub_result = $mysqli->query($sub);
+        
+?>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-12 col-md-3"></div>
+                <div class="col-sm-12 col-md-6">
+                    <div class="jumbotron">
+                        <h1>Create a new book.</h1>
+                        <p>Choose a domain and sub-domain (optional) for your book.</p>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="http://apps.emcp.com/redirects/">Home</a></li>
+                            <li class="breadcrumb-item"><a href="http://apps.emcp.com/redirects/books/">Books</a></li>
+                            <li class="breadcrumb-item active">New</li>
+                        </ol>
+                        <p>Note: If you do not see the domain or subdomain in the list below, go back to the <a href="http://apps.emcp.com/redirects/">Home</a> page and create a new domain first.</p>
+                    </div>
+                    <div class="row">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label for="destination-value" class="col-md-3 control-label">Book Name</label>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control" id="name-value" value="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="string-value" class="col-md-3 control-label">Domain</label>
+                                <div class="col-md-9">
+                                    <select class="form-control" id="domain-choice">
+                                        <option value="">Choose Domain</option>
+                                        <?php
+                                        
+                                            while($row = $domain_result->fetch_assoc()) {
+                                                echo '<option value="'. $row['id'] .'">'. $row['domain'] .'</option>';
+                                            }
+        
+                                        ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="string-value" class="col-md-3 control-label">Sub Domain (Optional)</label>
+                                <div class="col-md-9">
+                                    <select class="form-control" id="sub-choice">
+                                        <option value="">Choose Sub Domain</option>
+                                        <?php
+                                        
+                                            while($row = $sub_result->fetch_assoc()) {
+                                                
+                                                if( $row['sub'] == '' ) {
+                                                    $sub_domain = 'Root Domain';
+                                                } else {
+                                                    $sub_domain = $row['sub'];
+                                                }
+                                                
+                                                echo '<option value="'. $row['id'] .'">'. $sub_domain .'</option>';
+                                            }
+        
+                                        ?>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <div class="col-md-offset-1">
+                                    <button type="submit" class="btn btn-default" disabled="disabled">Create Book</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>                    
+            <div class="col-sm-12 col-md-3"></div>
+        </div>
+        <script>
+            $(document).ready(function() {
+                
+                $('#name-value').keyup(function() {
+                    if( $(this).val() != '' ) {
+                        if( $('#domain-choice').val() != '' ) {
+                            $('form button[type="submit"]').removeAttr('disabled');
+                        } else {
+                            $('form button[type="submit"]').attr('disabled','disabled');
+                        }
+                    } else {
+                        $('form button[type="submit"]').attr('disabled','disabled');
+                    }
+                });
+                
+                $('#domain-choice').change(function() {
+                    if( $(this).val() != '' ) {
+                        if( $('#name-value').val() != '' ) {
+                            $('form button[type="submit"]').removeAttr('disabled');
+                        } else {
+                            $('form button[type="submit"]').attr('disabled','disabled');
+                        }
+                    } else {
+                        $('form button[type="submit"]').attr('disabled','disabled');
+                    }
+                });
+                    
+                $('form').submit(function(e) {
+                    
+                    e.preventDefault();
+                    
+                    $title = $('#name-value').val();
+                    $domain_id = $('#domain-choice').val();
+                    $sub_id = $('#sub-choice').val();
+                    
+                    $.ajax({
+                        method: "POST",
+                        url: "http://apps.emcp.com/redirects/includes/create_book.php",
+                        data: { 
+                            title: $title,
+                            domain_id: $domain_id,
+                            sub_id: $sub_id
+                        }
+                    }).done(function(data) {
+                        $('.error-handling').html(data);
+                    }); 
+                                        
+                    
+                });
+                
+            });
+        </script>
+        <div class="error-handling transition"></div>
+        <div class="success-modal">
+            <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h2 class="modal-title" id="myModalLabel">Excellent.</h2>
+                        </div>
+                        <div class="modal-body">
+                            <h3>Your new book has been created.</h3>
+                            <p>If you would like to manage your new book or create links for it, you can do so by <a class="success-anchor" href="">clicking here</a>.</p>
+                            <p>If you want to create another book, you can do so by closing this modal.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Ignore</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="duplicate-modal">
+            <div class="modal fade" id="duplicateModal" tabindex="-1" role="dialog" aria-labelledby="duplicateModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h2 class="modal-title" id="myModalLabel">Oops.</h2>
+                        </div>
+                        <div class="modal-body">
+                            <h3>The book you are attempting to create already exists.</h3>
+                            <p>If you would like to manage this book or any of it's links, you can do so by <a class="fail-anchor" href="">clicking here</a>.</p>
+                            <p>If you want to create another book, you can do so by closing this modal.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Ignore</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+<?php
+        
+    }
+
+    $domain_result->close();
+    $sub_result->close();
+
+?>
