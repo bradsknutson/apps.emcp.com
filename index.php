@@ -1,10 +1,18 @@
 <?php
 
-    $ip = '206.9.73.9';
+    $dom = $_SERVER['HTTP_HOST'];
 
-    if($_SERVER['REMOTE_ADDR'] != $ip) {
-        header("Location: http://www.emcp.com/");
+    if( $dom == 'paradigmpublishing.snap2016.com') {
+        header("Location: https://paradigmpublishing.instructure.com");
+        exit();
     } else {
+
+        $ip1 = '63.224.12.3'; // EMCP Building Address
+        $ip2 = '184.100.121.17'; // Brad Home IP
+
+        if($_SERVER['REMOTE_ADDR'] != $ip1 && $_SERVER['REMOTE_ADDR'] != $ip2) {
+            header("Location: http://www.emcp.com/");
+        } else {
         
 ?>
 <!DOCTYPE html>
@@ -75,4 +83,6 @@
         </script>
     </body>
 </html>
-<?php } ?>
+<?php }
+
+}?>
