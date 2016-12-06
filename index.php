@@ -9,8 +9,9 @@
 
         $ip1 = '63.224.12.3'; // EMCP Building Address
         $ip2 = '184.100.121.17'; // Brad Home IP
+        $ip3 = '209.181.150.39'; // Brian Home IP
 
-        if($_SERVER['REMOTE_ADDR'] != $ip1 && $_SERVER['REMOTE_ADDR'] != $ip2) {
+        if($_SERVER['REMOTE_ADDR'] != $ip1 && $_SERVER['REMOTE_ADDR'] != $ip2 && $_SERVER['REMOTE_ADDR'] != $ip3) {
             header("Location: http://www.emcp.com/");
         } else {
         
@@ -49,7 +50,7 @@
 
                                     while (false !== ($entry = readdir($handle))) {
 
-                                        if ($entry != "." && $entry != ".." && $entry != 'index.php') {
+                                        if ($entry != "." && $entry != ".." && $entry != 'index.php' && $entry != '.htaccess' && $entry != 'cleanup' && $entry != 'editor' && $entry != 'api') {
 
                                             echo '<button type="button" class="btn btn-default btn-lg btn-block">'. $entry .'</button>';
                                         }

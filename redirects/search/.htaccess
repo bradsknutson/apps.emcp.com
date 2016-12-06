@@ -1,0 +1,3 @@
+RewriteEngine On
+RewriteCond %{REQUEST_URI} !(/$|\.)
+RewriteRule ^([a-zA-Z0-9]+)?$ /redirects/search/index.php?id=$1 [L]

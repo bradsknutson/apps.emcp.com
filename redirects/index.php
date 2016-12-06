@@ -2,7 +2,7 @@
 
     require 'includes/functions.php';
 
-    if($_SERVER['REMOTE_ADDR'] != $ip1 && $_SERVER['REMOTE_ADDR'] != $ip2) {
+    if($_SERVER['REMOTE_ADDR'] != $ip1 && $_SERVER['REMOTE_ADDR'] != $ip2 && $_SERVER['REMOTE_ADDR'] != $ip3) {
         header("Location: http://paradigmeducation.com/");
     } else {
         
@@ -16,6 +16,7 @@
                     <div class="jumbotron">
                         <h1>EMCP Redirects</h1>
                         <p>This tool is used to manage and generate new redirects.</p>
+                        <p><a href="/redirects/search/" class="search-link"><i class="fa fa-search" aria-hidden="true"></i> Search for a redirect</a></p>
                     </div>
                     <div class="row">
                         <div class="col-sm-12 col-md-6">
@@ -65,8 +66,53 @@
         <script>
             $(document).ready(function() {
                 
+                $('.search-link').click(function(e) {
+                    
+                    e.preventDefault();
+                    
+                    $('#searchModal').modal('show');
+                    
+                });
+                
+                $('form').submit(function(e) {
+                    
+                    e.preventDefault();
+                    
+                    if( $('.input-lg').val() != '' ) {
+                        window.location.href = '/redirects/search/' + $('.input-lg').val();
+                    }
+                    
+                });
             });
         </script>
+        <div class="search-modal">
+            <div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h2 class="modal-title" id="searchModalLabel">Search for a redirect.</h2>
+                        </div>
+                        <div class="modal-body">
+                            <p>Enter the redirect string you want to find.</p>
+                            <form class="form-horizontal">
+                                <div class="form-group row">
+                                    <input type="text" class="form-control input-lg" id="search" placeholder="Search">
+                                </div>                   
+                                <div class="form-group row">
+                                    <button type="submit" class="btn btn-default btn-lg">Submit</button>
+                                </div> 
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
 </html>
 <?php

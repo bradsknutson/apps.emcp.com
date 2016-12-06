@@ -4,7 +4,7 @@
 
     require '../../includes/functions.php';
 
-    if($_SERVER['REMOTE_ADDR'] != $ip1 && $_SERVER['REMOTE_ADDR'] != $ip2) {
+    if($_SERVER['REMOTE_ADDR'] != $ip1 && $_SERVER['REMOTE_ADDR'] != $ip2 && $_SERVER['REMOTE_ADDR'] != $ip3) {
         header("Location: http://paradigmeducation.com/");
     } else {
         
@@ -37,32 +37,17 @@
                         <form class="form-horizontal">
                             
                             <div class="form-group">
-                                <label for="string-value" class="col-md-3 control-label">Redirect String <i class="fa fa-info-circle help-redirect-string" aria-hidden="true"></i>
-</label>
+                                <label for="string-value" class="col-md-3 control-label" title="Redirect String" data-content="This is the part of the URL that is displayed after the sub domain and domain." data-toggle="popover" data-placement="top" data-trigger="hover click">Redirect String <i class="fa fa-info-circle" aria-hidden="true"></i></label>
                                 <div class="col-md-9">
                                     <input type="text" class="form-control" id="string-value" value="">
                                 </div>
                             </div>
-                            
-                            <div class="help-text-redirect-string">
-                                <p>The <strong>Redirect String</strong> is the string of text that appears at the <strong>end</strong> of the URL. <?php if($book_info['sub'] != '') { echo $book_info['sub'] .'.'; } ?><?php echo $book_info['domain']; ?>/<strong>{redirect will go here}</strong></p>
-                                <p>Do not enter http:// or www. Do not enter the subdomain or domain.  Only enter the string at the end of the redirect URL.</p>
-                                <p>No spaces, periods or # symbols are allowed.  Alphanumerical characters and slashes only.</p>
-                            </div>
-                            
                             <div class="form-group">
-                                <label for="destination-value" class="col-md-3 control-label">Destination URL <i class="fa fa-info-circle help-destination-url" aria-hidden="true"></i>
-</label>
+                                <label for="destination-value" class="col-md-3 control-label" title="Destination URL" data-content="The Destination URL is the web page that the user will see when clicking on our redirected link.  This is the final destination, and the content we want the end user to actually see. http:// is required." data-toggle="popover" data-placement="top" data-trigger="hover click">Destination URL <i class="fa fa-info-circle help-destination-url" aria-hidden="true"></i></label>
                                 <div class="col-md-9">
                                     <input type="text" class="form-control" id="destination-value" value="">
                                 </div>
                             </div>
-                            
-                            <div class="help-text-destination-url">
-                                <p>The destination URL is the web page that you want the link to go to.  This is usually a OneDrive URL, Google Drive, an internally hosted web page, or an external web page.</p>
-                                <p>Please <strong>do include</strong> http:// at the beginning of the link.</p>
-                            </div>
-                            
                             <div class="form-group">
                                 <div class="col-md-offset-1">
                                     <button type="submit" class="btn btn-default" disabled="disabled">Generate Redirect</button>
@@ -150,6 +135,27 @@
                             <h3>Special characters are not allowed.</h3>
                             <p>Redirects cannot be created with periods (.) hashtags (#) or spaces.</p>
                             <p>We've removed this character for you and you can continue creating your redirect.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="error-character-modal">
+            <div class="modal fade" id="dupModal" tabindex="-1" role="dialog" aria-labelledby="dupModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h2 class="modal-title" id="dupModalLabel">Duplicate Warning.</h2>
+                        </div>
+                        <div class="modal-body">
+                            <h3>It looks like this redirect already exists for this book.</h3>
+                            <p>You can manage it by <a class="link-duplicate-catch" href="">clicking here</a>, or you can close this modal and go back and edit the redirect string to create a new link.</p>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

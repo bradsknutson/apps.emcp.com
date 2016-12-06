@@ -42,6 +42,12 @@ $(document).ready(function() {
         
         $str = $(this).val();
         
+        if( $str.match(/ /gi) ){
+            $replaced = $(this).val().replace(/ /gi,'');
+            $(this).val($replaced);
+            
+            $('#characterErrorModal').modal('show');
+        }
         if( $str.match(/http/gi) ){
             $replaced = $(this).val().replace(/http/gi,'');
             $(this).val($replaced);
@@ -68,6 +74,8 @@ $(document).ready(function() {
         }
 
     });
+    
+    $('[data-toggle="popover"]').popover();
 
     
 });

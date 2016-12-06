@@ -4,7 +4,7 @@
 
     require '../includes/functions.php';
 
-    if($_SERVER['REMOTE_ADDR'] != $ip1 && $_SERVER['REMOTE_ADDR'] != $ip2) {
+    if($_SERVER['REMOTE_ADDR'] != $ip1 && $_SERVER['REMOTE_ADDR'] != $ip2 && $_SERVER['REMOTE_ADDR'] != $ip3) {
         header("Location: http://paradigmeducation.com/");
     } else {
         
@@ -33,7 +33,6 @@
                                 <li class="breadcrumb-item"><a href="http://apps.emcp.com/redirects/domains/">Domains</a></li>
                                 <li class="breadcrumb-item active"><?php echo $domain_info_string['domain']; ?></li>
                             </ol>
-                            <p><a href="/redirects/domains/edit/<?php echo $domain_info_string['id']; ?>"><i class="fa fa-pencil" aria-hidden="true"></i> Edit Domain</a></p>
                         </div>
                         <div class="row">
                             <div class="row">

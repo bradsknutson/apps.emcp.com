@@ -4,7 +4,7 @@
 
     require '../../includes/functions.php';
 
-    if($_SERVER['REMOTE_ADDR'] != $ip1 && $_SERVER['REMOTE_ADDR'] != $ip2) {
+    if($_SERVER['REMOTE_ADDR'] != $ip1 && $_SERVER['REMOTE_ADDR'] != $ip2 && $_SERVER['REMOTE_ADDR'] != $ip3) {
         header("Location: http://paradigmeducation.com/");
     } else {
         
@@ -38,13 +38,13 @@
                     <div class="row">
                         <form class="form-horizontal">
                             <div class="form-group">
-                                <label for="destination-value" class="col-md-3 control-label">Book Name</label>
+                                <label for="destination-value" class="col-md-3 control-label" title="Book Name" data-content="The Book Name is a user-friendly internal only value used for organizational purposes." data-toggle="popover" data-placement="top" data-trigger="hover click">Book Name <i class="fa fa-info-circle help-book-name" aria-hidden="true"></i></label>
                                 <div class="col-md-9">
                                     <input type="text" class="form-control" id="name-value" value="">
                                 </div>
-                            </div>
+                            </div>                            
                             <div class="form-group">
-                                <label for="string-value" class="col-md-3 control-label">Domain</label>
+                                <label for="string-value" class="col-md-3 control-label" title="Domain" data-content="Select the domain for which you want the book to use for redirects. For Paradigm products, paradgigmeducation.com is usually the correct domain." data-toggle="popover" data-placement="top" data-trigger="hover click">Domain <i class="fa fa-info-circle help-book-domain" aria-hidden="true"></i></label>
                                 <div class="col-md-9">
                                     <select class="form-control" id="domain-choice">
                                         <option value="">Choose Domain</option>
@@ -59,7 +59,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="string-value" class="col-md-3 control-label">Sub Domain (Optional)</label>
+                                <label for="string-value" class="col-md-3 control-label" title="Sub Domain" data-content="Select the sub domain you wish to appear in front of the domain to be used in redirects.  For example, if you wish to use ODW4.paradigmeducation.com for your redirects, choose the ODW4 sub domain from this dropdown." data-toggle="popover" data-placement="top" data-trigger="hover click">Sub Domain <i class="fa fa-info-circle help-book-sub" aria-hidden="true"></i></label>
                                 <div class="col-md-9">
                                     <select class="form-control" id="sub-choice">
                                         <option value="">Choose Sub Domain</option>
@@ -80,7 +80,6 @@
                                     </select>
                                 </div>
                             </div>
-                            
                             <div class="form-group">
                                 <div class="col-md-offset-1">
                                     <button type="submit" class="btn btn-default" disabled="disabled">Create Book</button>
@@ -98,7 +97,11 @@
                 $('#name-value').keyup(function() {
                     if( $(this).val() != '' ) {
                         if( $('#domain-choice').val() != '' ) {
-                            $('form button[type="submit"]').removeAttr('disabled');
+                            if( $('#sub-choice').val() != '' ) {
+                                $('form button[type="submit"]').removeAttr('disabled');
+                            } else {
+                                $('form button[type="submit"]').attr('disabled','disabled');
+                            }
                         } else {
                             $('form button[type="submit"]').attr('disabled','disabled');
                         }
@@ -110,7 +113,27 @@
                 $('#domain-choice').change(function() {
                     if( $(this).val() != '' ) {
                         if( $('#name-value').val() != '' ) {
-                            $('form button[type="submit"]').removeAttr('disabled');
+                            if( $('#sub-choice').val() != '' ) {
+                                $('form button[type="submit"]').removeAttr('disabled');
+                            } else {
+                               $('form button[type="submit"]').attr('disabled','disabled'); 
+                            }
+                        } else {
+                            $('form button[type="submit"]').attr('disabled','disabled');
+                        }
+                    } else {
+                        $('form button[type="submit"]').attr('disabled','disabled');
+                    }
+                });
+                
+                $('#sub-choice').change(function() {
+                    if( $(this).val() != '' ) {
+                        if( $('#name-value').val() != '' ) {
+                            if( $('#domain-choice').val() != '' ) {
+                                $('form button[type="submit"]').removeAttr('disabled');
+                            } else {
+                               $('form button[type="submit"]').attr('disabled','disabled'); 
+                            }
                         } else {
                             $('form button[type="submit"]').attr('disabled','disabled');
                         }

@@ -4,7 +4,7 @@
 
     require '../../includes/functions.php';
 
-    if($_SERVER['REMOTE_ADDR'] != $ip1 && $_SERVER['REMOTE_ADDR'] != $ip2) {
+    if($_SERVER['REMOTE_ADDR'] != $ip1 && $_SERVER['REMOTE_ADDR'] != $ip2 && $_SERVER['REMOTE_ADDR'] != $ip3) {
         header("Location: http://paradigmeducation.com/");
     } else {
         
