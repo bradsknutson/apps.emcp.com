@@ -25,8 +25,6 @@
                 
             </script>';
     } else {
-    
-        
         
         $insert = "INSERT INTO book (title,domain_id,sub_id)
                     VALUES ('". $title ."','". $domain_id ."','". $sub_id ."')";
@@ -42,9 +40,7 @@
                 
                 $(\'#successModal\').modal(\'show\');
                 
-            </script>';
-            
-        
+            </script>'; 
         
     }
 
