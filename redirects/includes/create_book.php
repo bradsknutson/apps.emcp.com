@@ -5,6 +5,7 @@
     $title = $mysqli->real_escape_string( $_POST['title'] );
     $domain_id = $mysqli->real_escape_string( $_POST['domain_id'] );
     $sub_id = $mysqli->real_escape_string( $_POST['sub_id'] );
+    $default_url = $mysqli->real_escape_string( $_POST['default_url'] );
 
     $check = "SELECT id FROM book
                 WHERE domain_id = '". $domain_id ."'
@@ -26,8 +27,8 @@
             </script>';
     } else {
         
-        $insert = "INSERT INTO book (title,domain_id,sub_id)
-                    VALUES ('". $title ."','". $domain_id ."','". $sub_id ."')";
+        $insert = "INSERT INTO book (title,domain_id,sub_id,default_url)
+                    VALUES ('". $title ."','". $domain_id ."','". $sub_id ."','". $default_url ."')";
 
         $result = $mysqli->query($insert);
 

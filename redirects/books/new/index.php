@@ -81,6 +81,13 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                                <label for="default-url" class="col-md-3 control-label" title="Default URL" data-content="This is the default URL for redirects for this book that do not exist.  For example, if someone were to mistype URL for this domain and subdomain combination, this is the page you want them to end up on. Consider it a fallback URL. Typically a marketing or product page for the book." data-toggle="popover" data-placement="top" data-trigger="hover click">Default URL <i class="fa fa-info-circle help-book-sub" aria-hidden="true"></i></label>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control" id="default-url" value="">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
                                 <div class="col-md-offset-1">
                                     <button type="submit" class="btn btn-default" disabled="disabled">Create Book</button>
                                 </div>
@@ -98,7 +105,11 @@
                     if( $(this).val() != '' ) {
                         if( $('#domain-choice').val() != '' ) {
                             if( $('#sub-choice').val() != '' ) {
-                                $('form button[type="submit"]').removeAttr('disabled');
+                                if(/^(http|https|ftp):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i.test($("#default-url").val())){
+                                    $('form button[type="submit"]').removeAttr('disabled');
+                                } else {
+                                    $('form button[type="submit"]').attr('disabled','disabled'); 
+                                }
                             } else {
                                 $('form button[type="submit"]').attr('disabled','disabled');
                             }
@@ -114,7 +125,11 @@
                     if( $(this).val() != '' ) {
                         if( $('#name-value').val() != '' ) {
                             if( $('#sub-choice').val() != '' ) {
-                                $('form button[type="submit"]').removeAttr('disabled');
+                                if(/^(http|https|ftp):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i.test($("#default-url").val())){
+                                    $('form button[type="submit"]').removeAttr('disabled');
+                                } else {
+                                    $('form button[type="submit"]').attr('disabled','disabled'); 
+                                }
                             } else {
                                $('form button[type="submit"]').attr('disabled','disabled'); 
                             }
@@ -130,7 +145,11 @@
                     if( $(this).val() != '' ) {
                         if( $('#name-value').val() != '' ) {
                             if( $('#domain-choice').val() != '' ) {
-                                $('form button[type="submit"]').removeAttr('disabled');
+                                if(/^(http|https|ftp):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i.test($("#default-url").val())){
+                                    $('form button[type="submit"]').removeAttr('disabled');
+                                } else {
+                                    $('form button[type="submit"]').attr('disabled','disabled'); 
+                                }
                             } else {
                                $('form button[type="submit"]').attr('disabled','disabled'); 
                             }
@@ -141,6 +160,22 @@
                         $('form button[type="submit"]').attr('disabled','disabled');
                     }
                 });
+                
+                $("#default-url").keyup(function() {
+                    if(/^(http|https|ftp):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i.test($("#default-url").val())){
+                        if( $('#domain-choice').val() != '' ) {
+                            if( $('#name-value').val() != '' ) {
+                                $('form button[type=submit]').removeAttr('disabled');
+                            } else {
+                                $('form button[type=submit]').attr('disabled','disabled');
+                            }
+                        } else {
+                            $('form button[type=submit]').attr('disabled','disabled');
+                        }
+                    } else {             
+                        $('form button[type=submit]').attr('disabled','disabled');
+                    }                    
+                });                
                     
                 $('form').submit(function(e) {
                     
@@ -149,6 +184,7 @@
                     $title = $('#name-value').val();
                     $domain_id = $('#domain-choice').val();
                     $sub_id = $('#sub-choice').val();
+                    $default_url = $('#default-url').val();
                     
                     $.ajax({
                         method: "POST",
@@ -156,7 +192,8 @@
                         data: { 
                             title: $title,
                             domain_id: $domain_id,
-                            sub_id: $sub_id
+                            sub_id: $sub_id,
+                            default_url: $default_url
                         }
                     }).done(function(data) {
                         $('.error-handling').html(data);

@@ -168,6 +168,7 @@
                         <div class="row">
                             <div class="col-sm-12 col-md-3"></div>
                             <div class="col-sm-12 col-md-6">
+                                <a type="button" class="btn btn-success btn-lg btn-block create-new-book-v2" href="new/">Create New Book</a>
                                 <?php
 
                                     $book = "SELECT * FROM book
@@ -181,7 +182,6 @@
                                     $book_result->close();
 
                                 ?>
-                                <a type="button" class="btn btn-success btn-lg btn-block create-new-book" href="new/">Create New Book</a>
                             </div>
                             <div class="col-sm-12 col-md-3"></div>
                         </div> 

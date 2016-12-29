@@ -74,16 +74,8 @@
                     
                 });
                 
-                $('form').submit(function(e) {
-                    
-                    e.preventDefault();
-                    
-                    if( $('.input-lg').val() != '' ) {
-                        window.location.href = '/redirects/search/' + $('.input-lg').val();
-                    }
-                    
-                });
             });
+            
         </script>
         <div class="search-modal">
             <div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel">

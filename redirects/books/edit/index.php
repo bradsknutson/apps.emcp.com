@@ -20,7 +20,7 @@
         
         $sub_result = $mysqli->query($sub);
         
-        $book = "SELECT a.id, a.title, b.domain, b.id AS domain_id, c.sub, c.id AS sub_id
+        $book = "SELECT a.id, a.title, b.domain, b.id AS domain_id, c.sub, c.id AS sub_id, a.default_url
                 FROM book a, root_domains b, sub_domains c
                 WHERE a.id = '". $id ."'
                 AND a.domain_id = b.id
@@ -92,6 +92,12 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label for="default-url" class="col-md-3 control-label">Default URL</label>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control" id="default-url" value="<?php echo $book_string['default_url']; ?>">
+                                </div>
+                            </div>
                             
                             <div class="domain-pre-selected" id="<?php echo $book_string['domain_id']; ?>"></div>
                             <div class="sub-pre-selected" id="<?php echo $book_string['sub_id']; ?>"></div>
@@ -124,7 +130,11 @@
                 $('#name-value').keyup(function() {
                     if( $(this).val() != '' ) {
                         if( $('#domain-choice').val() != '' ) {
-                            $('form button[type="submit"]').removeAttr('disabled');
+                            if(/^(http|https|ftp):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i.test($("#default-url").val())){
+                                $('form button[type="submit"]').removeAttr('disabled');
+                            } else {
+                                $('form button[type="submit"]').attr('disabled','disabled');
+                            }
                         } else {
                             $('form button[type="submit"]').attr('disabled','disabled');
                         }
@@ -144,7 +154,11 @@
                 $('#domain-choice').change(function() {
                     if( $(this).val() != '' ) {
                         if( $('#name-value').val() != '' ) {
-                            $('form button[type="submit"]').removeAttr('disabled');
+                            if(/^(http|https|ftp):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i.test($("#default-url").val())){
+                                $('form button[type="submit"]').removeAttr('disabled');
+                            } else {
+                                $('form button[type="submit"]').attr('disabled','disabled');
+                            }
                         } else {
                             $('form button[type="submit"]').attr('disabled','disabled');
                         }
@@ -169,6 +183,22 @@
                     $warning = '1';
                 });
                 
+                $("#default-url").keyup(function() {
+                    if(/^(http|https|ftp):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i.test($("#default-url").val())){
+                        if( $('#domain-choice').val() != '' ) {
+                            if( $('#name-value').val() != '' ) {
+                                $('form button[type=submit]').removeAttr('disabled');
+                            } else {
+                                $('form button[type=submit]').attr('disabled','disabled');
+                            }
+                        } else {
+                            $('form button[type=submit]').attr('disabled','disabled');
+                        }
+                    } else {             
+                        $('form button[type=submit]').attr('disabled','disabled');
+                    }                    
+                });                
+                
                 $('form').submit(function(e) {
                     
                     e.preventDefault();
@@ -178,6 +208,7 @@
                         $title = $('#name-value').val();
                         $did = $('#domain-choice').val();
                         $sid = $('#sub-choice').val();
+                        $default_url = $('#default-url').val();
                         
                         $.ajax({
                             method: "POST",
@@ -186,7 +217,8 @@
                                 id: <?php echo $id ?>,
                                 title: $title,
                                 domain_id: $did,
-                                sub_id: $sid
+                                sub_id: $sid,
+                                default_url: $default_url
                             }
                         }).done(function(data) {
                             $('.error-handling').html(data);
