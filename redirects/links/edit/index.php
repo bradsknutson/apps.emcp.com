@@ -26,7 +26,7 @@
                 <div class="col-sm-12 col-md-3"></div>
                 <div class="col-sm-12 col-md-6">
                     <div class="jumbotron">
-                        <h1>Link Editor</h1>
+                        <h1>Redirect Editor</h1>
                         <p><?php if($link_info['sub'] != '') { echo $link_info['sub'] .'.'; } ?><?php echo $link_info['domain']; ?>/<?php echo $link_info['string']; ?></p>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="http://apps.emcp.com/redirects/">Home</a></li>

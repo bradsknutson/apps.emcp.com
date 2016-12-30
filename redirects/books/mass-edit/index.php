@@ -28,13 +28,14 @@
                     <div class="col-sm-12 col-md-3"></div>
                     <div class="col-sm-12 col-md-6">
                         <div class="jumbotron">
-                            <h1>Mass Link Editor</h1>
+                            <h1>Bulk Redirect Editor</h1>
                             <h2>Book: <?php echo $title_string['title']; ?></h2>
                             <p>Links for this book use the domain <strong><?php if($title_string['sub'] != '') { echo $title_string['sub'] .'.'; } ?><?php echo $title_string['domain']; ?></strong></p>
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="http://apps.emcp.com/redirects/">Home</a></li>
                                 <li class="breadcrumb-item"><a href="http://apps.emcp.com/redirects/books/">Books</a></li>
-                                <li class="breadcrumb-item active"><?php echo $title_string['title']; ?></li>
+                                <li class="breadcrumb-item"><a href="http://apps.emcp.com/redirects/books/<?php echo $title_string['id']; ?>"><?php echo $title_string['title']; ?></a></li>
+                                <li class="breadcrumb-item active">Bulk Edit</li>
                             </ol>
                             <p><a href="/redirects/books/<?php echo $title_string['id']; ?>"><i class="fa fa-book" aria-hidden="true"></i> Go Back</a>&nbsp;&nbsp;&nbsp;<a href="/redirects/books/edit/<?php echo $title_string['id']; ?>"><i class="fa fa-pencil" aria-hidden="true"></i> Edit Book</a></p>
                         </div>
@@ -71,14 +72,9 @@
 
                             while($row = $link_result->fetch_assoc()) {
 
-                                $string = $row['string'];
-                                if( $string == '' ) {
-                                    $string = 'Domain Root';
-                                }
-
                                 echo '<div class="row is-table-row">
                                     <div class="col-md-3 border-cell">
-                                        <input type="text" id="redirect-'. $row['id'] .'" value="'. $string .'" />
+                                        <input type="text" id="redirect-'. $row['id'] .'" value="'. $row['string'] .'" />
                                     </div>
                                     <div class="col-md-7 border-cell">
                                         <input type="text" id="destination-'. $row['id'] .'" value="'. $row['destination'] .'" />

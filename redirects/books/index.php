@@ -36,7 +36,7 @@
                                 <li class="breadcrumb-item"><a href="http://apps.emcp.com/redirects/books/">Books</a></li>
                                 <li class="breadcrumb-item active"><?php echo $title_string['title']; ?></li>
                             </ol>
-                            <p><a href="/redirects/books/edit/<?php echo $title_string['id']; ?>"><i class="fa fa-pencil" aria-hidden="true"></i> Edit Book</a></p>
+                            <p><a href="/redirects/books/edit/<?php echo $title_string['id']; ?>"><i class="fa fa-pencil" aria-hidden="true"></i> Edit Book</a> &nbsp; <a href="/redirects/links/upload/<?php echo $title_string['id']; ?>"><i class="fa fa-upload" aria-hidden="true"></i> Import Redirects</a> &nbsp; <a href="/redirects/books/mass-edit/<?php echo $title_string['id']; ?>"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Bulk Edit</a></p>
                         </div>
                         <div class="row">
                             <a class="btn btn-success btn-lg btn-block create-new-link" href="http://apps.emcp.com/redirects/links/new/<?php echo $title_string['id']; ?>">Create New Link</a>
