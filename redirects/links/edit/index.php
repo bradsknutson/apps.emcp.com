@@ -20,6 +20,23 @@
         $link_info = $link_result->fetch_assoc();
         $link_result->close();
         
+        $hit_count = "SELECT count(a.link_id) as count
+                        FROM log_existing a, book b, redirects c, root_domains d, sub_domains e
+                        WHERE a.link_id = c.id
+                        AND c.book_id = b.id
+                        AND b.domain_id = d.id
+                        AND b.sub_id = e.id
+                        AND a.link_id = '". $id ."'
+                        GROUP BY a.link_id";
+        $hit_count_result = $mysqli->query($hit_count);
+        $hit_count_info = $hit_count_result->fetch_assoc();
+        $hit_count_result->close();
+        
+        $count = $hit_count_info['count'];
+        if( $count == '' ) {
+            $count = '0';
+        }
+        
 ?>
         <div class="container-fluid">
             <div class="row">
@@ -34,6 +51,7 @@
                             <li class="breadcrumb-item"><a href="http://apps.emcp.com/redirects/books/<?php echo $link_info['book_id']; ?>"><?php echo $link_info['title']; ?></a></li>
                             <li class="breadcrumb-item active">Edit</li>
                         </ol>
+                        <p>Redirect hits: <?php echo $count; ?></p>
                     </div>
                     <div class="row">
                         <form class="form-horizontal">

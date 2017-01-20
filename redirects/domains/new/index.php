@@ -33,6 +33,7 @@
                             <li class="breadcrumb-item"><a href="http://apps.emcp.com/redirects/domains/">Domains</a></li>
                             <li class="breadcrumb-item active">New</li>
                         </ol>
+                        <p><a href="/redirects/domains/sub/new/"><i class="fa fa-file-text-o" aria-hidden="true"></i> Create New Sub Domain</a></p>
                         <p>Note: Do not include http but do include .com or .net.  An acceptable example would be "paradigmeducation.com" or "paradigmeducation.net"</p>
                     </div>
                     <div class="row">
@@ -50,8 +51,6 @@
                                 </div>
                             </div>
                         </form>
-                        
-                        <a type="button" class="btn btn-success btn-lg btn-block create-new-sub" href="/redirects/domains/sub/new/">Create New Subdomain</a>
                     </div>
                 </div>
             </div>                    

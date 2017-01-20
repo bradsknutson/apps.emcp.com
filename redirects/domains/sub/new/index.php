@@ -29,6 +29,7 @@
                             <li class="breadcrumb-item"><a href="http://apps.emcp.com/redirects/domains/sub/">Subdomains</a></li>
                             <li class="breadcrumb-item active">New</li>
                         </ol>
+                        <p><a href="/redirects/domains/new/"><i class="fa fa-file-text" aria-hidden="true"></i> Create New Domain</a></p>
                         <p>Note: Do not include the domain, this page is only for creating new subdomains.  You will tie a subdomain to a domain when you <a href="/redirects/books/new">create a new book</a>.</p>
                     </div>
                     <div class="row">
@@ -46,8 +47,6 @@
                                 </div>
                             </div>
                         </form>
-                        
-                        <a type="button" class="btn btn-success btn-lg btn-block create-new-sub" href="/redirects/domains/new/">Create New Domain</a>
                     </div>
                 </div>
             </div>                    

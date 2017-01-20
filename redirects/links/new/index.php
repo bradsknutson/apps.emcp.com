@@ -1,6 +1,7 @@
 <?php
 
     $id = $_GET['id'];
+    $string = $_POST['string'];
 
     require '../../includes/functions.php';
 
@@ -24,8 +25,11 @@
                 <div class="col-sm-12 col-md-3"></div>
                 <div class="col-sm-12 col-md-6">
                     <div class="jumbotron">
-                        <h1>Link Editor</h1>
-                        <p>Link will use this domain: <?php if($book_info['sub'] != '') { echo $book_info['sub'] .'.'; } ?><?php echo $book_info['domain']; ?>/{redirect will go here}</p>
+                        <h1>Redirect Generator</h1>
+                        <p>This URL:<br />
+                            <?php if($book_info['sub'] != '') { echo $book_info['sub'] .'.'; } ?><?php echo $book_info['domain']; ?>/<span class="redirect-goes-here"><?php if( $string != '' ) { echo '<strong>'. $string .'</strong>'; } else { echo '{redirect will go here}'; } ?></span></p>
+                        <p>Will redirect to:<br />
+                            <strong><span class="destination-goes-here">&nbsp;</span></strong></p>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="http://apps.emcp.com/redirects/">Home</a></li>
                             <li class="breadcrumb-item"><a href="http://apps.emcp.com/redirects/books/">Books</a></li>
@@ -39,7 +43,7 @@
                             <div class="form-group">
                                 <label for="string-value" class="col-md-3 control-label" title="Redirect String" data-content="This is the part of the URL that is displayed after the sub domain and domain." data-toggle="popover" data-placement="top" data-trigger="hover click">Redirect String <i class="fa fa-info-circle" aria-hidden="true"></i></label>
                                 <div class="col-md-9">
-                                    <input type="text" class="form-control" id="string-value" value="">
+                                    <input type="text" class="form-control" id="string-value" value="<?php echo $string; ?>">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -67,11 +71,25 @@
                     $('form button[type=submit]').attr('disabled','disabled');
                 });
                 
+                $('#string-value').keyup(function() {
+                    $current = '<strong>' + $(this).val() + '</strong>';
+                    
+                    if( $(this).val() == '' ) {
+                        $current = '{redirect will go here}';
+                    }
+                    
+                    $('.redirect-goes-here').html($current);
+                    
+                });
+                
                 $("#destination-value").keyup(function() {
                     if(/^(http|https|ftp):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i.test($("#destination-value").val())){
                         $('form button[type=submit]').removeAttr('disabled');
+                        $('.destination-goes-here').html( $(this).val() );
+                        
                     } else {
                         $('form button[type=submit]').attr('disabled','disabled');
+                        $('.destination-goes-here').html( '&nbsp;' );
                     }                    
                 });
 

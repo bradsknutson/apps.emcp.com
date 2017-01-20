@@ -16,12 +16,14 @@
                     <div class="jumbotron">
                         <h1>EMCP Redirects</h1>
                         <p>This tool is used to manage and generate new redirects.</p>
-                        <p><a href="/redirects/search/" class="search-link"><i class="fa fa-search" aria-hidden="true"></i> Search for a redirect</a></p>
+                        <p><a href="/redirects/search/" class="search-link"><i class="fa fa-search" aria-hidden="true"></i> Search for a redirect</a> <a href="/redirects/stats/"><i class="fa fa-bar-chart" aria-hidden="true"></i> Statistics</a></p>
                     </div>
                     <div class="row">
                         <div class="col-sm-12 col-md-6">
                             <div class="row">
                                 <h2>Sort by book.</h2>
+                                <p><a href="/redirects/books/new/"><i class="fa fa-book" aria-hidden="true"></i> Create New Book</a></a>
+                                <div class="row">
                                 <?php
 
                                     $book = "SELECT * FROM book
@@ -29,18 +31,22 @@
                                     $book_result = $mysqli->query($book);
         
                                     while($row = $book_result->fetch_assoc()) {
-                                        echo '<a type="button" class="btn btn-default btn-lg btn-block sort-by-book" href="/redirects/books/'. $row['id'] .'">'. $row['title'] .'</a>';
+                                        echo '<div class="row is-table-row border-bottom"><a class="btn-block" href="/redirects/books/'. $row['id'] .'">'. $row['title'] .'</a></div>';
                                     }
 
                                     $book_result->close();
         
                                 ?>
-                                <a type="button" class="btn btn-success btn-lg btn-block create-new-book" href="/redirects/books/new/">Create New Book</a>
+                                </div>
+                                
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-6">
                             <div class="row">
                                 <h2>Sort by domain.</h2>
+                                <p><a href="/redirects/domains/new/"><i class="fa fa-file-text" aria-hidden="true"></i> Create New Domain</a></p>
+                                <p><a href="/redirects/domains/sub/new/"><i class="fa fa-file-text-o" aria-hidden="true"></i> Create New Sub Domain</a></p>
+                                <div class="row">
                                 <?php
 
                                     $dom = "SELECT * FROM root_domains
@@ -48,14 +54,13 @@
                                     $dom_result = $mysqli->query($dom);
         
                                     while($row = $dom_result->fetch_assoc()) {
-                                        echo '<a type="button" class="btn btn-default btn-lg btn-block" href="domains/'. $row['id'] .'">'. $row['domain'] .'</a>';
+                                        echo '<div class="row is-table-row border-bottom"><a class="btn-block" href="domains/'. $row['id'] .'">'. $row['domain'] .'</a></div>';
                                     }
 
                                     $dom_result->close();
         
                                 ?>
-                                <a type="button" class="btn btn-success btn-lg btn-block create-new-domain" href="/redirects/domains/new/">Create New Domain</a>
-                                <a type="button" class="btn btn-success btn-lg btn-block create-new-sub" href="/redirects/domains/sub/new/">Create New Subdomain</a>
+                                </div>
                             </div>
                         </div>
                     </div>

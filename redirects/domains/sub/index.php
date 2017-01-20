@@ -33,7 +33,6 @@
                             <li class="breadcrumb-item"><a href="http://apps.emcp.com/redirects/domains/sub/">Subdomains</a></li>
                             <li class="breadcrumb-item active"><?php echo $sub_info_string['sub']; ?></li>
                         </ol>
-                        <p><a href="/redirects/domains/sub/edit/<?php echo $sub_info_string['id']; ?>"><i class="fa fa-pencil" aria-hidden="true"></i> Edit Subdomain</a></p>
                     </div>
                     <div class="row">
                             <div class="row">
@@ -98,8 +97,6 @@
                                     $sub_domains_result->close();
         
                                 ?>
-                                <a type="button" class="btn btn-success btn-lg btn-block create-new-domain" href="/redirects/domains/new/">Create New Domain</a>
-                                <a type="button" class="btn btn-success btn-lg btn-block create-new-sub" href="/redirects/domains/sub/new/">Create New Subdomain</a>
                             </div>
                         </div>
                     </div>
@@ -155,6 +152,7 @@
                             <li class="breadcrumb-item"><a href="http://apps.emcp.com/redirects/domains/">Domains</a></li>
                             <li class="breadcrumb-item active">Subomains</li>
                         </ol>
+                        <p><a href="/redirects/domains/new/"><i class="fa fa-file-text" aria-hidden="true"></i> Create New Domain</a> &nbsp;<a href="/redirects/domains/sub/new/"><i class="fa fa-file-text-o" aria-hidden="true"></i> Create New Sub Domain</a></p>
                     </div>
                     <div class="row">
                         <div class="col-sm-12 col-md-3"></div>
@@ -175,14 +173,14 @@
                                             $string = $row['sub'];
                                         }
                                         
-                                        echo '<a type="button" class="btn btn-default btn-lg btn-block sort-by-book" href="/redirects/domains/sub/'. $row['id'] .'">'. $string .'</a>';
+                                        echo '<div class="border-bottom">
+                                                <a href="/redirects/domains/sub/'. $row['id'] .'">'. $string .'</a>
+                                            </div>';
                                     }
 
                                     $domain_result->close();
         
                                 ?>
-                                <a type="button" class="btn btn-success btn-lg btn-block create-new-domain" href="/redirects/domains/new/">Create New Domain</a>
-                                <a type="button" class="btn btn-success btn-lg btn-block create-new-sub" href="/redirects/domains/sub/new/">Create New Subdomain</a>
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-3"></div>

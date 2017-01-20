@@ -11,12 +11,14 @@
         include '../../includes/header.php';
         
         $domain = "SELECT *
-                FROM root_domains";
+                FROM root_domains
+                ORDER BY domain ASC";
         
         $domain_result = $mysqli->query($domain);
         
         $sub = "SELECT *
-                FROM sub_domains";
+                FROM sub_domains
+                ORDER BY sub ASC";
         
         $sub_result = $mysqli->query($sub);
         
@@ -241,6 +243,28 @@
                             <h3>The book you are attempting to create already exists.</h3>
                             <p>If you would like to manage this book or any of it's links, you can do so by <a class="fail-anchor" href="">clicking here</a>.</p>
                             <p>If you want to create another book, you can do so by closing this modal.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Ignore</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="duplicate-alias-modal">
+            <div class="modal fade" id="aliasModal" tabindex="-1" role="dialog" aria-labelledby="aliasModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h2 class="modal-title" id="aliasModalLabel">Whoops.</h2>
+                        </div>
+                        <div class="modal-body">
+                            <h3>The book you are attempting to create already exists as an alias.</h3>
+                            <p>If you would like to manage this alias, you can do so by <a class="alias-fail-anchor" href="">clicking here</a>.</p>
+                            <p>Or you can manage redirects for the book by <a class="book-fail-anchor" href="">clicking here</a>.</p>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Ignore</button>

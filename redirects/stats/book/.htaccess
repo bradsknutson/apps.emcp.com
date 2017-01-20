@@ -1,0 +1,3 @@
+RewriteEngine On
+RewriteCond %{REQUEST_URI} !(/$|\.)
+RewriteRule ^([0-9]+)(/sort/)?([A-Za-z]+)?/?([A-Za-z]+)?$ /redirects/stats/book/index.php?id=$1&var=$3&sort=$4 [L]

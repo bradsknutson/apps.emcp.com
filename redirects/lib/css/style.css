@@ -129,3 +129,32 @@ body {
 .jumbotron-margin-top {
     margin-top: 40px;
 }
+.fade-container {
+    padding: 0;
+}
+.hidden-cols {
+    position: absolute;
+}
+.is-table-row-modified {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+}
+.sort-a {
+    color: inherit;
+}
+.hidden-cols, .shown-cols {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.hidden-cols:hover, .shown-cols:hover {
+    overflow: visible;
+    background: #FFF;
+    z-index: 2;
+    width: auto;
+    position: absolute;
+    min-width: 100%;
+}

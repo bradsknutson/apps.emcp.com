@@ -39,16 +39,16 @@
                                 <div class="col-md-4 border-bottom">
                                     Redirect String
                                 </div>
-                                <div class="col-md-5 border-bottom">
+                                <div class="col-md-4 border-bottom">
                                     Book
                                 </div>
-                                <div class="col-md-1 border-bottom">
+                                <div class="col-md-2 border-bottom text-center">
                                     <div class="status-start">Status</div>
                                 </div>
-                                <div class="col-md-1 border-bottom">
+                                <div class="col-md-1 border-bottom text-center">
                                     <div>&nbsp;</div>
                                 </div>
-                                <div class="col-md-1 border-bottom">
+                                <div class="col-md-1 border-bottom text-center">
                                     <div>&nbsp;</div>
                                 </div>
                             </div>
@@ -76,16 +76,16 @@
                                         <div class="col-md-4 border-bottom">
                                             <a class="btn-block" href="/redirects/links/edit/'. $row['link_id'] .'">'. $string .'</a>
                                         </div>
-                                        <div class="col-md-5 border-bottom">
+                                        <div class="col-md-4 border-bottom">
                                             <a class="btn-block" href="/redirects/books/'. $row['book_id'] .'">'. $row['title'] .'</a>
                                         </div>
-                                        <div class="col-md-1 border-bottom status-check status-check-'. $row['link_id'] .'" id="'. $row['destination'] .'">
+                                        <div class="col-md-2 border-bottom text-center status-check status-check-'. $row['link_id'] .'" id="'. $row['destination'] .'">
                                             <div class="response-code">&nbsp;</div>
                                         </div>
-                                        <div class="col-md-1 border-bottom">
+                                        <div class="col-md-1 border-bottom text-center">
                                             <a href="/redirects/links/edit/'. $row['link_id'] .'"><i class="fa fa-pencil" aria-hidden="true"></i></a>
                                         </div>
-                                        <div class="col-md-1 border-bottom">
+                                        <div class="col-md-1 border-bottom text-center">
                                             <a class="delete-link" id="'. $row['link_id'] .'" href="/redirects/links/delete/'. $row['link_id'] .'"><i class="fa fa-trash" aria-hidden="true"></i></a>
                                         </div>
                                     </div>';
@@ -145,6 +145,7 @@
                             <li class="breadcrumb-item"><a href="http://apps.emcp.com/redirects/">Home</a></li>
                             <li class="breadcrumb-item active">Domains</li>
                         </ol>
+                        <p><a href="/redirects/domains/new/"><i class="fa fa-file-text" aria-hidden="true"></i> Create New Domain</a> &nbsp;<a href="/redirects/domains/sub/new/"><i class="fa fa-file-text-o" aria-hidden="true"></i> Create New Sub Domain</a></p>
                     </div>
                     <div class="row">
                         <div class="col-sm-12 col-md-3"></div>
@@ -158,14 +159,14 @@
                                     $domain_result = $mysqli->query($domain);
         
                                     while($row = $domain_result->fetch_assoc()) {
-                                        echo '<a type="button" class="btn btn-default btn-lg btn-block sort-by-book" href="/redirects/domains/'. $row['id'] .'">'. $row['domain'] .'</a>';
+                                        echo '<div class="border-bottom">
+                                                <a href="/redirects/domains/'. $row['id'] .'">'. $row['domain'] .'</a>
+                                            </div>';
                                     }
 
                                     $domain_result->close();
         
                                 ?>
-                                <a type="button" class="btn btn-success btn-lg btn-block create-new-domain" href="/redirects/domains/new/">Create New Domain</a>
-                                <a type="button" class="btn btn-success btn-lg btn-block create-new-sub" href="/redirects/domains/sub/new/">Create New Subdomain</a>
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-3"></div>
