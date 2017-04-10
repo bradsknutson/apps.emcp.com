@@ -45,7 +45,7 @@
                             <li class="breadcrumb-item"><a href="http://apps.emcp.com/redirects/books/<?php echo $book_string['id']; ?>"><?php echo $book_string['title']; ?></a></li>
                             <li class="breadcrumb-item active">Edit</li>
                         </ol>
-                        <p>Note: If you do not see the domain or subdomain in the list below, go back to the <a href="http://apps.emcp.com/redirects/">Home</a> page and create a new domain first.</p>
+                        <p>Note: If you do not see the domain or subdomain in the list below, <a href="/redirects/domains/new/">create a new domain</a> or <a href="/redirects/domains/sub/new">create a new subdomain</a> first.</p>
                     </div>
                     <div class="row">
                         <form class="form-horizontal">
@@ -71,7 +71,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="string-value" class="col-md-3 control-label">Sub Domain (Optional)</label>
+                                <label for="string-value" class="col-md-3 control-label">Sub Domain</label>
                                 <div class="col-md-9">
                                     <select class="form-control" id="sub-choice">
                                         <option value="">Choose Sub Domain</option>

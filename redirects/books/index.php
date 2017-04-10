@@ -30,7 +30,7 @@
             // ********** END BOOK INFO ********** \\
             
             // ********** MISSING REDIRECTS ********** \\            
-            $missing = "SELECT b.id, count(string) AS count, a.string
+            $missing = "SELECT count(a.string) AS count, a.string
                     FROM log_dne a, book b, root_domains c, sub_domains d
                     WHERE b.domain_id = c.id
                     AND b.sub_id = d.id
@@ -40,6 +40,22 @@
                     AND a.string NOT LIKE '%robots.txt%'
                     AND a.string NOT LIKE '%wp-login%'
                     AND a.string NOT LIKE '%favico%'
+                    AND a.string NOT LIKE '%wp-admin%'
+                    AND a.string NOT LIKE '%admin.php%'
+                    AND a.string NOT LIKE '%xmlrpc%'
+                    AND a.string NOT LIKE '%forum.php%'
+                    AND a.string NOT LIKE '%readme.html%'
+                    AND a.string NOT LIKE '%tiny_mce%'
+                    AND a.string NOT LIKE '%wp-content%'
+                    AND a.string NOT LIKE '%elfinder%'
+                    AND a.string NOT LIKE '%config.php%'
+                    AND a.string NOT LIKE '%cpanel%'
+                    AND a.string NOT LIKE '%license.php%'
+                    AND a.string NOT LIKE '%simplefileupload%'
+                    AND a.string NOT LIKE '%wordpress%'
+                    AND a.string NOT LIKE '%uploadify%'
+                    AND a.string NOT IN (SELECT e.string FROM redirects e WHERE e.book_id = '". $book ."')
+                    AND a.string NOT IN (SELECT f.string FROM dne_exempt f WHERE f.book_id = '". $book ."')
                     GROUP BY a.string";
 
             $missing_result = $mysqli->query($missing);
@@ -91,20 +107,27 @@
                                 <li class="breadcrumb-item"><a href="http://apps.emcp.com/redirects/books/">Books</a></li>
                                 <li class="breadcrumb-item active"><?php echo $title_string['title']; ?></li>
                             </ol>
-                            <p><a href="#toggle" class="redirect-toggle"><i class="fa fa-toggle-on" aria-hidden="true"></i> Toggle Display</a> &nbsp;<a href="/redirects/books/edit/<?php echo $title_string['id']; ?>"><i class="fa fa-pencil" aria-hidden="true"></i> Edit Book</a> &nbsp;<a href="/redirects/links/upload/<?php echo $title_string['id']; ?>"><i class="fa fa-upload" aria-hidden="true"></i> Import Redirects</a> &nbsp;<a href="/redirects/books/mass-edit/<?php echo $title_string['id']; ?>"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Bulk Edit</a></p>
-                            <p><a href="/redirects/books/alias/new/<?php echo $title_string['id']; ?>"><i class="fa fa-file" aria-hidden="true"></i> Create Alias</a> &nbsp;<a href="/redirects/books/alias/<?php echo $title_string['id']; ?>"><i class="fa fa-link" aria-hidden="true"></i> Manage Aliases</a> &nbsp;<a href="/redirects/stats/book/<?php echo $book; ?>/sort/hits/asc"><i class="fa fa-bar-chart" aria-hidden="true"></i> Statistics</a></p>
+                            <p><a href="#" class="toolbox-show" title="Toolbox" data-content="You can also use the keyboard shortcut 'm' to open the toolbox." data-toggle="popover" data-placement="top" data-trigger="hover"><i class="fa fa-bars" aria-hidden="true"></i> Toolbox</a></p>
+                            <div class="toolbox">
+                                <p><a href="http://apps.emcp.com/redirects/links/new/<?php echo $book; ?>"><i class="fa fa-link" aria-hidden="true"></i> Create New Link</a></p>
+                                <p><a href="#toggle" class="redirect-toggle"><i class="fa fa-toggle-on" aria-hidden="true"></i> Toggle Display</a></p>
+                                <p><a href="/redirects/books/edit/<?php echo $book; ?>"><i class="fa fa-pencil" aria-hidden="true"></i> Edit Book</a></p>
+                                <p><a href="/redirects/links/upload/<?php echo $book; ?>"><i class="fa fa-upload" aria-hidden="true"></i> Import Redirects</a></p>
+                                <p><a href="/redirects/books/alias/<?php echo $book; ?>"><i class="fa fa-link" aria-hidden="true"></i> Manage Aliases</a></p>
+                                <p><a href="/redirects/stats/book/<?php echo $book; ?>/sort/hits/asc"><i class="fa fa-bar-chart" aria-hidden="true"></i> Statistics</a></p>
+                                <p><a href="/redirects/books/mass-edit/<?php echo $book; ?>"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Bulk Edit</a></p>
+                            </div>
                             <?php if( $missing_num_rows > 0 ) { ?>
                             <p><a href="/redirects/books/missing/<?php echo $book; ?>"><i class="fa fa-question" aria-hidden="true"></i> <?php echo $missing_num_rows; ?> potential missing redirect(s) detected.</a></p>
                             <?php } ?>
                         </div>
                         <div class="row">
-                            <h4><a href="http://apps.emcp.com/redirects/links/new/<?php echo $title_string['id']; ?>"><i class="fa fa-link" aria-hidden="true"></i> Create New Link</a></h4>
                             <div class="row is-table-row-modified">
                                 <div class="col-md-8 fade-container">
-                                    <div class="col-md-12 border-bottom shown-cols">
+                                    <div class="col-md-12 border-bottom shown-cols single-shown-cols">
                                         Redirect String
                                     </div>
-                                    <div class="col-md-12 border-bottom hidden-cols">
+                                    <div class="col-md-12 border-bottom hidden-cols single-hidden-cols">
                                         Full Redirect
                                     </div>
                                 </div>
@@ -144,10 +167,10 @@
 
                                     echo '<div class="row is-table-row-modified">
                                         <div class="col-md-8 fade-container is-table-row">
-                                            <div class="col-md-12 border-bottom shown-cols">
+                                            <div class="col-md-12 border-bottom shown-cols single-shown-cols">
                                                 <a class="btn-block" href="/redirects/links/edit/'. $row['id'] .'">'. $string .'</a>
                                             </div>
-                                            <div class="col-md-12 border-bottom hidden-cols">
+                                            <div class="col-md-12 border-bottom hidden-cols single-hidden-cols">
                                                 <a href="/redirects/links/edit/'. $row['id'] .'">http://'. $domText . $URLstring .'</a>
                                             </div>
                                         </div>
@@ -226,6 +249,8 @@
             </div>
             <script>
                 $(document).ready(function() {
+                    
+                    $('.toolbox').fadeIn();
                     
                     $('.status-start').on('click', function() {
                         $('.status-check').each(function() {

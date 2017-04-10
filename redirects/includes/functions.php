@@ -3,7 +3,7 @@
     require 'conn.php';
 
     $ip1 = '63.224.12.3'; // EMCP Building Address
-    $ip2 = '71.220.36.110'; // Brad Home IP
+    $ip2 = '184.100.114.164'; // Brad Home IP
     $ip3 = '209.181.150.39'; // Brian Home IP
 
     function redirect($location) {

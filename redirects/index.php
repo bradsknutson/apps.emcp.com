@@ -8,6 +8,15 @@
         
         include 'includes/header.php';
         
+        $countRedirectsQuery = 'SELECT * FROM redirects';
+        $countLoggedQuery = 'SELECT * FROM log_existing';
+
+        $countRedirectsQueryResult = $mysqli->query($countRedirectsQuery);
+        $countRedirectsQueryCount = $countRedirectsQueryResult->num_rows;
+        
+        $countLoggedQueryResult = $mysqli->query($countLoggedQuery);
+        $countLoggedQueryCount = $countLoggedQueryResult->num_rows; 
+        
 ?>
         <div class="container-fluid">
             <div class="row">
@@ -15,7 +24,8 @@
                 <div class="col-sm-12 col-md-6">
                     <div class="jumbotron">
                         <h1>EMCP Redirects</h1>
-                        <p>This tool is used to manage and generate new redirects.</p>
+                        <p>This tool is used to manage and generate new redirects.<br />
+                            <strong><?php echo number_format($countRedirectsQueryCount); ?></strong> redirects have been used <strong><?php echo number_format($countLoggedQueryCount); ?></strong> times.</p>
                         <p><a href="/redirects/search/" class="search-link"><i class="fa fa-search" aria-hidden="true"></i> Search for a redirect</a> <a href="/redirects/stats/"><i class="fa fa-bar-chart" aria-hidden="true"></i> Statistics</a></p>
                     </div>
                     <div class="row">

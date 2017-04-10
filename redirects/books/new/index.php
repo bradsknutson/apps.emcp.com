@@ -35,7 +35,7 @@
                             <li class="breadcrumb-item"><a href="http://apps.emcp.com/redirects/books/">Books</a></li>
                             <li class="breadcrumb-item active">New</li>
                         </ol>
-                        <p>Note: If you do not see the domain or subdomain in the list below, go back to the <a href="http://apps.emcp.com/redirects/">Home</a> page and create a new domain first.</p>
+                        <p>Note: If you do not see the domain or subdomain in the list below, <a href="/redirects/domains/new/">create a new domain</a> or <a href="/redirects/domains/sub/new">create a new subdomain</a> first.</p>
                     </div>
                     <div class="row">
                         <form class="form-horizontal">
@@ -147,8 +147,12 @@
                     if( $(this).val() != '' ) {
                         if( $('#name-value').val() != '' ) {
                             if( $('#domain-choice').val() != '' ) {
-                                if(/^(http|https|ftp):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i.test($("#default-url").val())){
-                                    $('form button[type="submit"]').removeAttr('disabled');
+                                if( $('#sub-choice').val() != '' ) {
+                                    if(/^(http|https|ftp):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i.test($("#default-url").val())){
+                                        $('form button[type="submit"]').removeAttr('disabled');
+                                    } else {
+                                        $('form button[type="submit"]').attr('disabled','disabled'); 
+                                    }
                                 } else {
                                     $('form button[type="submit"]').attr('disabled','disabled'); 
                                 }
@@ -166,8 +170,12 @@
                 $("#default-url").keyup(function() {
                     if(/^(http|https|ftp):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i.test($("#default-url").val())){
                         if( $('#domain-choice').val() != '' ) {
-                            if( $('#name-value').val() != '' ) {
-                                $('form button[type=submit]').removeAttr('disabled');
+                            if( $('#sub-choice').val() != '' ) {
+                                if( $('#name-value').val() != '' ) {
+                                    $('form button[type=submit]').removeAttr('disabled');
+                                } else {
+                                    $('form button[type=submit]').attr('disabled','disabled');
+                                }
                             } else {
                                 $('form button[type=submit]').attr('disabled','disabled');
                             }

@@ -150,11 +150,41 @@ body {
     text-overflow: ellipsis;
     white-space: nowrap;
 }
-.hidden-cols:hover, .shown-cols:hover {
+.single-hidden-cols:hover, .single-shown-cols:hover {
     overflow: visible;
     background: #FFF;
     z-index: 2;
     width: auto;
     position: absolute;
     min-width: 100%;
+}
+.toolbox {
+    display: none;
+    position: fixed;
+    left: 20px;
+    bottom: 20px;
+    width: 20%;
+    padding: 45px;
+    border-radius: 5px;
+    background-color: #EEE;
+}
+.toolbox-hide {
+    content: 'x';
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 21px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #adadad;
+    line-height: 1em;
+	-webkit-transition: all ease 0.3s;
+	-moz-transition: all ease 0.3s;
+	-o-transition: all ease 0.3s;
+	-ms-transition: all ease 0.3s;
+	transition: all ease 0.3s;   
+    
+}
+.toolbox-hide:hover {
+    color: #000;   
 }

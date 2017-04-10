@@ -105,6 +105,25 @@ $(document).ready(function() {
 
     });
     
+    $('.toolbox').append('<p class="toolbox-hide">x</p>');
+    $(document).on('click','.toolbox-show', function(e) {
+        e.preventDefault();
+        $('.toolbox').fadeIn();
+    });
+    
+    $(document).on('click','.toolbox-hide', function() {
+        $('.toolbox').fadeOut(); 
+    });
+    
+    document.addEventListener("keydown", function(event) {
+        if( event.which == '77' ) {
+            $('.toolbox').fadeIn();
+        }
+        if( event.which == '67' ) {
+            $('.toolbox').fadeOut();
+        }
+    });
+    
 });
 
 function deleteLink($id) {
