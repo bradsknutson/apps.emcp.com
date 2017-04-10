@@ -1,0 +1,5 @@
+options -Indexes
+ORder Deny,Allow
+Deny from all
+Allow from 63.224.12.3
+Allow from 184.100.114.164

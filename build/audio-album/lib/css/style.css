@@ -1,0 +1,144 @@
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+.container-fluid {
+    padding: 0px !important;
+    margin: 0 !important;
+}
+.popover{
+    max-width: 100%;
+}
+.modal-click-style {
+    color: #337ab7;
+    text-decoration: none;
+    cursor: pointer;
+}
+img {
+    max-width: 100%;
+    display: block;
+    margin: auto;
+}
+.display-album-art,
+.display-audio-file-list {
+    display: none;
+}
+.dialog-options {
+    padding: 8px;
+    overflow: hidden;
+}
+.dialog-options div {
+    color: #2196f3;
+    text-transform: uppercase;
+    padding: 8px;
+    float: right;
+    margin-left: 8px;
+    cursor: pointer;
+}
+.dialog-label {
+    margin: 0;
+    padding: 24px 24px 10px 24px;
+    font-weight: bold;
+}
+.dialog-content {
+    padding: 10px 24px 24px 24px;
+}
+form {
+    padding: 0;
+    margin: 0;
+}
+input[name="title"], input[name="ebook"],
+input[name="title"]:hover, input[name="ebook"]:hover,
+input[name="title"]:focus, input[name="ebook"]:focus {
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 1px solid #CCC;
+    box-shadow: none;
+    outline: 0 !important;
+    border-radius: 0;
+    height: auto;
+    padding: 8px 0;
+    margin: 8px 0;
+}
+.input-group, .form-group {
+    margin: 0;
+    padding: 0;
+}
+.material-design-modal {
+    background: #FFF;
+}
+.material-design-modal .dialog-label {
+    
+}
+.material-design-modal .dialog-content {
+    
+}
+
+.material-design-modal .dialog-options {
+    padding: 8px 8px 8px 24px;
+}
+
+.border-cell {
+    padding: 0px !important;
+}
+.margin-top {
+    margin-top: 20px;
+}
+
+.loader-container {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
+.loader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(70, 132, 238,0.80);
+    color: #fff;
+    font-family: Consolas, Menlo, Monaco, monospace;
+    font-weight: bold;
+    font-size: 5em;
+    opacity: 0.8;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+      justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+      align-items: center;
+    z-index: 999;
+}
+.loader span {
+    display: inline-block;
+    -webkit-animation: pulse 0.4s alternate infinite ease-in-out;
+    animation: pulse 0.4s alternate infinite ease-in-out;
+}
+.loader span:nth-child(odd) {
+    -webkit-animation-delay: 0.4s;
+    animation-delay: 0.4s;
+}
+@-webkit-keyframes pulse {
+    to {
+        -webkit-transform: scale(0.8);
+        transform: scale(0.8);
+        opacity: 0.5;
+    }
+}
+@keyframes pulse {
+    to {
+        -webkit-transform: scale(0.8);
+        transform: scale(0.8);
+        opacity: 0.5;
+    }
+}
