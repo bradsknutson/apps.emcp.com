@@ -3,6 +3,13 @@
     $title = $_POST['title'];
 
     $titleDirectory = strtolower(str_replace(' ','-',$title));
+    $titleDirectory = strtolower(str_replace(',','',$titleDirectory));
+    $titleDirectory = strtolower(str_replace('/','',$titleDirectory));
+    $titleDirectory = strtolower(str_replace('.','',$titleDirectory));
+    $titleDirectory = strtolower(str_replace('\'','',$titleDirectory));
+    $titleDirectory = strtolower(str_replace('"','',$titleDirectory));
+
+    $title = str_replace('\'','&#39;',$title);
 
     $baseDirectory = '/chroot/home/emcpcom/resources.emcp.com/html/ebooks/audio-albums/';
 

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en-US">
     <head>
@@ -21,7 +20,8 @@
                 <div class="col-sm-12 col-md-6">
                     <div class="jumbotron">
                         <h2>Audio Album Generator</h2>
-                        <p><a href="http://resources.emcp.com/ebooks/audio-albums/example/" target="_blank">Click here</a> to see an example.  All albums generated will follow this template.</p>
+                        <p><a href="http://resources.emcp.com/ebooks/audio-albums/example-album/" target="_blank">Click here</a> to see an example.  All albums generated will follow this template.</p>
+                        <p><a href="http://apps.emcp.com/build/audio-album/directory/" target="_blank">Click here</a> to get a list of previously generated Audio Albums.</p>
                     </div>
                     <div class="col-md-10 col-md-offset-1">
                         <div class="step-1">
@@ -29,10 +29,10 @@
                             <div class="dialog-label">Step 1. Enter the album Name and eBook Folder Name.</div>
                             <form class="form-step-1 dialog-content">
                                 <div class="form-group">
-                                    <input type="text" name="title" class="form-control" id="title" placeholder="Album/Book name" autocomplete="off">
+                                    <input type="text" name="title" class="form-control" id="title" placeholder="Album name (example: MLT Monos)" autocomplete="off">
                                 </div>
                                 <div class="form-group margin-top">
-                                    <input type="text" name="ebook" class="form-control" id="ebook" placeholder="eBook Folder name" autocomplete="off">
+                                    <input type="text" name="ebook" class="form-control" id="ebook" placeholder="eBook Folder name (example: MLT_E_5_Monos)" autocomplete="off">
                                 </div>
                                 <div class="dialog-options">
                                     <div class="button-submit">Submit</div>

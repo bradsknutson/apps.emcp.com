@@ -53,11 +53,11 @@
             $length = sizeOf($csv);
             
             $jsObj = 'var csv = [';
+            $i = 1;
             foreach($csv as $row) {
                 
-                $sort = explode('_', $row[0]);
+                $jsObj .= '{audioFileTitle: "'. $row[1] .'",audioFileName: "'. $row[0] .'",sort: "'. $i++ .'"},';
                 
-                $jsObj .= '{audioFileTitle: "'. $row[1] .'",audioFileName: "'. $row[0] .'",sort: "'. $sort[0] .'"},';
             }
             $jsObj .= '];';
             
