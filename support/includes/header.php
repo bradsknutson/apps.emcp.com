@@ -1,3 +1,6 @@
+<?php
+    $cachefix = '08112017';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,11 +16,11 @@
     <link rel="stylesheet" href="/support/lib/css/bootstrap.min.css">
     <link rel="stylesheet" href="/support/lib/css/font-awesome.css">
     <link rel="stylesheet" href="/support/lib/css/awesomplete.css">
-    <link rel="stylesheet" href="/support/lib/css/style.css">
+    <link rel="stylesheet" href="/support/lib/css/style.css?=<?php echo $cachefix; ?>">
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="/support/lib/js/bootstrap.min.js"></script>
-    <script src="/support/lib/js/main.js"></script>
+    <script src="/support/lib/js/main.js?=<?php echo $cachefix; ?>"></script>
     <script src="/support/lib/js/awesomplete.min.js" async></script>
 </head>
 <body class="no-theme">

@@ -25,12 +25,12 @@ function launchWizard(e) {
     if (typeof(element) != 'undefined' && element != null) {
         //
     } else {
-        if( typeof emcpSupportParams.type !== 'undefined' && emcpSupportParams.type != '' ) { jsParams += '&type=' + emcpSupportParams.type }
-        if( typeof emcpSupportParams.name !== 'undefined' && emcpSupportParams.name != '' ) { jsParams += '&name=' + emcpSupportParams.name }
-        if( typeof emcpSupportParams.email !== 'undefined' && emcpSupportParams.email != '' ) { jsParams += '&email=' + emcpSupportParams.email }
-        if( typeof emcpSupportParams.role !== 'undefined' && emcpSupportParams.role != '' ) { jsParams += '&role=' + emcpSupportParams.role }
-        if( typeof emcpSupportParams.platform !== 'undefined' && emcpSupportParams.platform != '' ) { jsParams += '&platform=' + emcpSupportParams.platform }
-        if( typeof emcpSupportParams.school !== 'undefined' && emcpSupportParams.school != '' ) { jsParams += '&school=' + emcpSupportParams.school }
+        if( typeof emcpSupportParams.type !== 'undefined' && emcpSupportParams.type != '' && typeof emcpSupportParams.type != 'object' ) { jsParams += '&type=' + emcpSupportParams.type }
+        if( typeof emcpSupportParams.name !== 'undefined' && emcpSupportParams.name != '' && typeof emcpSupportParams.name != 'object' ) { jsParams += '&name=' + emcpSupportParams.name }
+        if( typeof emcpSupportParams.email !== 'undefined' && emcpSupportParams.email != '' && typeof emcpSupportParams.email != 'object' ) { jsParams += '&email=' + emcpSupportParams.email }
+        if( typeof emcpSupportParams.role !== 'undefined' && emcpSupportParams.role != '' && typeof emcpSupportParams.role != 'object' ) { jsParams += '&role=' + emcpSupportParams.role }
+        if( typeof emcpSupportParams.platform !== 'undefined' && emcpSupportParams.platform != '' && typeof emcpSupportParams.platform != 'object' ) { jsParams += '&platform=' + emcpSupportParams.platform }
+        if( typeof emcpSupportParams.school !== 'undefined' && emcpSupportParams.school != '' && typeof emcpSupportParams.school != 'object' ) { jsParams += '&school=' + emcpSupportParams.school }
         iframe.src = jsUrl + encodeURI(jsParams);
         
         document.body.appendChild(iframe);        

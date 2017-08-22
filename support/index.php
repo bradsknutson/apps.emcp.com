@@ -4,7 +4,6 @@
     $customerName = $_GET['name'];
     $customerEmail = $_GET['email'];
     $customerRole = $_GET['role'];
-    $customerSchool = $_GET['school'];
     $customerPlatform = $_GET['platform'];
     $customerProduct = $_GET['product'];
     $modalOption = $_GET['modal'];
@@ -33,6 +32,31 @@
         $orgSpecificTeacher = 'Educator';
     }
     include('includes/header.php');
+
+    if( strlen($customerEmail) > 2 ) {
+        /* ********** START Email -> School Match ********** */
+        
+        $email_domain = explode('@',$customerEmail);
+        
+        include('includes/conn.php');
+
+        $query = 'SELECT *
+                    FROM email_domains
+                    WHERE domain LIKE "%'. $email_domain[1] .'"';
+
+        $results = $mysqli->query($query);
+        $row = mysqli_fetch_assoc($results);
+
+        $customerSchool = $row['school_name'];
+
+        $results->free();
+        $mysqli->close();
+        /* ********** END Email -> School Match ********** */
+    } else {
+        
+        $customerSchool = $_GET['school'];
+        
+    }
 
 ?>
 <div class="form-container">
@@ -96,6 +120,7 @@
                     <div class="fa-input">
                         <input type="text" name="zipcode" placeholder="Zip Code" autocomplete="off" >
                     </div>
+                    <p class="text-center">We use your zip code to narrow down our list of institutions so we can better assist you.</p>
                     <p class="text-error"></p>
                 </div>
                 
@@ -129,7 +154,9 @@
                 </div>
                 
                 <div class="school-still-not-found-info hidden">
-                    <input type="text" name="schoolStillNotFound" placeholder="School/Organization Name" id="schoolStillNotFoundInput" />
+                    <div class="fa-input">
+                        <input type="text" name="schoolStillNotFound" placeholder="School/Organization Name" id="schoolStillNotFoundInput" />
+                    </div>
                 </div>
                 
                 <div class="hidden">
@@ -234,8 +261,13 @@
                 </div>
                 
                 <div class="submit-options">
-                    <p>The fastest way to get help is to use our live chat service.  If you would rather to submit your information, a Technical Support Specialist will contact you at <span class="customerEmailInsert"></span>.  If this is not the best email to contact you at, please <span class="back-step email-go-back" id="back-to-step-5">go back</span> and update it before submitting your information.</p>
+                    <p>The fastest way to get help is to use our live chat service.  If you would rather submit your information, a Technical Support Specialist will contact you at <strong><span class="customerEmailInsert"></span></strong>.  If this is not the best email to contact you at, please <span class="back-step email-go-back" id="back-to-step-5">go back</span> and update it before submitting your information.</p>
                 </div>
+                
+                <form class="hidden submitFormToSupport" method="POST">
+                    <input type="hidden" class="from-email" id="from-email" value="" />
+                    <input type="hidden" class="input-notes" id="input-notes" value="" />
+                </form>
 
                 <div class="button back-step transition" id="back-to-step-5">Back</div>
                 <div class="clearfix"></div>

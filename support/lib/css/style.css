@@ -557,6 +557,10 @@ select {
 .pes-theme .email-button .fa {
     background-color: rgba(0, 147, 199, 1);
 }
+.pes-theme .fa-input input,
+.pes-theme .fa-input select {
+    border: 1px solid rgba(0, 147, 199, 1);
+}
 
 .jist-theme .form-block .block-header,
 .jist-theme .status-progress,

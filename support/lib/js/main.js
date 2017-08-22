@@ -58,7 +58,7 @@ $(document).on('click','.type-select',function() {
     }
     
     setFavicon($orgType);
-    //console.log('triggered');
+    
     if( $('#to-step-2').hasClass('skip-school') ) {
         $('#back-to-step-3').addClass('halt');
         toStep(1,4);
@@ -135,50 +135,63 @@ $(function() {
         $('.form-block').css('height', getBoxHeight(2) ); 
         // Get zip code
         zipcode = $(this).val();
-        if (zipcode.length == 5 && /^[0-9]+$/.test(zipcode))
-        {
-            // Clear error
-            errorDiv.empty();
+        
+        if( /^[0-9]+$/.test(zipcode) ) {
+            
+            if( zipcode.length == 5 ) {
+                
+                // Clear error
+                errorDiv.empty();
 
-            // Check cache
-            if (zipcode in cache)
-            {
-                handleResp(cache[zipcode]);
-            }
-            else
-            {
-                // Build url https://www.zipcodeapi.com/rest/<api_key>/radius.<format>/<zip_code>/<distance>/<units>
-                var url = "https://www.zipcodeapi.com/rest/"+clientKey+"/radius.json/" + zipcode + "/10/mile";
+                // Check cache
+                if (zipcode in cache)
+                {
+                    handleResp(cache[zipcode]);
+                }
+                else
+                {
+                    // Build url https://www.zipcodeapi.com/rest/<api_key>/radius.<format>/<zip_code>/<distance>/<units>
+                    var url = "https://www.zipcodeapi.com/rest/"+clientKey+"/radius.json/" + zipcode + "/10/mile";
 
-                // Make AJAX request
-                $.ajax({
-                    "url": url,
-                    "dataType": "json"
-                }).done(function(data) {
-                    handleResp(data);
+                    // Make AJAX request
+                    $.ajax({
+                        "url": url,
+                        "dataType": "json"
+                    }).done(function(data) {
+                        handleResp(data);
 
-                    // Store in cache
-                    cache[zipcode] = data;
-                }).fail(function(data) {
-                    if (data.responseText && (json = $.parseJSON(data.responseText)))
-                    {
                         // Store in cache
-                        cache[zipcode] = json;
+                        cache[zipcode] = data;
+                        
+                        toStep('2','3');
+                    }).fail(function(data) {
+                        if (data.responseText && (json = $.parseJSON(data.responseText)))
+                        {
+                            // Store in cache
+                            cache[zipcode] = json;
 
-                        // Check for error
-                        if (json.error_msg)
-                            errorDiv.text(json.error_msg);
-                    }
-                    else
-                        errorDiv.text('Request failed.');
-                });
+                            // Check for error
+                            if (json.error_msg)
+                                errorDiv.text(json.error_msg);
+                        }
+                        else
+                            errorDiv.text('Request failed.');
+                    });
+                }
+                
+            } else if(zipcode.length < 5 ) {
+                $('.next-step#to-step-3').addClass('halt');
+            } else {
+                $('.next-step#to-step-3').addClass('halt');  
+                errorDiv.text('Zip code should be no more than 5 numbers.');
+                $('.form-block').css('height', getBoxHeight(2) );
             }
-        } else if(zipcode.length < 5 ) {
-            $('.next-step#to-step-3').addClass('halt');
+
         } else {
-            $('.next-step#to-step-3').addClass('halt');  
-            errorDiv.text('Zip code should be 5 numbers long.');
+            errorDiv.text('Zip code should be numbers only.');
+            $('.form-block').css('height', getBoxHeight(2) );
         }
+        
     }).trigger("change");
 });
 
@@ -237,11 +250,11 @@ $(document).on('propertychange change click keyup input paste awesomplete-close'
         }
     });
     
-    if( $schoolInputCharCount > 10 ) {
+    // if( $schoolInputCharCount > 10 ) {
         $('.school-not-found').fadeIn(function() {
             $(this).removeClass('halt');
         });
-    }
+    // }
  });
 $(document).on('propertychange change click keyup input paste awesomplete-close', 'input#schoolNotFoundInput', function(event) {
     
@@ -258,11 +271,11 @@ $(document).on('propertychange change click keyup input paste awesomplete-close'
         }
     });
     
-    if( $schoolNotFoundInputCharCount > 10 ) {
+    // if( $schoolNotFoundInputCharCount > 10 ) {
         $('.school-still-not-found').fadeIn(function() {
             $(this).removeClass('halt');
         });
-    }
+    // }
  });
 
 $(document).on('click','.school-not-found',function() {
@@ -291,9 +304,32 @@ $(document).on('click','.school-not-found',function() {
     var inputFull = document.getElementById("schoolNotFoundInput");
     new Awesomplete(inputFull, {
         list: "#schoolNotFoundInputList",
+        maxItems: 15,
         sort: false
     });     
     
+    
+});
+
+$(document).on('click','.school-still-not-found',function() {
+    $('.school-still-not-found').fadeOut();
+    $('.school-not-found-info').fadeOut(function() {
+        $('.school-still-not-found-info').hide().removeClass('hidden').fadeIn();
+        $('.form-block').css('height', getBoxHeight(3) );
+    });
+    
+});
+
+$(document).on('propertychange change click keyup input paste awesomplete-close', 'input#schoolStillNotFoundInput', function(event) {
+    
+    $schoolManualInput = $(this).val();
+    
+    if( $schoolManualInput.length > 3 ) {
+        
+        $('#to-step-4').removeClass('halt');
+        $schoolName = $schoolManualInput;
+        
+    }
     
 });
 
@@ -306,7 +342,7 @@ function loadProductList($o,callback) {
     //$('#productInput').unbind('change');
     $('#productInput').empty().append('<option value="">Choose Your Product...</option>');
     
-    $.getJSON( "/support/lib/js/platforms.json", function( data ) {
+    $.getJSON( "/support/lib/js/platforms.json?" + Date.now(), function( data ) {
         
         $o_id = $o.replace(new RegExp(' ', "g"), '-').toLowerCase();
         $platforms = data;
@@ -363,6 +399,7 @@ $(document).on('change', 'select#productInput', function(event) {
         } else {
             
             $('.next-step#to-step-5').removeClass('halt');
+            
         }
     
     } else {
@@ -375,12 +412,12 @@ $(document).on('change', 'select#productInput', function(event) {
     } 
     
     showProductsFromPlatform($platformSelected, function() {
-        resizeAfterProducts();
+        $('.form-block').css('height', getBoxHeight(4) );
     }); 
     
     if( $fieldCustomerPlatform == '' ) {
         showTypesByPlatform($platformSelected, function() {
-            resizeAfterProducts();
+            $('.form-block').css('height', getBoxHeight(4) );
         });
     }
     
@@ -411,7 +448,7 @@ $productsDrilledHTML = '<div class="fa-input preHideFadeIn" style="display:none;
 
 function showProductsFromPlatform($p,callback) {
     
-    $.getJSON( "/support/lib/js/products.json", function( data ) {
+    $.getJSON( "/support/lib/js/products.json?" + Date.now(), function( data ) {
         
         $('#productDrilled').parent().fadeOut('fast', function() {
             
@@ -441,10 +478,10 @@ function showProductsFromPlatform($p,callback) {
             
             if( $matchingProductCount == 0 ) {
                 $('#productDrilled').parent().fadeOut('fast', function() {
-                    callback();
                     if( $('#productInput').val() != '' && $fieldCustomerPlatform == '' ) {
                         toStep('4','5');
                     }
+                    callback();
                 });
             } else {
                 $('.preHideFadeIn').fadeIn();
@@ -472,7 +509,7 @@ $(document).on('click', '.cannotFindType', function(e) {
     e.preventDefault();
 });
 
-$typeInputHTML = '<div class="fa-input"><select id="typeInput"><option>Select a category...</option></select></div>';
+$typeInputHTML = '<div class="fa-input"><select id="typeInput"><option>I need help with...</option></select></div>';
 function refreshTypeInput($html) {
     $('.type-container').html($html);
 }
@@ -488,7 +525,7 @@ function showTypesByPlatform($p,callback) {
     
     refreshTypeInput($typeInputHTML);
     
-    $.getJSON( "/support/lib/js/help.json", function( data ) {
+    $.getJSON( "/support/lib/js/help.json?" + Date.now(), function( data ) {
         
         $typesJSON = data;
         
@@ -557,11 +594,14 @@ $(document).on('click', '#to-step-6', function() {
         $nextSubStep = 'b';        
     } else if( $currentSubStep == 'b' ) {
         $nextSubStep = 'c';
-    } else if( $currentSubStep == 'c' ) {
-        $nextSubStep = 'submit';
     }
     
     step5SubStepsMove($currentSubStep,$nextSubStep);
+});
+$(document).on('click', '#type-lookup #submit', function() {
+    
+    step5SubStepsMove('c','submit');
+    
 });
 
 function step5SubStepsMove($current,$next) {
@@ -571,8 +611,9 @@ function step5SubStepsMove($current,$next) {
         
         $customerName = $('input[name="customerName"]').val();
         $customerRoleVal = $('select.customerRole').val();
-        if( $customerRoleVal == 'customerIsEducator' ) { $customerRole = 'Educator'; }
-        if( $customerRoleVal == 'customerIsStudent' ) { $customerRole = 'Student'; }
+        if( $customerRoleVal == 'Educator' ) { $customerRole = 'Educator'; }
+        if( $customerRoleVal == 'Student' ) { $customerRole = 'Student'; }
+        console.log($customerRoleVal);
         $customerEmail = $('input[name="customerEmail"]').val();
         
     } else {
@@ -772,7 +813,7 @@ $(document).on('click','.next-step',function(e) {
             $next = $(this).attr('id').split('-')[2];
 
             if( $(this).attr('id') == 'to-step-4' ) {
-                if( $('#productDrilled > option').length > 1 ) {
+                if( $('#productDrilled > option').length >= 1 ) {
                     toStep($current,$next);
                 } else {
                     // Skip Step 4
@@ -822,6 +863,13 @@ $(document).on('mouseup','.close-modal', function() {
     $(this).removeClass('pressed'); 
 });
 
+$(document).on('submit', '.submit-form', function(e) {
+    e.preventDefault();    
+});
+$(document).on('click', '.email-button', function() {
+    submitForm(); 
+});
+
 
 /**************************************************************/
 /*******************GENERAL USE FUNCTIONS**********************/
@@ -832,7 +880,7 @@ function loadJSON(callback) {
 
     var xobj = new XMLHttpRequest();
     xobj.overrideMimeType("application/json");
-    xobj.open('GET', '/support/lib/js/schools.json', true); 
+    xobj.open('GET', '/support/lib/js/schools.json?' + Date.now(), true); 
     xobj.onreadystatechange = function () {
         if (xobj.readyState == 4 && xobj.status == "200") {
             callback(xobj.responseText);
@@ -865,6 +913,8 @@ function getBoxHeight($step) {
 // Function to transition modal to a specific step
 function toStep($current,$next) {
     
+    // console.log("caller function: " + arguments.callee.caller.toString());
+    
     $previous = parseInt($next) - 1;
     $('.status-step-' + $next).removeClass('disabled');
     
@@ -878,7 +928,7 @@ function toStep($current,$next) {
         $('.status-step').removeClass('status-complete')
         
         for(i = $previous; i > 0; i--) {
-            $('.status-step-' + i).addClass('status-complete');
+            $('.status-step-' + i).addClass('status-complete').removeClass('disabled')
             // console.log(i);
         }
         
@@ -893,7 +943,7 @@ function toStep($current,$next) {
 // Set favicon based on Organization Type selected
 function setFavicon($o) {
     
-    $baseURL = 'http://s2.googleusercontent.com/s2/favicons?domain=';
+    $baseURL = 'https://s2.googleusercontent.com/s2/favicons?domain=';
     
     if( $o == 'Post Secondary' ) {
         $faviconURL = $baseURL + 'paradigmeducation.com';
@@ -1152,9 +1202,33 @@ function preloadedSchool($schoolName,$advance) {
     
     $('#to-step-2').addClass('skip-school');
     
-    if (typeof $advance !== 'undefined') {
-        toStep('1','4')
+    if (typeof $advance !== 'undefined' && $advance != '5' ) {
+        toStep('1','4');
+    } else {
+        toStep('1','5');
     }
+}
+
+function submitForm() {
+    
+    $.ajax({
+        method: 'POST',
+        url: '/support/includes/mail.php',
+        data: {
+            email: $('input.from-email').val(),
+            notes: $('input.input-notes').val()
+        }
+    }).done(function(data) {
+        
+        $('.form-block .block-status, .form-block .block-content').fadeOut();
+        $('.form-block').append('<div class="block-content" style="display:block !important;"><p>Thank you for your information.  A Technical Support Specialist will review your request and contact you at the email provided shortly.</p></div>').fadeIn();
+        
+    }).fail(function(data) {
+        
+        // if fail
+        
+    });
+    
 }
 
 // Print Data to Console for Testing
@@ -1181,9 +1255,11 @@ function consoleContactData() {
     if( $customerEmail != '' ) {
         $data += 'Email: ' + $customerEmail + '\n';
         $('input[name="Email"]').val($customerEmail);
+        $('#from-email').val($customerEmail);
     } else if( typeof $fieldCustomerEmail !== 'undefined' && $fieldCustomerEmail != '' ) {
         $data += 'Email: ' + $fieldCustomerEmail + '\n';
         $('input[name="Email"]').val($fieldCustomerEmail);
+        $('#from-email').val($fieldCustomerEmail);
     }
     
     if( $schoolName != '' ) {
@@ -1215,12 +1291,17 @@ function consoleContactData() {
     }
     
     
-    $data += '\nUser Machine Information\n--------------\n';
+    $data += '\nClient Side Information\n--------------\n';
     $data += 'Operating System: ' + jscd.os + ' ' + jscd.osVersion + '\n';
-    $data += 'Browser : ' + jscd.browser + ' ' + jscd.browserMajorVersion + '\n';
+    $data += 'Browser: ' + jscd.browser + ' ' + jscd.browserMajorVersion + '\n';
     
     $data += '\n\n';
     
-    console.log($data);
+    // For debugging
+    // console.log($data);
+    
+    // Write to mail fields
+    $('#input-notes').val($data);
+    
     return $data;
 }
