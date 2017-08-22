@@ -70,6 +70,9 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="alert alert-warning" role="alert">
+                                <strong>Warning!</strong> Using this domain requires <strong>special setup</strong> by web development.  Please contact us.
+                            </div>
                             <div class="form-group">
                                 <label for="string-value" class="col-md-3 control-label">Sub Domain</label>
                                 <div class="col-md-9">
@@ -126,6 +129,12 @@
                 $('.close-modal').click(function() {
                     window.location.replace("http://apps.emcp.com/redirects/books/<?php echo $book_string['id']; ?>"); 
                 });
+                
+                if( $('#domain-choice').val() == '1' || $('#domain-choice').val() == '14' || $('#domain-choice').val() == '16' ) {
+                    $('.alert-warning').show();
+                } else {
+                    $('.alert-warning').hide();
+                }
                 
                 $('#name-value').keyup(function() {
                     if( $(this).val() != '' ) {

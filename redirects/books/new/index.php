@@ -60,6 +60,9 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="alert alert-warning" role="alert">
+                                <strong>Warning!</strong> Using this domain requires <strong>special setup</strong> by web development.  Please contact us.
+                            </div>
                             <div class="form-group">
                                 <label for="string-value" class="col-md-3 control-label" title="Sub Domain" data-content="Select the sub domain you wish to appear in front of the domain to be used in redirects.  For example, if you wish to use ODW4.paradigmeducation.com for your redirects, choose the ODW4 sub domain from this dropdown." data-toggle="popover" data-placement="top" data-trigger="hover click">Sub Domain <i class="fa fa-info-circle help-book-sub" aria-hidden="true"></i></label>
                                 <div class="col-md-9">

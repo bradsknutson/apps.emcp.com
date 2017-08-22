@@ -131,8 +131,11 @@
                                         Full Redirect
                                     </div>
                                 </div>
-                                <div class="col-md-2 border-bottom">
+                                <div class="col-md-1 border-bottom">
                                     <div class="status-start">Status</div>
+                                </div>
+                                <div class="col-md-1 border-bottom">
+                                    <div>&nbsp;</div>
                                 </div>
                                 <div class="col-md-1 border-bottom">
                                     <div>&nbsp;</div>
@@ -174,13 +177,16 @@
                                                 <a href="/redirects/links/edit/'. $row['id'] .'">http://'. $domText . $URLstring .'</a>
                                             </div>
                                         </div>
-                                        <div class="col-md-2 border-bottom status-check status-check-'. $row['id'] .'" id="'. $row['destination'] .'">
+                                        <div class="col-md-1 border-bottom status-check status-check-'. $row['id'] .'" id="'. $row['destination'] .'">
                                             <div class="response-code">&nbsp;</div>
                                         </div>
-                                        <div class="col-md-1 border-bottom">
+                                        <div class="col-md-1 border-bottom icon-align-right">
+                                            <a href="'. $row['destination'] .'" target="_blank"><i class="fa fa-link" aria-hidden="true"></i></a>
+                                        </div>
+                                        <div class="col-md-1 border-bottom icon-align-right">
                                             <a href="/redirects/links/edit/'. $row['id'] .'"><i class="fa fa-pencil" aria-hidden="true"></i></a>
                                         </div>
-                                        <div class="col-md-1 border-bottom">
+                                        <div class="col-md-1 border-bottom icon-align-right">
                                             <a class="delete-link" id="'. $row['id'] .'" href="/redirects/links/delete/'. $row['id'] .'"><i class="fa fa-trash" aria-hidden="true"></i></a>
                                         </div>
                                     </div>';

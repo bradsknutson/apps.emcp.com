@@ -23,12 +23,15 @@ $(document).ready(function() {
     });
     
     $(document).on('change', '#domain-choice', function() {
-        if( $('#domain-choice').val() == '1' ) {
+        if( $('#domain-choice').val() == '1' || $('#domain-choice').val() == '14' || $('#domain-choice').val() == '16' ) {
+            $('.alert-warning').fadeIn();
             $('#sub-choice option[value=3]').hide();
         } else {
+            $('.alert-warning').fadeOut();
             $('#sub-choice option[value=3]').show();
         }
     });
+    $('.alert-warning').hide();
     
     $(document).on('click', '.help-redirect-string', function() {
          $('.help-text-redirect-string').fadeIn();

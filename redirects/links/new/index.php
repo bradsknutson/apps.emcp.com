@@ -55,6 +55,7 @@
                             <div class="form-group">
                                 <div class="col-md-offset-1">
                                     <button type="submit" class="btn btn-default" disabled="disabled">Generate Redirect</button>
+                                    <button class="btn btn-default btn-tester" disabled="disabled">Test Destination</button>
                                 </div>
                             </div>
                         </form>
@@ -85,14 +86,24 @@
                 $("#destination-value").keyup(function() {
                     if(/^(http|https|ftp):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i.test($("#destination-value").val())){
                         $('form button[type=submit]').removeAttr('disabled');
+                        $('.btn-tester').removeAttr('disabled');
                         $('.destination-goes-here').html( $(this).val() );
                         
                     } else {
                         $('form button[type=submit]').attr('disabled','disabled');
+                        $('.btn-tester').attr('disabled','disabled');
                         $('.destination-goes-here').html( '&nbsp;' );
                     }                    
                 });
 
+                $(document).on('click', '.btn-tester', function(e) {
+                    $url = $('#destination-value').val();
+                    
+                    window.open($url);
+                    
+                    e.preventDefault();
+                });
+                
                 $('form').submit(function(e) {
                     
                     e.preventDefault();

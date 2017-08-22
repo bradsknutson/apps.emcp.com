@@ -38,6 +38,9 @@
     border-bottom: 1px solid #E4E4E4;
     padding: 5px;
 }
+.icon-align-right {
+    text-align: right;
+}
 .save-link {   
 }
 .saveActive {
