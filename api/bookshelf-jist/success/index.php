@@ -26,7 +26,7 @@
                     <?php if( $email && $campaign_id ) { ?>
                     <div class="jumbotron">
                         <h1>Thanks for your interest!</h1>
-                        <p>Your eBook is loading.</p>
+                        <p>Your resource is loading.</p>
                     </div>
                     <form class="linkbook" action="<?php echo $goToBookURL; ?>" method="GET">
                         <input id="book_id" name="book_id" value="<?php echo $book_id; ?>" />
