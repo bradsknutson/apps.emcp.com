@@ -95,7 +95,7 @@
                             <table>
                                 <tr>
                                     <td class="emc-logo">
-                                        <a href="http://www.emcp.com" target="_blank"><img src="http://apps.emcp.com/email-signatures/img/emc.png" alt="EMC School" height="35" /></a><br />
+                                        <a href="http://www.emcp.com" target="_blank"><img src="http://apps.emcp.com/email-signatures/img/emc.png" alt="EMC School" height="35" /></a>
                                     </td>
                                     <td class="paradigm-logo">
                                         <a href="http://paradigmcollege.com" target="_blank"><img src="http://apps.emcp.com/email-signatures/img/paradigm.png" alt="Paradigm Education Solutions" height="35" />
@@ -104,13 +104,6 @@
                                         <a href="http://jist.com" target="_blank"><img src="http://apps.emcp.com/email-signatures/img/jist.png" alt="JIST Career Solutions" height="35" />
                                     </td>
                                 </tr>
-								<tr>
-									<td colspan="3" class="emc-logo">
-										<a href="https://www.facebook.com/EMCPublishing"><img src="http://apps.emcp.com/email-signatures/img/facebook.png" width="35" alt="EMC School - Facebook" /></a>&nbsp;
-										<a href="https://twitter.com/EMCPublishing"><img src="http://apps.emcp.com/email-signatures/img/twitter.png" width="37" alt="EMC School - Twitter" /></a>&nbsp;
-										<a href="https://vimeo.com/emcpublishing"><img src="http://apps.emcp.com/email-signatures/img/vimeo.png" width="37" alt="EMC School - Vimeo" /></a>
-									</td>
-								</tr>
                             </table>
                         </td>
                     </tr>

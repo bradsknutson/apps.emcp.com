@@ -7,13 +7,10 @@ $(document).ready(function() {
     $division_pes = 'TRUE';
     $division_jist = 'TRUE';
 
-    $emc_link = '<a href="http://www.emcp.com" target="_blank" style="color:#000000;text-decoration:underline;">EMC School</a>';
-	// New Brian 8/23/17
-	$emc_support_link = '<a href="http://support.emcschool.com" target="_blank" style="color:#000000;text-decoration:underline;">EMC Support</a> 24/7';
-	
+    $emc_link = '<a href="http://www.emcp.com" target="_blank" style="color:#000000;text-decoration:none;">EMC School</a>';
     $pes_link = '<a href="http://paradigmcollege.com" target="_blank" style="color:#000000;text-decoration:none;">Paradigm Education Solutions</a>';
     $jist_link = '<a href="http://jist.com" target="_blank" style="color:#000000;text-decoration:none;">JIST Career Solutions</a>';
-    $all_link = '<a href="http://www.emcp.com" target="_blank" style="color:#000000;text-decoration:none;">EMC School</a>';
+    $all_link = '<a href="http://www.emcp.com" target="_blank" style="color:#000000;text-decoration:none;">EMC Publishing</a>';
 
     $emc_logo = '<a href="http://www.emcp.com" target="_blank"><img src="http://apps.emcp.com/email-signatures/img/emc.png" alt="EMC School" /></a>';
     $pes_logo = '<a href="http://paradigmcollege.com" target="_blank"><img src="http://apps.emcp.com/email-signatures/img/paradigm.png" alt="Paradigm Education Solutions" /></a>';
@@ -84,13 +81,13 @@ $(document).ready(function() {
         }        
         
         if ( $('#division-emc').prop('checked') && $('#division-pes').prop('checked') ) {
-            $('.sig-division').html($emc_link + ' and ' + $pes_link + '<br />' + $emc_support_link);
+            $('.sig-division').html($emc_link + ' and ' + $pes_link);
             $division_emc = 'TRUE';
             $division_pes = 'TRUE';
             $division_jist = 'FALSE';
         }
         if ( $('#division-emc').prop('checked') && $('#division-jist').prop('checked') ) {
-            $('.sig-division').html($emc_link + ' and ' + $jist_link + '<br />' + $emc_support_link);
+            $('.sig-division').html($emc_link + ' and ' + $jist_link);
             $division_emc = 'TRUE';
             $division_pes = 'FALSE';
             $division_jist = 'TRUE';
@@ -103,7 +100,7 @@ $(document).ready(function() {
         }
         
         if ( $('#division-emc').prop('checked') && !$('#division-pes').prop('checked') && !$('#division-jist').prop('checked') ) {
-            $('.sig-division').html($emc_link + '<br />' + $emc_support_link);
+            $('.sig-division').html($emc_link);
             $division_emc = 'TRUE';
             $division_pes = 'FALSE';
             $division_jist = 'FALSE';
