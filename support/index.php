@@ -33,7 +33,7 @@
     }
     include('includes/header.php');
 
-    if( strlen($customerEmail) > 2 ) {
+    if( $customerEmail != 'null' && strlen($customerEmail) > 2 ) {
         /* ********** START Email -> School Match ********** */
         
         $email_domain = explode('@',$customerEmail);
@@ -133,7 +133,7 @@
         <!-- STEP 3 -  -->
         <div class="block-content block-step-3 transition">
             <div id="school-lookup" class="row-fluid">
-                <p class="text-center">Enter the name of your <span class="org-wording">school</span>.</p>
+                <p class="text-center">Enter the full name of your <span class="org-wording">school</span>.</p>
                 <div class="school-name-container">
                     <div class="fa-input">
                         <input type="text" name="schoolName" placeholder="School/Organization Name" id="schoolInput" />
@@ -142,7 +142,11 @@
                     <p>Start typing your school name. We've narrowed down our list of schools based on your zip code.</p>
                 </div>
                 
-                <p class="school-not-found text-center cursor-pointer"><i class="fa fa-info transition" aria-hidden="true"></i> Can't find your school?</p>
+                <p class="school-not-found text-center cursor-pointer">
+                    <span class="not-found-button">
+                        <i class="fa fa-info transition" aria-hidden="true"></i> Can't find your school?
+                    </span>
+                </p>
                 
                 <div class="school-not-found-info hidden">
                     <div class="fa-input">
@@ -150,7 +154,11 @@
                     </div>
                     <ul id="schoolNotFoundInputList" class="hidden"></ul>
                     <p>Try typing in your school name again. We've expanded our search to include more schools.</p>
-                    <p class="school-still-not-found text-center cursor-pointer"><i class="fa fa-info transition" aria-hidden="true"></i> Still can't find your school?</p>
+                    <p class="school-still-not-found text-center cursor-pointer">
+                        <span class="not-found-button">
+                            <i class="fa fa-info transition" aria-hidden="true"></i> Still can't find your school?
+                        </span>
+                    </p>
                 </div>
                 
                 <div class="school-still-not-found-info hidden">

@@ -613,7 +613,7 @@ function step5SubStepsMove($current,$next) {
         $customerRoleVal = $('select.customerRole').val();
         if( $customerRoleVal == 'Educator' ) { $customerRole = 'Educator'; }
         if( $customerRoleVal == 'Student' ) { $customerRole = 'Student'; }
-        console.log($customerRoleVal);
+        //console.log($customerRoleVal);
         $customerEmail = $('input[name="customerEmail"]').val();
         
     } else {
@@ -622,13 +622,11 @@ function step5SubStepsMove($current,$next) {
         });
         $('#back-to-step-4').attr('data-sub-step',$next);
         
-        $('.button.submit').addClass('halt')  
         $('#to-step-6').removeClass('halt');  
     }
     
     if( $next == 'c' ) {
         $('#to-step-6').addClass('halt');
-        $('.button.submit').removeClass('halt');
     }
     
     if( $current == 'b' ) {
@@ -670,6 +668,24 @@ $(document).on('click', '.chat-button', function() {
     $chatChannel = $(this).attr('id').split('-')[1];
     Comm100API.open_chat_window(event, $chatChannel);
 });
+
+$(document).on('propertychange change click keyup input paste', '.step-5-c input', function() {
+    if( $('input[name="customerName"]').val().length > 1 ) {
+        if( validateEmail( $('input[name="customerEmail"]').val() ) ) {
+            if( $('.customerRole').val() != '' ) {
+                $('.block-step-5 #submit').removeClass('halt');
+            } else {
+                $('.block-step-5 #submit').addClass('halt');
+            }   
+        } else {
+            $('.block-step-5 #submit').addClass('halt');
+        }
+    } else {
+        $('.block-step-5 #submit').addClass('halt');
+    }
+});
+
+
 
 /**************************************************************/
 /*****************Processing for Step 6************************/
@@ -783,6 +799,8 @@ $(document).ready(function() {
     $('.school-not-found').addClass('halt');
     $('.school-still-not-found').addClass('halt');
     
+    hideSubmit();
+    
 });
 
 // Hide loading graphic
@@ -790,7 +808,9 @@ $(window).on('load', function() {
     $('.loadingContainer').fadeOut();
 });
 
-
+function hideSubmit() {
+    $('.block-step-5 #submit').addClass('halt');
+}
 
 /**************************************************************/
 /**************************TRIGGERS****************************/
@@ -1298,10 +1318,15 @@ function consoleContactData() {
     $data += '\n\n';
     
     // For debugging
-    // console.log($data);
+    console.log($data);
     
     // Write to mail fields
     $('#input-notes').val($data);
     
     return $data;
+}
+
+function validateEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
 }

@@ -515,6 +515,12 @@ select {
 .comm100-script {
     display: none;
 }
+.not-found-button {
+    padding: 5px 10px;
+    background: #FFF;
+    border: 1px solid #EEE;
+    box-shadow: 2px 2px 5px 1px rgba(0,0,0,0.25);
+}
 
 /*********** Org Themes ***********/
 
