@@ -18,7 +18,7 @@ $checkresult = $mysqli->query($checkquery);
 if( $checkresult->num_rows == 0) {
     // No campaign
     
-    $redirect_url = 'https://apps.emcp.com/api/bookshelf/oops/?fname='. $fname .'&lname='. $lname .'&email='. $email .'&campaign_id='. $campaign_id;
+    $redirect_url = '/api/bookshelf/oops/?fname='. $fname .'&lname='. $lname .'&email='. $email .'&campaign_id='. $campaign_id;
     
     header('Location: '. $redirect_url);
     exit;
@@ -62,10 +62,6 @@ $userLogResult = $mysqli->query($userLogQuery);
 
 if( $userLogResult->num_rows == 0) {
     // User->Campaign does no exists => /webservice/addexternaluser
-    $insertUserLogQuery = "INSERT INTO user_log (account_id,campaign_id)
-                            VALUES ('". $account_id ."','". $campaign_id ."')";
-    
-    $insertUserLogResult = $mysqli->query($insertUserLogQuery);
     
     $addExternalUserJson = callAPI($addExternalUserURL, $addExternalUserVars);
     $addExternalUserData = json_decode($addExternalUserJson, true);
@@ -77,10 +73,16 @@ if( $userLogResult->num_rows == 0) {
 
         header('Location: password/?email='. urlencode($email) .'&campaign_id='. $campaign_id );
         exit;
-
+        
     } else {
         // Account created successfully => /webservice/addbookuser
-            
+        
+        $insertUserLogQuery = "INSERT INTO user_log (account_id,campaign_id)
+                            VALUES ('". $account_id ."','". $campaign_id ."')";
+    
+        $insertUserLogResult = $mysqli->query($insertUserLogQuery);            
+        
+        
         $addBookUserJson = callAPI($addBookUserURL, $addBookUserVars);
         $addBookUserData = json_decode($addBookUserJson, true);
 

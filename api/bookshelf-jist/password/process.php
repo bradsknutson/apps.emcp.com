@@ -43,6 +43,12 @@
             echo $linkAccountJson;
         }
     } else {
+        
+        $insertUserLogQuery = "INSERT INTO user_log (account_id,campaign_id)
+                            VALUES ('". $account_id ."','". $campaign_id ."')";
+    
+        $insertUserLogResult = $mysqli->query($insertUserLogQuery);  
+        
         $addBookUserJson = callAPI($addBookUserURL, $addBookUserVars);
         $addBookUserData = json_decode($addBookUserJson, true);
         if( $addBookUserData['errno'] ) {

@@ -31,7 +31,7 @@
 <html lang="en-US">
     <head>
         <meta charset="utf-8">
-        <title>EMC School | Bookshelf</title>
+        <title>Paradigm Education Solutions | Bookshelf</title>
         <link rel="stylesheet" href="https://apps.emcp.com/editor/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://apps.emcp.com/api/bookshelf/style.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
@@ -56,8 +56,8 @@
                             console.log('Webhook: <?php echo $webhook; ?>');
                             console.log('Ping sent!');
                             window.setTimeout(function(){ 
-                                window.location.href = "http://www.emcp.com";
-                            }, 5000);
+                                window.location.href = "http://paradigmeducation.com";
+                            }, 8000);
                         </script>
                     </div>
                 </div>

@@ -10,7 +10,7 @@
 <html lang="en-US">
     <head>
         <meta charset="utf-8">
-        <title>EMC School | Bookshelf</title>
+        <title>JIST Career Solutions | Bookshelf</title>
         <link rel="stylesheet" href="https://apps.emcp.com/editor/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://apps.emcp.com/api/bookshelf/style.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
@@ -27,7 +27,7 @@
                         <p>Hmm...the password you are using doesn't seem to be working. Please try again. If you're not sure what your password is, try <a href="http://emc.bookshelf.emcp.com/account/forgotPassword" target="_blank">resetting your password</a>.</p>
                         <? } else { ?>
                         <h1>Your resource is almost ready.</h1>
-                        <p>We just need one more thing. It looks like you already have an account on our Bookshelf platform. In order to add your new resource to your existing account, we need you to autheticate with your Bookshelf password.</p>
+                        <p>We just need one more thing. It looks like you already have an account on our Bookshelf platform. In order to add your new resource to your existing account, we need you to authenticate with your Bookshelf password.</p>
                         <? } ?>
                     </div>
                     <div class="row">

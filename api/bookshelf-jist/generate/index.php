@@ -2,7 +2,7 @@
 <html lang="en-US">
     <head>
         <meta charset="utf-8">
-        <title>EMC School | Bookshelf</title>
+        <title>JIST Career Solutions | Bookshelf</title>
         <link rel="stylesheet" href="https://apps.emcp.com/editor/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://apps.emcp.com/api/bookshelf/style.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>

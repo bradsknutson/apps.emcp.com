@@ -27,7 +27,7 @@
                         <p>Hmm...the password you are using doesn't seem to be working. Please try again. If you're not sure what your password is, try <a href="http://emc.bookshelf.emcp.com/account/forgotPassword" target="_blank">resetting your password</a>.</p>
                         <? } else { ?>
                         <h1>Your eBook is almost ready.</h1>
-                        <p>We just need one more thing. It looks like you already have an account on our Bookshelf platform. In order to add your new eBook to your existing account, we need you to autheticate with your Bookshelf password.</p>
+                        <p>We just need one more thing. It looks like you already have an account on our Bookshelf platform. In order to add your new eBook to your existing account, we need you to authenticate with your Bookshelf password.</p>
                         <? } ?>
                     </div>
                     <div class="row">
