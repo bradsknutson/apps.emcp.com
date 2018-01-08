@@ -107,7 +107,7 @@
 								<tr>
 									<td colspan="3" class="emc-logo">
 										<a href="https://www.facebook.com/EMCPublishing"><img src="http://apps.emcp.com/email-signatures/img/facebook.png" width="35" alt="EMC School - Facebook" /></a>&nbsp;
-										<a href="https://twitter.com/EMCPublishing"><img src="http://apps.emcp.com/email-signatures/img/twitter.png" width="37" alt="EMC School - Twitter" /></a>&nbsp;
+										<a href="https://twitter.com/EMCschool"><img src="http://apps.emcp.com/email-signatures/img/twitter.png" width="37" alt="EMC School - Twitter" /></a>&nbsp;
 										<a href="https://vimeo.com/emcpublishing"><img src="http://apps.emcp.com/email-signatures/img/vimeo.png" width="37" alt="EMC School - Vimeo" /></a>
 									</td>
 								</tr>
