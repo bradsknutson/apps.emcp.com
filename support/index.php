@@ -2,8 +2,16 @@
 
     $org_type = $_GET['type'];
     $customerName = $_GET['name'];
-    $customerEmail = $_GET['email'];
+    if( $_GET['email'] != 'null' ) {
+        $customerEmail = $_GET['email'];
+    }
     $customerRole = $_GET['role'];
+    if( $customerRole == 'teacher' || $customerRole == 'admin' || $customerRole == 'educator' || $customerRole == 'administrator' ) {
+        $customerRole = 'Educator';
+    }
+    if( $customerRole == 'student') {
+        $customerRole = 'Student';
+    }
     $customerPlatform = $_GET['platform'];
     $customerProduct = $_GET['product'];
     $modalOption = $_GET['modal'];
@@ -56,6 +64,11 @@
         
         $customerSchool = $_GET['school'];
         
+    }
+
+    if( !empty($_GET['SNAPSystemAnalysisID']) ) {
+        $SNAPSystemAnalysisID = 'http://resources.emcp.com/snapsystemanalysis/techsupport/?id='. $_GET['SNAPSystemAnalysisID'];
+        $comm100SNAPAnalysis = '<input type="text" class="SNAPSystemAnalysisURL" id="SNAPSystemAnalysisURL" name="SNAPSystemAnalysisURL" value="'. $SNAPSystemAnalysisID .'" />';
     }
 
 ?>
@@ -304,6 +317,7 @@
     <input type="text" class="Textbook" id="Textbook" name="Textbook" value="" />
     <input type="text" class="Type" id="Type" name="Type" value="" />
     <input type="text" class="Description" id="Description" name="Description" value="" />
+    <?php echo $comm100SNAPAnalysis; ?>
 </div>
 
 <div class="comm100-script"></div>

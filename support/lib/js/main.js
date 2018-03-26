@@ -188,11 +188,19 @@ $(function() {
             }
 
         } else {
-            errorDiv.text('Zip code should be numbers only.');
+            errorDiv.empty().append('Canadian or other non-US zip code? <a href="#" id="canadian-zip">Click here</a>.');
             $('.form-block').css('height', getBoxHeight(2) );
         }
         
     }).trigger("change");
+});
+
+$(document).on('click','#canadian-zip',function(e) {
+    e.preventDefault();
+    
+    $schoolList = [];
+    toStep('2','3');
+    schoolNotFound();
 });
 
 
@@ -227,8 +235,7 @@ function generateSchoolList($zipArray) {
     
     var input = document.getElementById("schoolInput");
     new Awesomplete(input, {
-        list: "#schoolList",
-        sort: false
+        list: "#schoolList"
     });  
     
 }
@@ -278,7 +285,8 @@ $(document).on('propertychange change click keyup input paste awesomplete-close'
     // }
  });
 
-$(document).on('click','.school-not-found',function() {
+function schoolNotFound() {
+    
     $('.school-not-found').fadeOut();
     $('.school-name-container').fadeOut(function() {
         $('.school-not-found-info').hide().removeClass('hidden').fadeIn();
@@ -305,10 +313,11 @@ $(document).on('click','.school-not-found',function() {
     new Awesomplete(inputFull, {
         list: "#schoolNotFoundInputList",
         maxItems: 15,
-        sort: false
     });     
-    
-    
+}
+
+$(document).on('click','.school-not-found',function() {
+    schoolNotFound();
 });
 
 $(document).on('click','.school-still-not-found',function() {
@@ -420,7 +429,7 @@ $(document).on('change', 'select#productInput', function(event) {
             $('.form-block').css('height', getBoxHeight(4) );
         });
     }
-    
+        
 });
 
 
@@ -651,9 +660,17 @@ $(document).on('click', '.button.submit#submit', function() {
     $('.customerEmailInsert').text($customerEmail);
     
     if( $orgType == 'K-12' ) {
-        // Chat Channel EMC
-        $('.chat-button').attr('id','button-892');
-        $('.comm100-script').html($comm100EMC);
+        console.log('platform = ' + $platformSelected);
+        if( $platformSelected == 'Zulama' ) { 
+            // Chat Channel Zulama
+            $('.chat-button').attr('id','button-1609');
+            $('.comm100-script').html($comm100Zulama);
+           
+        } else {
+            // Chat Channel EMC
+            $('.chat-button').attr('id','button-892');
+            $('.comm100-script').html($comm100EMC);
+        }
     } else {
         // Chat Channel Paradigm (includes JIST)
         $('.chat-button').attr('id','button-891');
@@ -706,7 +723,7 @@ $comm100Paradigm = '<!--Begin Comm100 Live Chat Code--><div id="comm100-button-8
 
 $comm100EMC = '<!--Begin Comm100 Live Chat Code--><div id="comm100-button-892"></div><script type="text/javascript">var Comm100API=Comm100API||{};(function(t){function e(e){var a=document.createElement("script"),c=document.getElementsByTagName("script")[0];a.type="text/javascript",a.async=!0,a.src=e+t.site_id,c.parentNode.insertBefore(a,c)}t.chat_buttons=t.chat_buttons||[],t.chat_buttons.push({code_plan:892,div_id:"comm100-button-892"}),t.site_id=1000141,t.main_code_plan=892,e("https://ent.comm100.com/chatserver/livechat.ashx?siteId="),setTimeout(function(){t.loaded||e("https://entmax.comm100.com/chatserver/livechat.ashx?siteId=")},5e3)})(Comm100API||{})</script><!--End Comm100 Live Chat Code-->';
 
-
+$comm100Zulama = '<!--Begin Comm100 Live Chat Code--><div id="comm100-button-1609"></div><script type="text/javascript">var Comm100API=Comm100API||{};(function(t){function e(e){var a=document.createElement("script"),c=document.getElementsByTagName("script")[0];a.type="text/javascript",a.async=!0,a.src=e+t.site_id,c.parentNode.insertBefore(a,c)}t.chat_buttons=t.chat_buttons||[],t.chat_buttons.push({code_plan:1609,div_id:"comm100-button-1609"}),t.site_id=1000141,t.main_code_plan=1609,e("https://ent.comm100.com/chatserver/livechat.ashx?siteId="),setTimeout(function(){t.loaded||e("https://entmax.comm100.com/chatserver/livechat.ashx?siteId=")},5e3)})(Comm100API||{})</script><!--End Comm100 Live Chat Code-->';
 
 
 
@@ -1165,7 +1182,7 @@ function setFavicon($o) {
     };
 }(this));
 
-// URL String Preloadd with Organization Type
+// URL String Preload with Organization Type
 function preloadedOrgType($orgType,$advance) {
 
     if( $orgType == 'K-12' || $orgType == 'emc' || $orgType == '1' || $orgType == 'Post-Secondary' || $orgType == 'pes' || $orgType == '2' || $orgType == 'Federally-Funded' || $orgType == 'jist' || $orgType == '3' ) {

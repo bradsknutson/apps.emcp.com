@@ -1,5 +1,5 @@
 <?php
-    $cachefix = '09122017v2';
+    $cachefix = '01192018';
 ?>
 <!DOCTYPE html>
 <html lang="en">
