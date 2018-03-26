@@ -114,7 +114,7 @@
                                 <p><a href="/redirects/books/edit/<?php echo $book; ?>"><i class="fa fa-pencil" aria-hidden="true"></i> Edit Book</a></p>
                                 <p><a href="/redirects/links/upload/<?php echo $book; ?>"><i class="fa fa-upload" aria-hidden="true"></i> Import Redirects</a></p>
                                 <p><a href="/redirects/books/alias/<?php echo $book; ?>"><i class="fa fa-link" aria-hidden="true"></i> Manage Aliases</a></p>
-                                <p><a href="/redirects/stats/book/<?php echo $book; ?>/sort/hits/asc"><i class="fa fa-bar-chart" aria-hidden="true"></i> Statistics</a></p>
+                                <p><a href="/redirects/stats/book/<?php echo $book; ?>"><i class="fa fa-bar-chart" aria-hidden="true"></i> Statistics</a></p>
                                 <p><a href="/redirects/books/mass-edit/<?php echo $book; ?>"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Bulk Edit</a></p>
                             </div>
                             <?php if( $missing_num_rows > 0 ) { ?>

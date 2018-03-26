@@ -15,6 +15,8 @@
         
         include '../../includes/header.php';
         
+        /* Get Hit Tracking Data */
+        
         $book_title = "SELECT title
                         FROM book
                         WHERE id = '". $id ."'";
@@ -25,7 +27,7 @@
         
         $title = $book_title_string['title'];
         
-        $link = "SELECT a.link_id as redirect_id, count(a.link_id) as count, c.string, b.title, d.domain, e.sub, b.id as book_id, c.destination
+        $stats = "SELECT a.link_id as redirect_id, count(a.link_id) as count, c.string, b.title, d.domain, e.sub, b.id as book_id, c.destination
                                             FROM log_existing a, book b, redirects c, root_domains d, sub_domains e
                                             WHERE a.link_id = c.id
                                             AND c.book_id = b.id
@@ -34,6 +36,29 @@
                                             AND b.id = '". $id ."'
                                             GROUP BY a.link_id
                                             ";
+        $stats_result = $mysqli->query($stats);
+        $stats_num_rows = $stats_result->num_rows;
+        $stats_array = array();
+        
+        while($row = $stats_result->fetch_assoc()) {
+            array_push($stats_array,$row);
+        }
+        
+        /* Get All Redirects to Cross-match */
+        
+        $redirects_all = "SELECT * FROM redirects
+                    WHERE book_id = '". $id ."'
+                    AND deleted = '0'
+                    ORDER BY string ASC";
+            
+        $redirects_all_result = $mysqli->query($redirects_all);
+        $redirects_all_num_rows = $redirects_all_result->num_rows;
+        $redirects_array = array();
+        while($row = $redirects_all_result->fetch_assoc()) {
+            array_push($redirects_array,$row);
+        }
+        
+        /* Sorting Options */
         
         if( $var == 'string' && $sort == 'asc' || $var == '' && $sort == '' ) {
             $string_sort = 'desc';
@@ -89,72 +114,98 @@
                                 <li class="breadcrumb-item"><a href="/redirects/books/<?php echo $id; ?>"><?php echo $title; ?></a></li>
                                 <li class="breadcrumb-item active">Stats</li>
                             </ol>
-                            <p><a href="#toggle" class="redirect-toggle"><i class="fa fa-toggle-on" aria-hidden="true"></i> Toggle Display</a></p>
+                            <p><a href="#toggle" class="redirect-toggle"><i class="fa fa-toggle-on" aria-hidden="true"></i> Toggle Display</a>  &nbsp; <a href="/redirects/stats/book/csv/<?php echo $id; ?>" class="redirect-export"><i class="fa fa-download"></i> Export</a></p>
                         </div>
                         <div class="row">
                             <div class="row is-table-row-modified">
-                                <div class="col-md-10 fade-container">
+                                <div class="col-md-11 fade-container">
                                     <div class="col-md-12 border-bottom shown-cols">
-                                        <a href="/redirects/stats/book/<?php echo $id; ?>/sort/string/<?php echo $string_sort; ?>" class="sort-a sort-string">Redirect String <i class="fa fa-sort" aria-hidden="true"></i></a>
+                                        Redirect String
                                     </div>
                                     <div class="col-md-12 border-bottom hidden-cols">
                                         Full Redirect
                                     </div>
                                 </div>
+                                
                                 <div class="col-md-1 border-bottom">
-                                    <a href="/redirects/stats/book/<?php echo $id; ?>/sort/hits/<?php echo $hits_sort; ?>" class="sort-a sort-hits">Hits <i class="fa fa-sort" aria-hidden="true"></i></a>
-                                </div>
-                                <div class="col-md-1 border-bottom">
-                                    Edit
+                                    Hits
                                 </div>
                             </div>
                             <?php
             
-                                $link_result = $mysqli->query($link);
-                                $link_num_rows = $link_result->num_rows;
+                                $final_array = array();
+        
+                                foreach ($redirects_array as $redir) {
 
-                                while($row = $link_result->fetch_assoc()) {
+                                // $redir['id'];
+                                // $redir['string'];
+                                // $redir['destination'];
+                                // $redir['book_id'];
+                                // $redir['deleted'];
 
-                                    $string = $row['string'];
-                                    if( $string == '' ) {
-                                        $string = 'Domain Root';
-                                        $URLstring = '';
-                                    } else {
-                                        $URLstring = '/'. $row['string'];
+
+                                    foreach ($stats_array as $stat) {
+
+                                        // $stat['redirect_id'];
+                                        // $stat['count'];
+                                        // $stat['string'];
+                                        // $stat['domain'];
+                                        // $stat['sub'];
+                                        // $stat['book_id'];
+                                        // $stat['destination'];
+
+                                        $array_row = array();
+                                        if( $redir['id'] === $stat['redirect_id'] ) {
+
+                                            $redirect_id = $stat['redirect_id'];
+                                            $count = $stat['count'];
+                                            $string = $stat['string'];
+                                            $domain = $stat['domain'];
+                                            $sub = $stat['sub'];
+                                            $book_id = $stat['book_id'];
+                                            $destination = $stat['destination'];
+                                            break;
+
+                                        } else {
+
+                                            $redirect_id = $redir['id'];
+                                            $count = '0';
+                                            $string = $redir['string'];
+                                            $domain = $stat['domain'];
+                                            $sub = $stat['sub'];
+                                            $book_id = $redir['book_id'];
+                                            $destination = $redir['destination'];
+
+                                        }
                                     }
                                     
-                                    if( $row['sub'] == '' ) {
-                                        $domain = $row['domain'];
-                                    } else {
-                                        $domain = $row['sub'] .'.'. $row['domain'];
+                                    if( $string == '' ) {
+                                        $string = 'Domain Root';
                                     }
-
+                                        
                                     echo '<div class="row is-table-row-modified">
-                                        <div class="col-md-10 fade-container is-table-row">
+                                        <div class="col-md-11 fade-container is-table-row">
                                             <div class="col-md-12 border-bottom shown-cols">
-                                                <a class="btn-block" href="/redirects/links/edit/'. $row['redirect_id'] .'">'. $string .'</a>
+                                                <a class="btn-block" href="/redirects/links/edit/'. $redirect_id .'">'. $string .'</a>
                                             </div>
                                             <div class="col-md-12 border-bottom hidden-cols">
-                                                <a href="/redirects/links/edit/'. $row['redirect_id'] .'">http://'. $domain . $URLstring .'</a>
+                                                <a href="/redirects/links/edit/'. $redirect_id .'">'. $sub .'.'. $domain .'/'. $string .'</a>
                                             </div>
                                         </div>
+                                        
                                         <div class="col-md-1 border-bottom">
-                                            '. $row['count'] .'
-                                        </div>
-                                        <div class="col-md-1 border-bottom">
-                                            <a href="/redirects/links/edit/'. $row['redirect_id'] .'"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                                            '. $count .'
                                         </div>
                                     </div>';
-                                }
 
-                                $link_result->close();
+                                }
 
                             ?>
                         </div>
                     </div>               
                     <div class="col-sm-12 col-md-3"></div>
                 </div>
-            </div>
+            </div>    
             <script>
                 $(document).ready(function() {
                     
