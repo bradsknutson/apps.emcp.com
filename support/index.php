@@ -55,7 +55,17 @@
         $results = $mysqli->query($query);
         $row = mysqli_fetch_assoc($results);
 
-        $customerSchool = $row['school_name'];
+        $customerSchoolFromDB = $row['school_name'];
+        
+        if( $customerSchoolFromDB == '' ) {
+            if( !empty($_GET['school']) ) {
+                $customerSchool = $_GET['school'];
+            } else {
+                $customerSchool = '';
+            }
+        } else {
+            $customerSchool = $row['school_name'];
+        }
 
         $results->free();
         $mysqli->close();
@@ -265,6 +275,11 @@
         <!-- STEP 6 -  -->
         <div class="block-content block-step-6 transition">
             <div id="submit-form" class="row-fluid">
+                <?php
+                    // Server time. Server is in Michigan, in Eastern Time.
+                    $time = date('H:i');
+                    if( $time > '06:00' && $time < '20:00') { // During business hours
+                ?>
                 <p class="text-center">How would you like to contact Technical Support?</p>
                 
                 <div class="chat-button-wrapper">
@@ -289,6 +304,29 @@
                     <input type="hidden" class="from-email" id="from-email" value="" />
                     <input type="hidden" class="input-notes" id="input-notes" value="" />
                 </form>
+                
+                <?php
+                    } else { // After business hours.
+                ?>
+                <p class="text-center">How would you like to contact Technical Support?</p>
+                
+                <div class="chat-button-wrapper">
+                    <div class="email-button after-hours transition width opacity">
+                        <i class="fa fa-envelope" aria-hidden="true"></i>
+                        <p class="chat-button-text">Submit</p>
+                    </div>
+                </div>
+                
+                <div class="submit-options-after-hours">
+                    <p>Live chat is available from 7:00 AM to 7:00 PM Central Time.  Please submit your information via email and a Technical Support Specialist will contact you at <strong><span class="customerEmailInsert"></span></strong>.  If this is not the best email to contact you at, please <span class="back-step email-go-back" id="back-to-step-5">go back</span> and update it before submitting your information.</p>
+                </div>
+                
+                <form class="hidden submitFormToSupport" method="POST">
+                    <input type="hidden" class="from-email" id="from-email" value="" />
+                    <input type="hidden" class="input-notes" id="input-notes" value="" />
+                </form>
+                
+                <?php } ?>
 
                 <div class="button back-step transition" id="back-to-step-5">Back</div>
                 <div class="clearfix"></div>
