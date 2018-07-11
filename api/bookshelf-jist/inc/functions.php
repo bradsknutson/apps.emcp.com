@@ -12,7 +12,7 @@ $email = $_GET['email'];
 $campaign_id = $_GET['campaign_id'];
 
 //$base = 'https://staging-softcrylic.bookshelf.emcp.com'; // Staging
-$base = 'https://jist.bookshelf.emcp.com'; // Production
+$base = 'https://jist-api.bookshelf.emcp.com'; // Production
 
 $linkAccountURL = $base .'/webservice/linkaccount';
 $addExternalUserURL = $base .'/webservice/addexternaluser';

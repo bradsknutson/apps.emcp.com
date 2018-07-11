@@ -4,3 +4,5 @@ resources/includes/github.php
 api/bookshelf/testing/.DS_Store
 
 resources/css/.DS_Store
+api/bookshelf-jist/inc/con.php
+api/bookshelf-pes/inc/con.php
