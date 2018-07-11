@@ -130,7 +130,7 @@
                     window.location.replace("http://apps.emcp.com/redirects/books/<?php echo $book_string['id']; ?>"); 
                 });
                 
-                if( $('#domain-choice').val() == '1' || $('#domain-choice').val() == '14' || $('#domain-choice').val() == '16' ) {
+                if( $('#domain-choice').val() == '1' || $('#domain-choice').val() == '14' || $('#domain-choice').val() == '16' || $('#domain-choice').val() == '20' ) {
                     $('.alert-warning').show();
                 } else {
                     $('.alert-warning').hide();
