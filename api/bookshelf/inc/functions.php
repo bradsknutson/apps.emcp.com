@@ -11,7 +11,7 @@ if(isset($_GET['lname'])) {
 $email = $_GET['email'];
 $campaign_id = $_GET['campaign_id'];
 
-$base = 'https://emc.bookshelf.emcp.com';
+$base = 'https://emc-api.bookshelf.emcp.com';
 
 $linkAccountURL = $base .'/webservice/linkaccount';
 $addExternalUserURL = $base .'/webservice/addexternaluser';

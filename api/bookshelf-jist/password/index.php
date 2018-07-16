@@ -24,7 +24,7 @@
                     <div class="jumbotron">
                         <?php if( $badpass ) { ?>
                         <h1>Incorrect password.</h1>
-                        <p>Hmm...the password you are using doesn't seem to be working. Please try again. If you're not sure what your password is, try <a href="http://emc.bookshelf.emcp.com/account/forgotPassword" target="_blank">resetting your password</a>.</p>
+                        <p>Hmm...the password you are using doesn't seem to be working. Please try again. If you're not sure what your password is, try <a href="http://jist.bookshelf.emcp.com/" target="_blank">resetting your password</a>.</p>
                         <? } else { ?>
                         <h1>Your resource is almost ready.</h1>
                         <p>We just need one more thing. It looks like you already have an account on our Bookshelf platform. In order to add your new resource to your existing account, we need you to authenticate with your Bookshelf password.</p>
