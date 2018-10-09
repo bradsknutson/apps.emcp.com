@@ -58,7 +58,7 @@
                         </div>
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" name="division" id="division-pes" class="uncheck" value="EMC School">
+                                <input type="checkbox" name="division" id="division-pes" class="uncheck" value="Paradigm Education Solutions">
                                 Paradigm Education Solutions
                             </label>
                         </div>
@@ -95,7 +95,8 @@
                             <table>
                                 <tr>
                                     <td class="emc-logo">
-                                        <a href="http://www.emcp.com" target="_blank"><img src="http://apps.emcp.com/email-signatures/img/emc.png" alt="EMC School" height="35" /></a><br />
+                                        <a href="http://www.emcp.com" target="_blank"><img src="http://apps.emcp.com/email-signatures/img/emc.png" alt="EMC School" height="35" /></a>&nbsp;&nbsp;
+										<a href="http://www.emcp.com/zulama" target="_blank"><img src="http://apps.emcp.com/email-signatures/img/zulama.png" alt="EMC School - Zulama" /></a>
                                     </td>
                                     <td class="paradigm-logo">
                                         <a href="http://paradigmcollege.com" target="_blank"><img src="http://apps.emcp.com/email-signatures/img/paradigm.png" alt="Paradigm Education Solutions" height="35" />
@@ -108,7 +109,7 @@
 									<td colspan="3" class="emc-logo">
 										<a href="https://www.facebook.com/EMCPublishing"><img src="http://apps.emcp.com/email-signatures/img/facebook.png" width="35" alt="EMC School - Facebook" /></a>&nbsp;
 										<a href="https://twitter.com/EMCschool"><img src="http://apps.emcp.com/email-signatures/img/twitter.png" width="37" alt="EMC School - Twitter" /></a>&nbsp;
-										<a href="https://vimeo.com/emcpublishing"><img src="http://apps.emcp.com/email-signatures/img/vimeo.png" width="37" alt="EMC School - Vimeo" /></a>
+										<a href="https://vimeo.com/emcschool"><img src="http://apps.emcp.com/email-signatures/img/vimeo.png" width="37" alt="EMC School - Vimeo" /></a>
 									</td>
 								</tr>
                             </table>

@@ -15,7 +15,7 @@ $(document).ready(function() {
     $jist_link = '<a href="http://jist.com" target="_blank" style="color:#000000;text-decoration:none;">JIST Career Solutions</a>';
     $all_link = '<a href="http://www.emcp.com" target="_blank" style="color:#000000;text-decoration:none;">EMC School</a>';
 
-    $emc_logo = '<a href="http://www.emcp.com" target="_blank"><img src="http://apps.emcp.com/email-signatures/img/emc.png" alt="EMC School" /></a>';
+    $emc_logo = '<a href="http://www.emcp.com" target="_blank"><img src="http://apps.emcp.com/email-signatures/img/emc.png" alt="EMC School" /></a>&nbsp;&nbsp;<a href="http://www.emcp.com/zulama" target="_blank"><img src="http://apps.emcp.com/email-signatures/img/zulama.png" alt="EMC School - Zulama" /></a>&nbsp;&nbsp;';
     $pes_logo = '<a href="http://paradigmcollege.com" target="_blank"><img src="http://apps.emcp.com/email-signatures/img/paradigm.png" alt="Paradigm Education Solutions" /></a>';
     $jist_logo = '<a href="http://jist.com" target="_blank"><img src="http://apps.emcp.com/email-signatures/img/jist.png" alt="JIST Career Solutions" /></a>';    
     
